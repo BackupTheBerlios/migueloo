@@ -1,0 +1,123 @@
+<?php
+/*
+      +----------------------------------------------------------------------+
+      | miguel base                                                          |
+      +----------------------------------------------------------------------+
+      | Copyright (c) 2003, miguel Development Team                          |
+      +----------------------------------------------------------------------+
+      |   This program is free software; you can redistribute it and/or      |
+      |   modify it under the terms of the GNU General Public License        |
+      |   as published by the Free Software Foundation; either version 2     |
+      |   of the License, or (at your option) any later version.             |
+      |                                                                      |
+      |   This program is distributed in the hope that it will be useful,    |
+      |   but WITHOUT ANY WARRANTY; without even the implied warranty of     |
+      |   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the      |
+      |   GNU General Public License for more details.                       |
+      |                                                                      |
+      |   You should have received a copy of the GNU General Public License  |
+      |   along with this program; if not, write to the Free Software        |
+      |   Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA          |
+      |   02111-1307, USA. The GNU GPL license is also available through     |
+      |   the world-wide-web at http://www.gnu.org/copyleft/gpl.html         |
+      +----------------------------------------------------------------------+
+      | Authors: Jesus A. Martinez Cerezal <jamarcer@inicia.es>              |
+      |          Antonio F. Cano Damas <antoniofcano@telefonica.net>         |
+      |          miguel Development Team                                     |
+      |                       <e-learning-desarrollo@listas.hispalinux.es>   |      
+      +----------------------------------------------------------------------+
+*/
+/**
+ * Define la clase base de miguel.
+ *
+ * @author Jesus A. Martinez Cerezal <jamarcer@inicia.es>
+ * @author Antonio F. Cano Damas <antoniofcano@telefonica.net>
+ * @author miguel development team <e-learning-desarrollo@listas.hispalinux.es>     
+ * @package miguel base
+ * @subpackage control
+ * @version 1.0.0
+ *
+ */ 
+/**
+ *
+ */
+
+class miguel_CMain extends base_Controller
+{	
+	/**
+	 * This is the constructor.
+	 *
+	 */
+	function miguel_CMain()
+	{	
+		$this->base_Controller();
+		$this->setModuleName('main');
+		$this->setModelClass('miguel_MMain');
+		$this->setViewClass('miguel_VIntro');
+		$this->setCacheFlag(false);
+	}
+     
+	function processPetition() 
+	{
+		//Se controla que el usuario no tenga acceso. 
+                $bol_hasaccess = false;
+		
+                //Peticion de salida
+                if ( $this->issetViewVariable('id') && $this->getViewVariable('id') == 'logoff') {
+                    $this->Close($this->obj_data);
+                }
+
+                //Primero comprueba si estamos identificados y si no es asi entonces vamos a ver si es una peticion de autenticacion
+                $user_id = $this->getSessionElement( 'userinfo', 'user_id' );
+
+                if ( isset($user_id) && $user_id != '' ) {
+                    $bol_hasaccess = true;
+                    $user = $this->getSessionElement( 'userinfo', 'user_alias' );
+                } else {
+                    if ( $this->issetViewVariable('id') && $this->getViewVariable('id') == 'logon'){
+ 		        $user = $this->getViewVariable("nombre_de_usuario");
+                        if ($user == '' || $user == 'guest' ) {
+		            $user = 'guest';
+		            $password = 'guest';
+		        } else {
+                            $user = $this->getViewVariable("nombre_de_usuario");
+                            $password = $this->getViewVariable("clave_de_acceso");
+                        }
+   	                $bol_hasaccess = $this->processUser($this->obj_data, $user,  $password );
+                    }
+                }
+ 
+                if($bol_hasaccess) {
+                    if ( $user == 'guest' ) { 
+                    //Navega por la jerarqu’a
+                        $this->setViewClass("miguel_VMain");                    
+                        $this->setPageTitle("miguel_institutionList");
+                        $this->addNavElement(Util::format_URLPath('main/index.php','id=institution'), agt("miguel_Center") );
+  
+                        $this->setViewVariable('arr_categories', $this->obj_data->getInstitutionResume() );
+                        $this->setViewVariable('arr_courses', $this->obj_data->getCourse() );
+    
+                        $this->setCacheFile("miguel_VMain_Institution_" . $this->getSessionElement("userinfo", "user_id"));
+                        $this->setMessage( agt('miguel_institutionList') );
+                    } else {
+                    //Muestra los cursos de un usuario
+                        $this->setViewClass("miguel_VUserCourses");
+                        $this->addNavElement(Util::format_URLPath('main/index.php','id=institution'), agt('miguel_Courses') );
+                        $this->setViewVariable('arr_courses', $this->obj_data->getUserCourse( $this->getSessionElement('userinfo', 'user_id') ) );
+
+                        $this->setCacheFile("miguel_VMain_Courses_" . $this->getSessionElement("userinfo", "user_id"));
+                        $this->setMessage(agt("miguel_userCourses"));
+                        $this->setPageTitle("miguel_userCourses");
+                    }
+                } else { 
+                    //Bienvenida
+                    $this->setPageTitle("miguel_Welcome");
+
+                    $this->setCacheFile("miguel_VMain_Welcome");
+                    $this->setMessage(agt('miguel_Welcome'));
+                }
+                $this->setCacheFlag(true);
+                $this->setHelp("EducContent");                
+        }
+}
+?>

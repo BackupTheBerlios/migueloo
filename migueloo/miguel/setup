@@ -1,0 +1,3 @@
+clear
+SETUP_FILE=`pwd`/modules/setup/setup.php
+php -f $SETUP_FILE $*

@@ -1,0 +1,149 @@
+Instalación de miguelOO (aka andromeda)
+=======================================
+
+1.- Requisitos.
+---------------
+
+Antes de instalar miguelOO hay que comprobar que se tiene un 
+servidor web funcionando (normalmente un Apache) con soporte 
+PHP/MySQL.
+
+PHP debe tener, además, los módulos: zlib y gettext.
+
+
+2.- Librerías.
+--------------
+
+MiguelOO utiliza 4 librerías de desarrollo "externo":
+
+* MiniXML [http://minixml.psychogenic.com/]: API para generar 
+  y parsear XML. [Está integrada, no hace falta instalarla].
+  
+* phpGACL [http://phpgacl.sourceforge.net/]: Sistema de gestión 
+  de accesos. [Está integrada, no hace falta instalarla]. 
+  
+* ADOdb [http://php.weblogs.com/ADODB]: Para accesos a BBDD 
+  independientemente del SGBD. Se usa la versión 4.0.4.
+  
+* phpHtmlLib [http://phphtmllib.newsblob.com/]: API para la 
+  generación de documentos XML, HTML, XHTML, WAP/WML e imagenes 
+  SVG (Scalable Vector Graphics). Se usa la versión 2.3.0.
+  
+¿Cómo instalarlas?
+Una vez descargadas desde los enlaces, se descomprimen y se 
+mueven al directorio root del apache:
+
+i) Descargar en temp/ las librerías (ficheros phphtmllib-2.3.0.tgz y
+adodb404.tgz).
+ii) Descomprimir mediante tar xvfz <fichero> (o la forma que se 
+conozca). Se tendrán dos directorios en temp/:
+	phphtmllib-2.3.0/
+	adodb/
+iii) Se mueven al directorio root del apache. Por ejemplo, en 
+instalaciones Mandrake (sin tocar la instalación) este directorio 
+es /var/www/html/, luego
+
+	mv -R temp/phphtmllib-2.3.0/ /var/www/html/phphtmllib/
+	mv -R temp/adodb /var/www/html/adodb/
+	
+Por supuesto, hay que comprobar los permisos del usuario para 
+hacer este move ;).
+
+
+3.- Instalar miguelOO.
+----------------------
+
+Al igual que las librerías, miguelOO debe estar instalado en el 
+directorio root del apache.
+
+[Si se ha descargado del cvs bastaría con moverlo. Y si se tiene 
+un fichero tar.gz o tgz antes tendríamos que descomprimirlo].
+
+**Preparar la base de datos**
+Es necesario preparar la base de datos. En un principio, con 
+tener la base de datos de miguel bastaría. Pero como estoy 
+incluyendo funcionalidades que no tenía miguel, es necesario 
+usar otra base de datos para no interferir.
+
+En mi instalación para diferenciar, llamo a la base de datos de
+miguelOO andromeda. Y utilizo MySQL.
+
+Es necesario tener un usuario con permisos. Como por defecto al
+instalarse MySQL (en una Mandrake) se define un usuario: root con
+clave: <vacía>, voy a usarlo así en el ejemplo. 
+
+Instalando:
+1) Crear la base de datos andromeda (podéis poner otro nombre):
+   Abrimos un terminal de comandos de mysql con el usuario:
+      mysql -uroot -p
+   Creamos la base de datos escribiendo:
+      CREATE DATABASE andromeda;
+   Debe respondernos con un "Query OK, 1 row affected(xxxx sec).
+   Y salimos del terminal de comandos:
+      \q   
+	  
+2) Cargamos las tablas. Para eso usaremos el fichero con las 
+definiciones en sql/andromeda.sql. 
+
+Haríamos:
+    mysql -uroot -p < /path_a_miguelOO/sql/andromeda.sql
+
+Y tenemos la base de datos lista.
+
+
+4.- Configuración de miguelOO
+-----------------------------
+
+Dado que estamos en proceso de desarrollo deberemos hacerlo de 
+forma manual.
+
+a) Configuración de miguelOO: fichero common/miguel_base.inc.php.
+Para tener operativo miguel sólo hay que tocar la línea:
+
+define("MIGUEL_LOCALPATH", "andromeda"); Cambiar andromeda por el 
+nombre del directorio bajo el que está miguelOO en el directorio
+root de apache.
+
+
+b) Configuración del framework: fichero base/framework.inc.php.
+Para configurar el framework basta con tocar las líneas:
+
+define("MIGUELBASE_PHPHTMLLIB", $_SERVER['DOCUMENT_ROOT']."/phphtmllib"); 
+
+Si se ha instalado phphtmllib en /var/www/html/phphtmllib/, 
+ya estaría.
+
+define("MIGUELBASE_ADODB", $_SERVER['DOCUMENT_ROOT']."/adodb_4.0.4"); 
+
+Si se ha instalado adodb en /var/www/html/adodb/, hay que cambiar 
+adodb_4.0.4 por adodb.
+
+c) Configuración de la base de datos: fichero main/include/config.xml.
+Sólo tendremos en cuenta los elementos:
+
+<ddbbSgbd> mysql </ddbbSgbd>          SGBD usado: MySQL
+<ddbbServer> localhost </ddbbServer>  Host
+<ddbbUser> root </ddbbUser>           Usuario con permisos:
+<ddbbPassword>  </ddbbPassword>       Clave del usuario
+<ddbbMainDb> andromeda </ddbbMainDb>  Nombre de la BBDD.
+
+Si se usan los valores que he ido usando ya estaría.
+
+
+5.- Ejecución de miguelOO.
+--------------------------
+
+Abrimos un navegador nuestro navegador web favorito y escribimos:
+
+http://localhost/<directorio_donde_instalamos_miguelOO>
+
+Y, ¡ya está!
+
+
+6.- Información adicional.
+--------------------------
+
+Si quereis alguna cosa más, ya sabéis dónde estoy.
+
+Jesús Martínez
+<jamarcer AT inicis DOT es>

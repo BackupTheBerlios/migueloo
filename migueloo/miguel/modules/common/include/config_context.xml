@@ -1,0 +1,13 @@
+<?xml version="1.0"?>
+<config>
+<siteName> miguel </siteName>
+<Institution> Hispalinux </Institution>
+<InstitutionUrl> http://www.hispalinux.es </InstitutionUrl>
+<language> es_ES </language>
+<emailAdministrator> root@localhost </emailAdministrator>
+<administratorName> Juan </administratorName>
+<administratorSurname> Español </administratorSurname>
+<educationManager> Juan Español </educationManager>
+<telephone> (515) 648 208 </telephone>
+<mainInterfaceWidth> 100% </mainInterfaceWidth>
+</config>
