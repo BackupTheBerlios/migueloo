@@ -1,1 +1,0 @@
-php -f modules/setup/setup.php $*
