@@ -14,7 +14,7 @@ PHP debe tener, además, los módulos: zlib y gettext.
 2.- Librerías.
 --------------
 
-miguel utiliza 3 librerías de desarrollo "externo":
+miguel utiliza 4 librerías de desarrollo "externo":
 
 * MiniXML [http://minixml.psychogenic.com/]: API para generar 
   y parsear XML. [Está integrada, no hace falta instalarla].
@@ -25,26 +25,13 @@ miguel utiliza 3 librerías de desarrollo "externo":
 * phpHtmlLib [http://phphtmllib.newsblob.com/]: API para la 
   generación de documentos XML, HTML, XHTML, WAP/WML e imagenes 
   SVG (Scalable Vector Graphics). Se usa la versión 2.4.1.
+
+* pclzip [http://www.phpconcept.net/pclzip/index.en.php]: librería 
+  para la manipulación de ficheros en formato zip. Versión 2.1
   
 ¿Cómo instalarlas?
 Una vez descargadas desde los enlaces, se descomprimen y se 
 mueven al directorio root del apache:
-
-i) Descargar en temp/ las librerías (ficheros phphtmllib-2.4.1.tgz y
-adodb422.tgz).
-ii) Descomprimir mediante tar xvfz <fichero> (o la forma que se 
-conozca). Se tendrán dos directorios en temp/:
-	phphtmllib-x.x.x/
-	adodb/
-iii) Se mueven al directorio root del apache. Por ejemplo, en 
-instalaciones Mandrake (sin tocar la instalación) este directorio 
-es /var/www/html/, luego
-
-	mv -R temp/phphtmllib-2.3.0/ /var/www/html/phphtmllib/
-	mv -R temp/adodb /var/www/html/adodb/
-	
-Por supuesto, hay que comprobar los permisos del usuario para 
-hacer este move ;).
 
 
 3.- Instalar miguel.
@@ -56,14 +43,25 @@ directorio root del apache.
 [Si se ha descargado del cvs bastaría con moverlo. Y si se tiene 
 un fichero tar.gz o tgz antes tendríamos que descomprimirlo].
 
-**Preparar la base de datos**
-Es necesario preparar la base de datos. En un principio, con 
-tener la base de datos de miguel bastaría. Pero como estoy 
-incluyendo funcionalidades que no tenía miguel, es necesario 
-usar otra base de datos para no interferir.
 
-En mi instalación para diferenciar, llamo a la base de datos de
-miguel andromeda. Y utilizo MySQL.
+ATENCION: ES NECESARIO para el correcto funcionamiento de la 
+herramienta que los directorios (y contenido) bajo migueloo/var/:
+
+bibliography/
+cache/
+data/
+secretary/
+temp/
+
+sean propiedad del usuario y grupo del apache, y sean de lectura 
+escritura para el propietario.
+
+**Preparar la base de datos**
+Es necesario preparar la base de datos. Hay que crear la base de 
+datos y poblarla.
+
+Se usa como SGBD MySQL. Se podría usar cualquiera de los que
+soporta ADOdb.
 
 Es necesario tener un usuario con permisos. Como por defecto al
 instalarse MySQL (en una Mandrake) se define un usuario: root con
@@ -74,16 +72,16 @@ Instalando:
    Abrimos un terminal de comandos de mysql con el usuario:
       mysql -uroot -p
    Creamos la base de datos escribiendo:
-      CREATE DATABASE migueloo;
+      CREATE DATABASE miguel;
    Debe respondernos con un "Query OK, 1 row affected(xxxx sec).
    Y salimos del terminal de comandos:
       \q   
 	  
 2) Cargamos las tablas. Para eso usaremos el fichero con las 
-definiciones en doc/sql/migueloo.sql. 
+definiciones en doc/sql/miguel.sql. 
 
 Haríamos:
-    mysql -uroot -p <<nombre_base_de_datos>>  < /path_a_migueloo/doc/sql/miguel.sql
+    mysql -uroot -p <<nombre_base_de_datos>>  < /path_a_miguel/doc/sql/miguel.sql
 
 Y tenemos la base de datos lista.
 
@@ -109,10 +107,12 @@ Cambiar <'/var/www/html/'> por <'/path_al_directorio_root_de_apache'>
 b) Configuración del framework: fichero base/framework.inc.php.
 Para configurar el framework basta con tocar las líneas:
 
-define('MIGUELBASE_PHPHTMLLIB', '/var/www/html/phphtmllib');
-define('MIGUELBASE_ADODB', '/var/www/html/adodb');
+define('MIGUELBASE_PHPHTMLLIB', MIGUEL_ROOT_DIR.'/phphtmllib');
+define('MIGUELBASE_ADODB', MIGUEL_ROOT_DIR.'/adodb');
+define('MIGUELBASE_MINIXML', MIGUEL_ROOT_DIR.'/miniXML');
+define('MIGUELBASE_PCLZIP', MIGUEL_ROOT_DIR.'/pclzip');
 
-En ambas, cambiar </var/www/html/> por </path_al_directorio_root_de_apache/>
+En todas, cambiar el nombre por el que habéis usado.
 
 
 c) Configuración de la base de datos: fichero common/include/config.xml.
@@ -140,12 +140,14 @@ Y, ¡ya está!
 6.- Información adicional.
 --------------------------
 
-Hay tres usuarios "predefinidos":
+Hay varios usuarios "predefinidos":
 admin <admin> con perfil de administrador
-antonio <tonino007> con perfil de tutor
+alumno <alumno> con perfil de alumno
+profesor <profesor> con perfil profesor
+secretaria <secretaria> con perfil secretaría
 guest <guest> con perfil de invitado
 
-Si quereis alguna cosa más, ya sabéis dónde estoy.
+El usuario "afinado" es el de alumno ;)
 
 Jesús Martínez
 <jamarcer AT inicia DOT es>
