@@ -40,7 +40,7 @@
  *
  */
 
-include_once (Util::app_Path("common/control/classes/miguel_userinfo.class.php"));
+include_once (Util::app_Path('common/control/classes/miguel_userinfo.class.php'));
 
 
 //Fijamos el numero maximo de peticiones en pantalla

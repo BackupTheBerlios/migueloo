@@ -26,17 +26,17 @@
       |                       <e-learning-desarrollo@listas.hispalinux.es>   |      
       +----------------------------------------------------------------------+
 */
-if(file_exists("./modules/common/miguel_base.inc.php")){
-	include_once ("./modules/common/miguel_base.inc.php");
+if(file_exists('./modules/common/miguel_base.inc.php')){
+	include_once ('./modules/common/miguel_base.inc.php');
 
 	if(file_exists(CONFIG_FILE)){
-		header("Location:./modules/main/index.php");
+		header('Location:./modules/main/index.php');
 	} else {
-		header("Location:./modules/install/index.php");
+		header('Location:./modules/install/index.php');
 	}
 } else {
-	echo "<h1>miguel no está configurado</h1>";
-	echo "<h2>Debe ejecutar previamente el sistema de setup desde la consola</h2>";
-	echo "<h3>Lea el fichero INSTALL para más información</h3>";
+	echo '<h1>miguel no está configurado</h1>';
+	echo '<h2>Debe ejecutar previamente el sistema de setup desde la consola</h2>';
+	echo '<h3>Lea el fichero INSTALL para más información</h3>';
 }
 ?>

@@ -160,7 +160,7 @@ msgstr ""
 			unlink($filename);
 		}
 		//Writes file into $folder
-		$fp = fopen($filename,"wb");
+		$fp = fopen($filename,'wb');
 		fwrite($fp,$file_content);
 		fclose($fp);
 	}
@@ -173,7 +173,7 @@ msgstr ""
 		$file_content = array();
 		$numLin = 0;
 		// Read in the file's contents
-		$fp = fopen($filename,"rb");
+		$fp = fopen($filename,'rb');
 		while($reg = fgets($fp)) {
 			$file_content[$numLin] =$reg;
 			$numLin++;
@@ -217,7 +217,7 @@ Extractor de literales para gettext del proyecto miguel
 } else {
 	$gen = new andro_xgettext();
 	for($i = 1; $i < $argc; $i++){
-		if($argv[$i] == "-o") {
+		if($argv[$i] == '-o') {
 			$gen->setFileName($argv[$i+1]);
 			$i = $i+1;
 			continue;

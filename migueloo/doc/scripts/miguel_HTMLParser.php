@@ -118,7 +118,7 @@ class miguel_HTMLParser
 			unlink($filename);
 		}
 		//Writes file into $folder
-		$fp = fopen($filename,"wb");
+		$fp = fopen($filename,'wb');
 		fwrite($fp,$file_content);
 		fclose($fp);
 	}
@@ -128,9 +128,9 @@ class miguel_HTMLParser
 		$file_content = array();
 		$numLin = 0;
 		// Read in the file's contents
-		$fp = fopen($filename,"rb");
+		$fp = fopen($filename,'rb');
 		while($reg = fgets($fp)) {
-			$file_content[$numLin] =$reg;
+			$file_content[$numLin] = $reg;
 			$numLin++;
 		}
 		//$this->file_content = fread($fp, filesize($filename));
@@ -162,21 +162,21 @@ Procesador de ficheros de un curso en formato HTML del proyecto miguel
 	$gen = new miguel_HTMLParser();
 	
 	for($i = 1; $i < $argc; $i++)	{
-		if($argv[$i] == "-p"){
+		if($argv[$i] == '-p'){
 			$gen->setParam($argv[$i+1], $argv[$i+2]);
 			$i = $i +3;
 		}
 		
-		if($argv[$i] == "-d") {
+		if($argv[$i] == '-d') {
 			$dirname = getcwd();
 			$dir = opendir($dirname);
 
 			while($file = @readdir($dir)) {
-				if($file == "." || $file == "..") {
+				if($file == '.' || $file == '..') {
 					continue;
-				} else if(@is_dir($dirname."/".$file)) {
+				} else if(@is_dir($dirname.'/'.$file)) {
 					continue;
-				} else if(@file_exists($dirname."/".$file)) {
+				} else if(@file_exists($dirname.'/'.$file)) {
 					if($file != 'miguel_HTMLParser.php'){
 						echo "Procesado fichero: $file\n";
 						$gen->addFile($file);

@@ -28,8 +28,8 @@
       +----------------------------------------------------------------------+
 */
 
-include_once ("../common/miguel_base.inc.php");
-include_once (Util::app_Path("admin/control/classes/miguel_cadmin.class.php"));
+include_once ('../common/miguel_base.inc.php');
+include_once (Util::app_Path('admin/control/classes/miguel_cadmin.class.php'));
 
 $miguel = new miguel_CAdmin();
 $miguel->Exec();

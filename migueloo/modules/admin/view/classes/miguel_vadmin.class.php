@@ -40,13 +40,13 @@
  *
  */
 
-include_once (Util::app_Path("common/view/classes/miguel_vmenu.class.php"));
-include_once (Util::app_Path("admin/view/include/classes/miguel_searchForm.class.php"));
-include_once (Util::app_Path("admin/view/include/classes/miguel_searchresultForm.class.php"));
-include_once (Util::app_Path("admin/view/include/classes/miguel_adduserlistForm.class.php"));
-include_once (Util::app_Path("admin/view/include/classes/miguel_adduserForm.class.php"));
-include_once (Util::app_Path("admin/view/include/classes/miguel_deluserForm.class.php"));
-include_once (Util::app_Path("admin/view/include/classes/miguel_edituserprofileForm.class.php"));
+include_once (Util::app_Path('common/view/classes/miguel_vmenu.class.php'));
+include_once (Util::app_Path('admin/view/include/classes/miguel_searchForm.class.php'));
+include_once (Util::app_Path('admin/view/include/classes/miguel_searchresultForm.class.php'));
+include_once (Util::app_Path('admin/view/include/classes/miguel_adduserlistForm.class.php'));
+include_once (Util::app_Path('admin/view/include/classes/miguel_adduserForm.class.php'));
+include_once (Util::app_Path('admin/view/include/classes/miguel_deluserForm.class.php'));
+include_once (Util::app_Path('admin/view/include/classes/miguel_edituserprofileForm.class.php'));
 
 class miguel_VAdmin extends miguel_VMenu
 {
@@ -283,7 +283,7 @@ class miguel_VAdmin extends miguel_VMenu
     //                                          'Editar un curso'), html_br());
     //$ret_val->add(html_a(Util::format_URLPath('admin/index.php', 'admin_screen=course_list'),
     //                                          'Lista de cursos'), html_br());
-    $ret_val->add("No implementado");
+    $ret_val->add('No implementado');
 
     return $ret_val;
   }
@@ -292,7 +292,7 @@ class miguel_VAdmin extends miguel_VMenu
   {
     $ret_val = html_div();
 
-    $ret_val->add("No implementado");
+    $ret_val->add('No implementado');
 
     return $ret_val;
   }
@@ -301,7 +301,7 @@ class miguel_VAdmin extends miguel_VMenu
   {
     $ret_val = html_div();
 
-    $ret_val->add("No implementado");
+    $ret_val->add('No implementado');
 
     return $ret_val;
   }
