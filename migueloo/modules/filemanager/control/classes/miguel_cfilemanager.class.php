@@ -107,33 +107,70 @@ class miguel_CFileManager extends miguel_Controller
 					}
 				}
 	
-				/* ------------ OTRAS OPERACIONES ARCHIVOS Y DIRECTORIOS -------------- */
+				/* ------------ OTRAS OPERACIONES ARCHIVOS Y DIRECTORIOS CON FORMULARIO INTERMEDIO-------------- */
 				/* Eliminar, Renombrar, Comentar, Mover, Hacer visible, Bloquear, Compartir, ¿Actualizar y guardar un log de cambios o control de versiones? */
-	
+                                if ( $this->issetViewVariable('status') ) {
+                                    $status = $this->getViewVariable('status');
+                                    switch ( $status ) {
+                                        case 'rename':
+                                            if($this->getViewVariable('tp') == 'f'){
+                                                    $this->obj_data->renameFolder($this->getViewVariable('id'), $this->getViewVariable('newname'));
+                                            } else {
+                                                    $this->obj_data->renameFile($this->getViewVariable('id'), $this->getViewVariable('newname'));
+                                            }
+                                            break;
+                                    }
+                                    $status = null;
+                                    unset( $status );
+                                }
 				/* Debería retornar un valor error o estado de la operación y notificarlo en la carga del módulo */
 			}
-			
+
+			/* ------------------ OPERACIONES REALIZADAS DIRECTAMENTE ---------*/
 			if ( $this->issetViewVariable('status') ) {
-				if($this->getViewVariable('status') == 'del'){
+                            $status = $this->getViewVariable('status');
+                            switch ( $status ) {
+				case 'del':
 					if($this->getViewVariable('tp') == 'f'){
 						$this->obj_data->deleteFolder($this->getViewVariable('id'));
 					} else {
 						$this->obj_data->deleteFile($this->getViewVariable('id'));
 					}
-				}
-			}
-	
-			/* -------------------- CARGA EL MODULO Y LO MUESTRA POR PANTALLA -------------------- */
-			$this->setViewClass("miguel_VMain");                    
-			$this->setPageTitle("miguel_institutionList");
-			//$this->addNavElement(Util::format_URLPath('main/index.php','id=institution'), agt("miguel_Center") );
-
+                                        break;
+                                case 'visible':
+                                        if($this->getViewVariable('tp') == 'f'){
+                                                $this->obj_data->visibleElement($this->getViewVariable('id'), 1, 'folder');
+                                        } else {
+                                                $this->obj_data->visibleElement($this->getViewVariable('id'), 1, 'document');
+                                        }
+                                        break;
+                                case 'invisible':
+                                        if($this->getViewVariable('tp') == 'f'){
+                                                $this->obj_data->visibleElement($this->getViewVariable('id'), 0, 'folder');
+                                        } else {
+                                                $this->obj_data->visibleElement($this->getViewVariable('id'), 0, 'document');
+                                        }       
+                                        break;
+                                case 'lock':
+                                        $this->obj_data->lockDocument($this->getViewVariable('id'), 1);
+                                        break;
+                                case 'unlock':
+                                        $this->obj_data->lockDocument($this->getViewVariable('id'), 0);
+                                        break;
+                                case 'share':
+                                        $this->obj_data->shareDocument($this->getViewVariable('id'), 1);
+                                        break;
+                                case 'unshare':
+                                        $this->obj_data->shareDocument($this->getViewVariable('id'), 0);
+                                        break;
+                            }
+                        }
 			if ( $this->issetViewVariable("folder_id") != "" ) {
 				$current_folder_id = $this->getViewVariable("folder_id");
 			} else {
-				$current_folder_id = $this->obj_data->getFolderId($course_id);//0;
+				//$current_folder_id = $this->obj_data->getFolderId($course_id);//0;
+                                $current_folder_id = 0;
 			}
-			
 			$current_folder_info = $this->obj_data->getFolderName( $current_folder_id );
 				
 			$this->setViewVariable('current_folder_name', $current_folder_info[0]['folder_name']);

@@ -46,7 +46,7 @@ class miguel_MFileManager extends base_Model
     function getFileList( $current_course, $current_folder_id)
     {
         $document = $this->SelectMultiTable('fm_course_document_folder, fm_document',
-                                           "fm_course_document_folder.document_id, fm_document.document_name, fm_document.document_size, fm_document.user_id,  fm_document.date_publish",
+                                           "fm_course_document_folder.document_id, fm_document.document_name, fm_document.document_size, fm_document.user_id,  fm_document.date_publish, fm_document.document_visible, fm_document.document_lock, fm_document.document_share",
                                            'fm_course_document_folder.course_id = ' . $current_course . ' AND fm_course_document_folder.folder_id = ' . $current_folder_id . ' AND fm_course_document_folder.document_id = fm_document.document_id');
             if ($this->hasError()) {
                     $ret_val = null;
@@ -57,7 +57,10 @@ class miguel_MFileManager extends base_Model
                                   'document_name' => $document[$i]['fm_document.document_name'],
                                   'document_size' => $document[$i]['fm_document.document_size'],
                                   'document_date' => $document[$i]['fm_document.date_publish'],
-                                  'document_autor' => $this->_getNameFromUser($document[$i]['fm_document.user_id'])
+                                  'document_autor' => $this->_getNameFromUser($document[$i]['fm_document.user_id']),
+                                  'document_visible' => $document[$i]['fm_document.document_visible'],
+                                  'document_lock' => $document[$i]['fm_document.document_lock'],
+                                  'document_share' => $document[$i]['fm_document.document_share']
                                 );
         }
 
@@ -89,7 +92,7 @@ class miguel_MFileManager extends base_Model
     function getFolderList( $current_course, $current_folder_id)
     {
         //$current_course = 0;
-        $folder = $this->Select("fm_folder", "folder_id, folder_name, folder_parent_id, folder_date, user_id",
+        $folder = $this->Select("fm_folder", "folder_id, folder_name, folder_parent_id, folder_date, user_id, folder_visible",
                                 "course_id = $current_course AND folder_parent_id = $current_folder_id");
 
         if ($this->hasError()) {
@@ -106,15 +109,16 @@ class miguel_MFileManager extends base_Model
                                   'folder_parent_id' => $folder[$i]['fm_folder.folder_parent_id'],
                                   'folder_date' => $folder[$i]['fm_folder.folder_date'],
                                   'folder_count_element' => $fileCount + $currentFolderCount,
-                                  'folder_autor' => $this->_getNameFromUser($folder[$i]['fm_folder.user_id'])
+                                  'folder_autor' => $this->_getNameFromUser($folder[$i]['fm_folder.user_id']),
+                                  'folder_visible' => $folder[$i]['fm_folder.folder_visible']
                                 );
         }
 
         return ($ret_val);
     }
 
-        //Maqueta
-        function getFolderId( $course_id )
+    //Maqueta
+    function getFolderId( $course_id )
     {
         $folder = $this->Select("fm_folder", "folder_id",
                                 "course_id = $course_id and folder_parent_id = 0");
@@ -128,8 +132,8 @@ class miguel_MFileManager extends base_Model
         return ($ret_val);
 
     }
-        //Maqueta
 
+    //Maqueta
     function getFolderName( $folder_id )
     {
         $folder = $this->Select("fm_folder", "folder_name, folder_parent_id",
@@ -154,8 +158,8 @@ class miguel_MFileManager extends base_Model
 		$now = date("Y-m-d");
 
 		$ret_val = $this->Insert('fm_folder',
-									'folder_parent_id, course_id, folder_name, user_id, folder_date',
-									"$parent_folder_id,$course_id,$folder_name, $user_id, $now");
+					'folder_parent_id, course_id, folder_name, user_id, folder_date, folder_visible',
+					"$parent_folder_id,$course_id,$folder_name, $user_id, $now, 1");
 		
 		
 		if ($this->hasError()) {
@@ -171,8 +175,8 @@ class miguel_MFileManager extends base_Model
 		$now = date("Y-m-d");
 
         $documentID = $this->Insert('fm_document',
-                                 'document_mime, document_name, user_id, document_size, date_publish',
-                                 "$document_mime, $document_name, $user_id, $size, $now");
+                                 'document_mime, document_name, user_id, document_size, date_publish, document_visible, document_lock, document_share',
+                                 "$document_mime, $document_name, $user_id, $size, $now,0,0,0");
 
         if ($this->hasError()) {
                 $ret_val = null;
@@ -188,7 +192,85 @@ class miguel_MFileManager extends base_Model
         return ($ret_val);
 
     }
+
+    function visibleElement($id, $status, $type='document') {
+        if ($type='document') {
+            $ret_val = $this->Update('fm_document', 'document_visible', $status, 'document_id = '.$id);
+        } else {
+            $ret_val = $this->Update('fm_folder', 'folder_visible', $status, 'folder_id = '.$id);
+        }
+        if ($this->hasError() ) {
+            $ret_val = null;
+        }
+        return ($ret_val);
+    }
 	
+    function lockDocument($id, $status) {
+        $ret_val = $this->Update('fm_document', 'document_lock', $status, 'document_id = '.$id);
+        if ($this->hasError() ) {
+            $ret_val = null;
+        }
+
+        return ($ret_val);
+    }
+
+    function shareDocument($id, $status) {
+        $ret_val = $this->Update('fm_document', 'document_share', $status, 'document_id = '.$id);
+        
+        if ($this->hasError() ) {
+            $ret_val = null;
+        }
+        
+        return ($ret_val);
+    }
+
+    //Maqueta
+    function _getFileName( $document_id )
+    {
+        $document = $this->Select("fm_document", "document_name",
+                                "document_id = $document_id");
+
+        if ($this->hasError()) {
+                $ret_val = null;
+        }
+
+        $countDocument = count($document);
+        for ($i=0; $i < $countDocument; $i++) {
+             $ret_val[] = array ( 'document_name' => $document[$i]['fm_document.document_name']);
+        }
+
+        return ($ret_val);
+
+    }
+
+    function renameFile( $_id, $_newName ) {
+        $oldName = $this->_getFileName( $_id ); 
+        $ret_val = $this->Update('fm_document', 'document_name', $_newName, 'document_id = '.$_id);
+        
+        if ($this->hasError() ) {
+            $ret_val = null;
+        } else {
+            //user can't give the old name for security reasons
+            $file = Util::main_Path('var/data/' . $oldName[0]['document_name']);
+            $newFile = Util::main_Path('var/data/' . $_newName);
+            if(file_exists($file)){
+                rename($file, $newFile);
+            }
+        } 
+        
+        return ($ret_val);
+    }
+
+    function renameFolder( $_id, $_newName ) {
+        $ret_val = $this->Update('fm_folder', 'folder_name', $_newName, 'folder_id = '.$_id);
+  
+        if ($this->hasError() ) {
+            $ret_val = null;
+        }
+
+        return ($ret_val);
+    }
+
 	function deleteFile($_id)
 	{
 		$show_sql = $this->Select('fm_document', 'document_name', "document_id = $_id");

@@ -77,12 +77,14 @@ class miguel_VFileManager extends miguel_VMenu
                         for ($i=0; $i<count($arr_data); $i++) {
                                 //Debug::oneVar($arr_data[$i], __FILE__, __LINE__);
                                 $table->add($this->addDocumentInfo($arr_data[$i]['folder_id'],
-                                                                                        $arr_data[$i]['folder_name'],
-                                                                                        $arr_data[$i]['folder_date'],
-                                                                                        $arr_data[$i]['folder_autor'],
-                                                                                        0,
-                                                                                        $arr_data[$i]['folder_count_element'],
-                                                                                        true));
+                                                                   $arr_data[$i]['folder_name'],
+                                                                   $arr_data[$i]['folder_date'],
+                                                                   $arr_data[$i]['folder_autor'],
+                                                                   0,
+                                                                   $arr_data[$i]['folder_count_element'],
+                                                                   $arr_data[$i]['folder_visible'],
+                                                                   1,1,
+                                                                   true));
                         }
                         //$bol_hasFolders = true;
                 } /*else {
@@ -93,13 +95,15 @@ class miguel_VFileManager extends miguel_VMenu
                 //Debug::oneVar($arr_data, __FILE__, __LINE__);
                 if ($arr_data[0]['document_name'] != null) {
                         for ($i=0; $i<count($arr_data); $i++) {
-                                //Debug::oneVar($arr_data[$i], __FILE__, __LINE__);
                                 $table->add($this->addDocumentInfo($arr_data[$i]['document_id'],
-                                                                                        $arr_data[$i]['document_name'],
-                                                                                        $arr_data[$i]['document_date'],
-                                                                                        $arr_data[$i]['document_autor'],
-                                                                                        0,
-                                                                                        $arr_data[$i]['document_size']));
+                                                                   $arr_data[$i]['document_name'],
+                                                                   $arr_data[$i]['document_date'],
+                                                                   $arr_data[$i]['document_autor'],
+                                                                   0,
+                                                                   $arr_data[$i]['document_size'],
+                                                                   $arr_data[$i]['document_visible'],
+                                                                   $arr_data[$i]['document_lock'],
+                                                                   $arr_data[$i]['document_share']));
                         }
                 } /*else {
                         if(!$bol_hasFolders){
@@ -114,10 +118,8 @@ class miguel_VFileManager extends miguel_VMenu
         {
                 $folder_parent_id = $this->getViewVariable('folder_parent_id');
                 if($folder_parent_id != 0 ){
-                        $link = $this->imag_alone(Util::format_URLPath('filemanager/index.php',$status.$_id, 'folder_id=' . $folder_parent_id),
-                                                                                                                Theme::getThemeImagePath('img_carpeta_up.png'), agt('Subir'), 15, 12); //filemanager/parentdir.png
-                        //$image = Theme::getThemeImage("filemanager/parentdir.png"); //img_carpeta.jpg //boton_arriba.gif
-                        //$link = html_a(Util::format_URLPath('filemanager/index.php', 'folder_id=' . $folder_parent_id), $image, null, '_top');
+                        $link = $this->imag_alone(Util::format_URLPath('filemanager/index.php',"folder_id=$folder_parent_id"),
+                                                                        Theme::getThemeImagePath('filemanager/parentdir.png'), agt('Subir'),15,12);
                 } else {
                         $link = _HTML_SPACE;
                 }
@@ -134,6 +136,11 @@ class miguel_VFileManager extends miguel_VMenu
                 $elem7 = html_td('ptabla02', "", html_p(agt('Tamaño')));
                 $elem8 = html_td('ptabla02', "", _HTML_SPACE);
                 $elem9 = html_td('ptabla02', "",_HTML_SPACE);
+                $elem10 = html_td('ptabla02', "",_HTML_SPACE);
+                $elem11 = html_td('ptabla02', "",_HTML_SPACE);
+                $elem12 = html_td('ptabla02', "",_HTML_SPACE);
+                $elem13 = html_td('ptabla02', "",_HTML_SPACE);
+                $elem14 = html_td('ptabla02', "",_HTML_SPACE);
 
                 $elem1->set_tag_attribute('width', '1%');
                 $elem2->set_tag_attribute('width', '1%');
@@ -144,6 +151,11 @@ class miguel_VFileManager extends miguel_VMenu
                 $elem7->set_tag_attribute('width', '5%');
                 $elem8->set_tag_attribute('width', '1%');
                 $elem9->set_tag_attribute('width', '1%');
+                $elem10->set_tag_attribute('width', '1%');
+                $elem11->set_tag_attribute('width', '1%');
+                $elem12->set_tag_attribute('width', '1%');
+                $elem13->set_tag_attribute('width', '1%');
+                $elem14->set_tag_attribute('width', '1%');
 
                 $row->add($elem1);
                 $row->add($elem2);
@@ -154,11 +166,15 @@ class miguel_VFileManager extends miguel_VMenu
                 $row->add($elem7);
                 $row->add($elem8);
                 $row->add($elem9);
-
+                $row->add($elem10);
+                $row->add($elem11);
+                $row->add($elem12);
+                $row->add($elem13);
+                $row->add($elem14);
                 return $row;
         }
 
-        function addDocumentInfo($_id, $_name, $_date, $_owner, $_downs, $_size, $_folder = false)
+        function addDocumentInfo($_id, $_name, $_date, $_owner, $_downs, $_size, $_visible=1, $_lock=1, $_share=1, $_folder = false)
         {
                 $row = html_tr();
 
@@ -166,7 +182,7 @@ class miguel_VFileManager extends miguel_VMenu
 
                 if($_folder){
                         $link = $this->imag_alone(Util::format_URLPath('filemanager/index.php',"folder_id=$_id"),
-                                                                                                                Theme::getThemeImagePath('img_carpeta.jpg'), agt('Entrar'));
+                                                                        Theme::getThemeImagePath('filemanager/folder.png'), agt('Entrar'));
                 } else {
                         include_once (Util::app_Path("filemanager/include/classes/filedisplay.class.php"));
                         $image =  Theme::getThemeImagePath("filemanager/" . fileDisplay::choose_image($_name));
@@ -196,6 +212,7 @@ class miguel_VFileManager extends miguel_VMenu
                 $elem8 = html_td('ptabla03', '', $link);
                 $elem8->set_tag_attribute('align', 'center');
 
+                //----------------- COMMON OPERATIONS ------------------------------
                 $_fid = $this->getViewVariable('folder_id');
 
                 if($_folder){
@@ -204,10 +221,89 @@ class miguel_VFileManager extends miguel_VMenu
                         $status = 'folder_id='.$_fid.'&status=del&tp=d&id=';
                 }
                 $img = $this->imag_alone(Util::format_URLPath('filemanager/index.php',$status.$_id),
-                                                                                                                Theme::getThemeImagePath('boton_papelera.gif'), agt('Borrar'));
-                $elem9 = html_td('ptabla03', '', $img); //eliminar.jpg //html_img(Theme::getThemeImagePath('boton_papelera.gif'))
+                                         Theme::getThemeImagePath('filemanager/delete.png'), agt('Borrar'));
+                $elem9 = html_td('ptabla03', '', $img);
                 $elem9->set_tag_attribute('align', 'center');
 
+                $_fid = $this->getViewVariable('folder_id');
+
+                if($_folder){
+                        $status = 'oldName='.$_name.'&operation_id=rename&tp=f&id=';
+                } else {
+                        $status = 'oldName='.$_name.'&operation_id=rename&tp=d&id=';
+                }
+                $img = $this->imag_alone(Util::format_URLPath('filemanager/index.php',$status.$_id),
+                                         Theme::getThemeImagePath('filemanager/rename.png'), agt('Renombrar'));
+                $elem10 = html_td('ptabla03', '', $img); 
+                $elem10->set_tag_attribute('align', 'center');
+
+                if($_folder){
+                        $status = 'folder_id='.$_fid.'&operation_id=move&tp=f&id=';
+                } else {
+                        $status = 'folder_id='.$_fid.'&operation_id=move&tp=d&id=';
+                }
+                $img = $this->imag_alone(Util::format_URLPath('filemanager/index.php',$status.$_id),
+                                         Theme::getThemeImagePath('filemanager/move.png'), agt('Mover'));
+                $elem11 = html_td('ptabla03', '', $img); 
+                $elem11->set_tag_attribute('align', 'center');
+                if ($_visible == 0) {
+                    $status= 'visible';
+                    $icon='invisible.png';
+                    $tooltip='Visible';
+                } else {
+                    $status='invisible';
+                    $icon='visible.png';
+                    $tooltip='Invisible';
+                }
+                if($_folder){
+                        $status = 'status='.$status.'&tp=f&id=';
+                } else {
+                        $status = 'status='.$status.'&tp=d&id=';
+                }
+                $img = $this->imag_alone(Util::format_URLPath('filemanager/index.php',$status.$_id),
+                                         Theme::getThemeImagePath('filemanager/'.$icon), agt($tooltip));
+                $elem12 = html_td('ptabla03', '', $img); 
+                $elem12->set_tag_attribute('align', 'center');
+
+                if( !$_folder ) {
+                    if ($_lock == 0) {
+                        $status= 'lock';
+                        $icon='lock.png';
+                        $tooltip='Bloquear';
+                    } else {
+                        $status='unlock';
+                        $icon='unlock.png';
+                        $tooltip='Desbloqear';
+                    }
+                    $status = 'status='.$status.'&id=';
+                    $img = $this->imag_alone(Util::format_URLPath('filemanager/index.php',$status.$_id),
+                                             Theme::getThemeImagePath('filemanager/'.$icon), agt($tooltip));
+
+                    $elem13 = html_td('ptabla03', '', $img);
+                    $elem13->set_tag_attribute('align', 'center');
+                    if ($_share == 0) {
+                        $status= 'share';
+                        $icon='invisible.png';
+                        $tooltip='Compartir';
+                    } else {
+                        $status='unshare';
+                        $icon='visible.png';
+                        $tooltip='No compartir';
+                    }
+                    $status = 'status='.$status.'&id=';
+                    $img = $this->imag_alone(Util::format_URLPath('filemanager/index.php',$status.$_id),
+                                             Theme::getThemeImagePath('filemanager/'.$icon), agt($tooltip));
+
+                    $elem14 = html_td('ptabla03', '', $img);
+                    $elem14->set_tag_attribute('align', 'center');
+                } else {
+                    $link = _HTML_SPACE;
+                    $elem13 = html_td('ptabla03', '', $link);
+                    $elem13->set_tag_attribute('align', 'center');
+                    $elem14 = html_td('ptabla03', '', $link);
+                    $elem14->set_tag_attribute('align', 'center');
+                }
+                //--------------------- ADD OPERATIONS INTO TR CONTAINET -----------------
                 $row->add($elem1);
                 $row->add($elem2);
                 $row->add($elem3);
@@ -217,7 +313,11 @@ class miguel_VFileManager extends miguel_VMenu
                 $row->add($elem7);
                 $row->add($elem8);
                 $row->add($elem9);
-
+                $row->add($elem10);
+                $row->add($elem11);
+                $row->add($elem12);
+                $row->add($elem13);
+                $row->add($elem14);
                 return $row;
         }
 
@@ -231,6 +331,15 @@ class miguel_VFileManager extends miguel_VMenu
                                 case 'submitFile':
                                         $ret_val = $this->addForm('filemanager', 'miguel_submitFileForm');
                                         break;
+                                case 'rename':
+                                        $ret_val = $this->addForm('filemanager', 'miguel_renameForm');
+                                        break; 
+                                case 'move':
+                                        $ret_val = $this->addForm('filemanager', 'miguel_moveForm');
+                                        break;
+                                case 'comment':
+                                        $ret_val = $this->addForm('filemanager', 'miguel_submitFileForm');
+                                        break;  
                         }
                 } else {
                         $ret_val = $this->addOperationBar();
@@ -268,15 +377,15 @@ class miguel_VFileManager extends miguel_VMenu
         $table->add_row(html_td('ptabla03', '', $this->addDocuments() ));
         //$table->add_row(html_td('ptabla03', '', $this->init_content() ));
         $table->add_row(html_td('ptabla03', '', _HTML_SPACE));
-                $table->add_row($this->_operationForm());
-                $table->add_row(html_td('ptabla03', '', _HTML_SPACE));
+        $table->add_row($this->_operationForm());
+        $table->add_row(html_td('ptabla03', '', _HTML_SPACE));
         $table->add_row(html_td('ptabla01pie', '', $title));
 
         return $table;
     }
 
     function right_block()
-        {
+    {
                 //Crea el contenedor del right_block
                 $main = container();
 
