@@ -63,13 +63,13 @@ class miguel_CFileManager extends miguel_Controller
 
 
 		//Primero comprueba si estamos identificados y si no es asi entonces vamos a ver si es una peticion de autenticacion
-		$user_id = $this->getSessionElement( 'userinfo', 'user_id' );
-        $course_id = $this->getSessionElement( 'courseinfo', 'course_id');
+                $user_id = $this->getSessionElement( 'userinfo', 'user_id' );
+                $course_id = $this->getSessionElement( 'courseinfo', 'course_id');
+
 		//Para maqueta
 		if(empty($course_id)){
 			$course_id = 7;
 		}
-
 		if ( isset($user_id) && $user_id != '' ) {
 			$bol_hasaccess = true;
 			$user = $this->getSessionElement( 'userinfo', 'user_alias' );
@@ -78,13 +78,14 @@ class miguel_CFileManager extends miguel_Controller
 		$this->clearNavBarr();
 
 		if($bol_hasaccess) {
+                        /* --------------- EXEC FILEMANAGER ACTIONS ----------------- */
 			if ( $this->issetViewVariable('submit') ) {
-				/* ----------- CREA UN DIRECTORIO -------------- */
+				/* ----------- NEW FOLDER  -------------- */
 				if ( $this->issetViewVariable('foldername') ) {
-						$this->setViewVariable('folder_id', $this->obj_data->insertFolder( $this->getViewVariable('folder_id'), $course_id, $this->getViewVariable('foldername'), $user_id ));
+                                    $this->setViewVariable('folder_id', $this->obj_data->insertFolder( $this->getViewVariable('folder_id'), $course_id, $this->getViewVariable('foldername'), $user_id ));
 				}
 	
-				/* ----------- ENVÍO DE FICHEROS -------------- */
+				/* -----------  SUBMIT FILE  -------------- */
 				if ( $_FILES['filename']['tmp_name'] != null ) {
 					include_once (Util::app_Path("filemanager/include/classes/filemanager.class.php"));
 					if ( !$this->getViewVariable('filezip') ) {
@@ -165,12 +166,15 @@ class miguel_CFileManager extends miguel_Controller
                                         break;
                             }
                         }
+                        /* -------- SET CURRENT FOLDER, IF EMPTY BY DEFAULT FOLDER_ID = 0 ------------- */
 			if ( $this->issetViewVariable("folder_id") != "" ) {
 				$current_folder_id = $this->getViewVariable("folder_id");
 			} else {
 				//$current_folder_id = $this->obj_data->getFolderId($course_id);//0;
                                 $current_folder_id = 0;
 			}
+//Debug::oneVar( $this->obj_data->getFolderTree( $course_id,  0 ) );
+                        /* ----------- DISPLAY FOLDER CONTENT --------------- */
 			$current_folder_info = $this->obj_data->getFolderName( $current_folder_id );
 				
 			$this->setViewVariable('current_folder_name', $current_folder_info[0]['folder_name']);
@@ -182,6 +186,8 @@ class miguel_CFileManager extends miguel_Controller
 			$this->setViewVariable('folder_id', $current_folder_id);
 			$this->setViewVariable('operation_id', $this->getViewVariable('operation_id') );
 		
+                        $this->setViewVariable('user_id', $user_id);
+                        $this->setViewVariable('profile_id', $this->getSessionElement( 'userinfo', 'profile_id' ) );
 			$this->setCacheFile("miguel_VFileManager" . $this->getSessionElement("userinfo", "user_id"));
 			//$this->setMessage(agt("miguel_fileManager"));
 			$this->setPageTitle("miguel_fileManager");

@@ -21,7 +21,7 @@
       |   02111-1307, USA. The GNU GPL license is also available through     |
       |   the world-wide-web at http://www.gnu.org/copyleft/gpl.html         |
       +----------------------------------------------------------------------+
-      | Authors: Antonio F. Cano Damas <antoniofcano@telefonica.net>         |
+      | Authors: Antonio F. Cano Damas <antonio@igestec.com>                 |
       |          miguel Development Team                                     |
       |                       <e-learning-desarrollo@listas.hispalinux.es>   |
       +----------------------------------------------------------------------+
@@ -29,7 +29,7 @@
 /**
  * Define la clase base de miguel.
  *
- * @author Antonio F. Cano Damas <antoniofcano@telefonica.net>
+ * @author Antonio F. Cano Damas <antonio@igestec.com>
  * @author miguel development team <e-learning-desarrollo@listas.hispalinux.es>
  * @package miguel base
  * @subpackage control
@@ -58,6 +58,7 @@ class miguel_MFileManager extends base_Model
                                   'document_size' => $document[$i]['fm_document.document_size'],
                                   'document_date' => $document[$i]['fm_document.date_publish'],
                                   'document_autor' => $this->_getNameFromUser($document[$i]['fm_document.user_id']),
+                                  'document_user_id' => $document[$i]['fm_document.user_id'],
                                   'document_visible' => $document[$i]['fm_document.document_visible'],
                                   'document_lock' => $document[$i]['fm_document.document_lock'],
                                   'document_share' => $document[$i]['fm_document.document_share']
@@ -110,11 +111,28 @@ class miguel_MFileManager extends base_Model
                                   'folder_date' => $folder[$i]['fm_folder.folder_date'],
                                   'folder_count_element' => $fileCount + $currentFolderCount,
                                   'folder_autor' => $this->_getNameFromUser($folder[$i]['fm_folder.user_id']),
+                                  'folder_user_id' => $folder[$i]['fm_folder.user_id'],
                                   'folder_visible' => $folder[$i]['fm_folder.folder_visible']
                                 );
         }
 
         return ($ret_val);
+    }
+
+    function getFolderTree( $current_course, $current_folder_id = 0 )
+    {
+        $folderList = $this->getFolderList($current_course, $current_folder_id);
+
+        // recursive operation if subdirectories exist
+        $folderCount = sizeof($folderList);
+        if ( $folderCount > 0 ) {
+            for ($i = 0 ; $i < $folderCount ; $i++ ) {
+//                $subFolderList = $this->getFolderTree( $current_course, $folderList[$i]['folder_id'] ) ;             // function recursivity
+//                $folderList  =  array_merge( $folderList , $subFolderList ) ; // data merge
+                  Debug::oneVar( $folderList[$i]['folder_id'] );
+            }
+        }
+        return $folderList;
     }
 
     //Maqueta
@@ -176,7 +194,7 @@ class miguel_MFileManager extends base_Model
 
         $documentID = $this->Insert('fm_document',
                                  'document_mime, document_name, user_id, document_size, date_publish, document_visible, document_lock, document_share',
-                                 "$document_mime, $document_name, $user_id, $size, $now,0,0,0");
+                                 "$document_mime, $document_name, $user_id, $size, $now,0,1,0");
 
         if ($this->hasError()) {
                 $ret_val = null;

@@ -21,7 +21,7 @@
       |   02111-1307, USA. The GNU GPL license is also available through     |
       |   the world-wide-web at http://www.gnu.org/copyleft/gpl.html         |
       +----------------------------------------------------------------------+
-      | Authors: Antonio F. Cano Damas <antoniofcano@telefonica.net>         |
+      | Authors: Antonio F. Cano Damas <antonio@igestec.com>                 |
       |          miguel Development Team                                     |
       |                       <e-learning-desarrollo@listas.hispalinux.es>   |
       +----------------------------------------------------------------------+
@@ -46,7 +46,7 @@
  *
  * Utiliza la libreria phphtmllib.
  *
- * @author Antonio F. Cano Damas  <antoniofcano@telefonica.net>
+ * @author Antonio F. Cano Damas  <antonio@igestec.com>
  * @author miguel development team <e-learning-desarrollo@listas.hispalinux.es>
  * @package miguel base
  * @subpackage view
@@ -80,6 +80,7 @@ class miguel_VFileManager extends miguel_VMenu
                                                                    $arr_data[$i]['folder_name'],
                                                                    $arr_data[$i]['folder_date'],
                                                                    $arr_data[$i]['folder_autor'],
+                                                                   $arr_data[$i]['folder_user_id'],
                                                                    0,
                                                                    $arr_data[$i]['folder_count_element'],
                                                                    $arr_data[$i]['folder_visible'],
@@ -99,6 +100,7 @@ class miguel_VFileManager extends miguel_VMenu
                                                                    $arr_data[$i]['document_name'],
                                                                    $arr_data[$i]['document_date'],
                                                                    $arr_data[$i]['document_autor'],
+                                                                   $arr_data[$i]['document_user_id'],
                                                                    0,
                                                                    $arr_data[$i]['document_size'],
                                                                    $arr_data[$i]['document_visible'],
@@ -174,8 +176,19 @@ class miguel_VFileManager extends miguel_VMenu
                 return $row;
         }
 
-        function addDocumentInfo($_id, $_name, $_date, $_owner, $_downs, $_size, $_visible=1, $_lock=1, $_share=1, $_folder = false)
+        function addDocumentInfo($_id, $_name, $_date, $_owner, $_owner_id, $_downs, $_size, $_visible=1, $_lock=1, $_share=1, $_folder = false)
         {
+                $user_id = $this->getViewVariable('user_id');
+                $profile_id = $this->getViewVariable('profile_id');
+                //If not Admin, teacher or tutor
+                if ( $profile_id >= 4) {
+                    //Test ownership and visibility
+                    if ( ( $user_id != $_owner_id ) && ($_visible == 0 ) ) {
+                        return ;
+                    }
+                }
+
+                //Necesito dos clases: una para visible y otra para invisible. La de invisible es para diferenciar en la vista del propietario o administrador
                 $row = html_tr();
 
                 $elem1 = html_td('ptabla03', '', _HTML_SPACE);
@@ -211,6 +224,44 @@ class miguel_VFileManager extends miguel_VMenu
                 }
                 $elem8 = html_td('ptabla03', '', $link);
                 $elem8->set_tag_attribute('align', 'center');
+
+                //---------------- TEST LOCK ---------------------------------------
+                if ( ($_lock == 0) && ($profile_id >= 4) ){
+                    $elem9 = html_td('ptabla03', '', _HTML_SPACE);
+                    $elem9->set_tag_attribute('align', 'center');
+
+                    $elem10 = html_td('ptabla03', '', _HTML_SPACE);
+                    $elem10->set_tag_attribute('align', 'center');
+
+                    $elem11 = html_td('ptabla03', '', _HTML_SPACE);
+                    $elem11->set_tag_attribute('align', 'center');
+
+                    $elem12 = html_td('ptabla03', '', _HTML_SPACE);
+                    $elem12->set_tag_attribute('align', 'center');
+
+                    $elem13 = html_td('ptabla03', '', _HTML_SPACE);
+                    $elem13->set_tag_attribute('align', 'center');
+
+                    $elem14 = html_td('ptabla03', '', _HTML_SPACE);
+                    $elem14->set_tag_attribute('align', 'center');
+                  
+                    $row->add($elem1);
+                    $row->add($elem2);
+                    $row->add($elem3);
+                    $row->add($elem4);
+                    $row->add($elem5);
+                    $row->add($elem6);
+                    $row->add($elem7);
+                    $row->add($elem8);
+                    $row->add($elem9);
+                    $row->add($elem10);
+                    $row->add($elem11);
+                    $row->add($elem12);
+                    $row->add($elem13);
+                    $row->add($elem14);
+
+                    return $row;
+                }
 
                 //----------------- COMMON OPERATIONS ------------------------------
                 $_fid = $this->getViewVariable('folder_id');
@@ -266,21 +317,26 @@ class miguel_VFileManager extends miguel_VMenu
                 $elem12->set_tag_attribute('align', 'center');
 
                 if( !$_folder ) {
-                    if ($_lock == 0) {
-                        $status= 'lock';
-                        $icon='lock.png';
-                        $tooltip='Bloquear';
+                    //--------- ONLY TEACHER, TUTOR OR ADMIN CAN LOCK FILES ----------------
+                    if ($profile_id < 4) {
+                        if ($_lock == 0) {
+                            $status= 'lock';
+                            $icon='lock.png';
+                            $tooltip='Bloquear';
+                        } else {
+                            $status='unlock';
+                            $icon='unlock.png';
+                            $tooltip='Desbloqear';
+                        }
+                        $status = 'status='.$status.'&id=';
+                        $img = $this->imag_alone(Util::format_URLPath('filemanager/index.php',$status.$_id),
+                                                 Theme::getThemeImagePath('filemanager/'.$icon), agt($tooltip));
                     } else {
-                        $status='unlock';
-                        $icon='unlock.png';
-                        $tooltip='Desbloqear';
+                        $img = _HTML_SPACE;
                     }
-                    $status = 'status='.$status.'&id=';
-                    $img = $this->imag_alone(Util::format_URLPath('filemanager/index.php',$status.$_id),
-                                             Theme::getThemeImagePath('filemanager/'.$icon), agt($tooltip));
-
                     $elem13 = html_td('ptabla03', '', $img);
                     $elem13->set_tag_attribute('align', 'center');
+
                     if ($_share == 0) {
                         $status= 'share';
                         $icon='invisible.png';
