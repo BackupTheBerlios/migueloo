@@ -1,0 +1,93 @@
+<?xml version="1.0"?>
+ <menuBar>
+  <menu>
+  		<name>Evolución del curso</name>
+	  	<option>
+  	  		<name>Estadísticas de seguimiento</name>
+					<type>i</type>
+					<link></link>
+					<param></param>
+  		</option>
+  		<option>
+    			<name>Estadísticas de evaluación</name>
+					<type>i</type>
+					<link></link>
+					<param></param>
+  		</option>
+  		<option>
+    			<name>Estadísticas de conexión</name>
+					<type>i</type>
+					<link></link>
+					<param></param>
+  		</option>
+  	</menu>
+  	<menu>
+  		<name>Acción formativa</name>
+	  	<option>
+  	  			<name>Ficha del curso</name>
+						<type>i</type>
+						<link></link>
+						<param></param>
+  		</option>
+  		<option>
+    				<name>Gestor de tareas</name>
+						<type>i</type>
+						<link></link>
+						<param></param>
+  		</option>
+  		<option>
+    				<name>Contactos</name>
+						<type>i</type>
+						<link></link>
+						<param></param>
+  		</option>
+  		<option>
+    				<name>Mis documentos</name>
+						<type>i</type>
+						<link></link>
+						<param></param>
+  		</option>
+  		<option>
+    				<name>Documentos compartidos</name>
+						<type>i</type>
+						<link></link>
+						<param></param>
+  		</option>
+  	</menu>
+		<menu>
+  		<name>Contenidos</name>	
+	  	<option>
+  	  		<name>Mapa del curso</name>
+					<type>i</type>
+					<link></link>
+					<param></param>
+  		</option>
+	  	<option>
+  	  		<name>Actividades</name>
+					<type>i</type>
+					<link></link>
+					<param></param>
+  		</option>
+	  	<option>
+  	  		<name>Evaluación</name>
+					<type>i</type>
+					<link></link>
+					<param></param>
+  		</option>
+  	</menu>
+  		<menu>
+  		<name>Documentación</name>
+	  	<option>
+  	  	<name>Tus documentos</name>
+				<type>i</type>
+				<link></link>
+				<param></param>
+  		</option>
+  		<option>
+    		<name>Documentos compartidos</name>
+				<type>i</type>
+				<link></link>
+				<param></param>
+  		</option>
+  	</menu>
+	</menuBar>

@@ -1,0 +1,1829 @@
+<?xml version="1.0"?>
+<schema version="0.2">
+	<table name="answer">
+		<field name="ANSWER_ID" type="I" size="11">
+			<PRIMARY/>
+			<DEFAULT value="0"/>
+		</field>
+		<field name="QUESTION_ID" type="I" size="11">
+			<PRIMARY/>
+			<DEFAULT value="0"/>
+		</field>
+		<field name="ANSWER_TEXT" type="C" size="255">
+			<NOTNULL/>
+		</field>
+		<field name="ANSER_CORRECT" type="I" size="1">
+			<NOTNULL/>
+			<DEFAULT value="0"/>
+		</field>
+		<field name="ANSWER_COMMENT" type="C" size="255">
+			<NOTNULL/>
+		</field>
+		<field name="ANSWER_PUNTUATION" type="I" size="4">
+			<NOTNULL/>
+			<DEFAULT value="0"/>
+		</field>
+		<field name="ANSWER_POSITION" type="I" size="4">
+			<NOTNULL/>
+			<DEFAULT value="0"/>
+		</field>
+	</table>
+	<table name="area">
+		<field name="AREA_ID" type="I" size="11">
+			<PRIMARY/>
+			<AUTOINCREMENT/>
+		</field>
+		<field name="DEPARTMENT_ID" type="I" size="11">
+			<PRIMARY/>
+			<DEFAULT value="0"/>
+		</field>
+		<field name="FACULTY_ID" type="I" size="11">
+			<PRIMARY/>
+			<DEFAULT value="0"/>
+		</field>
+		<field name="INSTITUTION_ID" type="I" size="11">
+			<PRIMARY/>
+			<DEFAULT value="0"/>
+		</field>
+		<field name="AREA_NAME" type="C" size="70">
+			<NOTNULL/>
+		</field>
+		<field name="AREA_DESCRIPTION" type="C" size="100">
+			<NOTNULL/>
+		</field>
+		<field name="AREA_RESPONSABLE" type="C" size="80">
+			<NOTNULL/>
+		</field>
+		<field name="AREA_ADDRESS" type="C" size="100">
+			<NOTNULL/>
+		</field>
+		<field name="AREA_URL" type="C" size="30">
+			<NOTNULL/>
+		</field>
+		<field name="AREA_MAIL" type="C" size="30">
+			<NOTNULL/>
+		</field>
+	</table>
+	<sql>
+		<query>INSERT INTO `area` (`AREA_ID`, `DEPARTMENT_ID`, `FACULTY_ID`, `INSTITUTION_ID`, `AREA_NAME`, `AREA_DESCRIPTION`, `AREA_RESPONSABLE`, `AREA_ADDRESS`, `AREA_URL`, `AREA_MAIL`) VALUES (1, 1, 1, 1, 'Electrónica aplicada', 'Introducción', '', '', '', '')</query>
+		<query>INSERT INTO `area` (`AREA_ID`, `DEPARTMENT_ID`, `FACULTY_ID`, `INSTITUTION_ID`, `AREA_NAME`, `AREA_DESCRIPTION`, `AREA_RESPONSABLE`, `AREA_ADDRESS`, `AREA_URL`, `AREA_MAIL`) VALUES (2, 2, 2, 1, 'Fisioterapia', 'Curación con las manos', '', '', '', '')</query>
+		<query>INSERT INTO `area` (`AREA_ID`, `DEPARTMENT_ID`, `FACULTY_ID`, `INSTITUTION_ID`, `AREA_NAME`, `AREA_DESCRIPTION`, `AREA_RESPONSABLE`, `AREA_ADDRESS`, `AREA_URL`, `AREA_MAIL`) VALUES (3, 3, 0, 2, 'Ingenieria informática', 'Cursos de Programación', 'Director', '', '', '')</query>
+	</sql>
+	<table name="business">
+		<field name="INSTITUTION_ID" type="I" size="11">
+			<PRIMARY/>
+			<DEFAULT value="0"/>
+		</field>
+	</table>
+	<table name="calendar">
+		<field name="CALENDAR_ID" type="I" size="11">
+			<PRIMARY/>
+			<DEFAULT value="0"/>
+		</field>
+		<field name="COURSE_ID" type="I" size="11">
+			<PRIMARY/>
+			<DEFAULT value="0"/>
+		</field>
+		<field name="EVENT_TYPE_ID" type="I" size="11">
+			<NOTNULL/>
+			<DEFAULT value="0"/>
+		</field>
+		<field name="TITLE" type="C" size="30">
+			<NOTNULL/>
+		</field>
+		<field name="DESCRIPTION" type="C" size="255">
+			<NOTNULL/>
+		</field>
+		<field name="DATE_START" type="T">
+			<NOTNULL/>
+			<DEFAULT value="0000-00-00 00:00:00"/>
+		</field>
+		<field name="DATE_END" type="T">
+			<NOTNULL/>
+			<DEFAULT value="0000-00-00 00:00:00"/>
+		</field>
+		<field name="ALL_DAY" type="I" size="1">
+			<NOTNULL/>
+			<DEFAULT value="0"/>
+		</field>
+		<index name="CALENDAR_ID">
+			<col>CALENDAR_ID</col>
+		</index>
+	</table>
+	<table name="classroom">
+		<field name="GROUP_ID" type="I" size="11">
+			<PRIMARY/>
+			<DEFAULT value="0"/>
+		</field>
+		<field name="GROUP_NAME" type="C" size="70">
+			<NOTNULL/>
+		</field>
+		<field name="GROUP_DESCRIPTION" type="C" size="255">
+			<NOTNULL/>
+		</field>
+		<field name="USER_TUTOR_ID" type="I" size="11">
+			<NOTNULL/>
+			<DEFAULT value="0"/>
+		</field>
+		<field name="GROUP_MAX_USERS" type="I" size="11">
+			<NOTNULL/>
+			<DEFAULT value="0"/>
+		</field>
+		<field name="GROUP_SELF_REGISTRATION" type="I" size="1">
+			<NOTNULL/>
+			<DEFAULT value="0"/>
+		</field>
+		<field name="GROUP_DIR" type="C" size="100">
+			<NOTNULL/>
+		</field>
+		<field name="HAS_DOCUMENT" type="I" size="1">
+			<NOTNULL/>
+			<DEFAULT value="0"/>
+		</field>
+		<field name="WIKI_PAGE" type="C" size="30">
+			<NOTNULL/>
+		</field>
+		<index name="USER_TUTOR_ID">
+			<col>USER_TUTOR_ID</col>
+		</index>
+	</table>
+	<table name="classroom_course">
+		<field name="GROUP_ID" type="I" size="11">
+			<PRIMARY/>
+			<DEFAULT value="0"/>
+		</field>
+		<field name="COURSE_ID" type="I" size="11">
+			<PRIMARY/>
+			<DEFAULT value="0"/>
+		</field>
+	</table>
+	<table name="contact">
+		<field name="CONTACT_ID" type="I" size="11">
+			<PRIMARY/>
+			<DEFAULT value="0"/>
+		</field>
+		<field name="USER_ID" type="I" size="11">
+			<PRIMARY/>
+			<DEFAULT value="0"/>
+		</field>
+		<field name="CONTACT_NAME" type="C" size="30">
+			<NOTNULL/>
+		</field>
+		<field name="CONTACT_SURNAME" type="C" size="50">
+			<NOTNULL/>
+		</field>
+		<field name="CONTACT_NICK" type="C" size="30">
+			<NOTNULL/>
+		</field>
+		<field name="CONTACT_MAIL" type="C" size="20">
+			<NOTNULL/>
+		</field>
+		<field name="CONTACT_JABBER" type="C" size="20">
+			<NOTNULL/>
+		</field>
+		<field name="CONTACT_COMMENTS" type="C" size="255">
+			<NOTNULL/>
+		</field>
+		<field name="IS_FROM_MIGUEL" type="I" size="1">
+			<NOTNULL/>
+			<DEFAULT value="0"/>
+		</field>
+	</table>
+	<table name="course">
+		<field name="COURSE_ID" type="I" size="11">
+			<PRIMARY/>
+			<AUTOINCREMENT/>
+		</field>
+		<field name="COURSE_NAME" type="C" size="70">
+			<NOTNULL/>
+		</field>
+		<field name="COURSE_DESCRIPTION" type="C" size="100">
+			<NOTNULL/>
+		</field>
+		<field name="COURSE_LANGUAGE" type="C" size="5">
+			<NOTNULL/>
+		</field>
+		<field name="COURSE_ACCESS" type="I" size="4">
+			<NOTNULL/>
+			<DEFAULT value="0"/>
+		</field>
+		<field name="INSTITUTION_ID" type="I" size="11">
+			<NOTNULL/>
+			<DEFAULT value="0"/>
+		</field>
+		<field name="FACULTY_ID" type="I" size="11">
+			<NOTNULL/>
+			<DEFAULT value="0"/>
+		</field>
+		<field name="AREA_ID" type="I" size="11">
+			<NOTNULL/>
+			<DEFAULT value="0"/>
+		</field>
+		<field name="DEPARTMENT_ID" type="I" size="11">
+			<NOTNULL/>
+			<DEFAULT value="0"/>
+		</field>
+		<field name="USER_ID" type="I" size="11">
+			<NOTNULL/>
+			<DEFAULT value="0"/>
+		</field>
+		<field name="COURSE_ACTIVE" type="I" size="1">
+			<NOTNULL/>
+			<DEFAULT value="0"/>
+		</field>
+		<index name="DEPARTMENT_ID">
+			<col>DEPARTMENT_ID</col>
+		</index>
+		<index name="USER_ID">
+			<col>USER_ID</col>
+		</index>
+		<index name="INSTITUTION_ID">
+			<col>INSTITUTION_ID</col>
+		</index>
+		<index name="AREA_ID">
+			<col>AREA_ID</col>
+		</index>
+		<index name="FACULTY_ID">
+			<col>FACULTY_ID</col>
+		</index>
+		<index name="INSTITUTION_ID_2">
+			<col>INSTITUTION_ID</col>
+			<col>FACULTY_ID</col>
+			<col>AREA_ID</col>
+			<col>DEPARTMENT_ID</col>
+		</index>
+	</table>
+	<sql>
+		<query>INSERT INTO `course` (`COURSE_ID`, `COURSE_NAME`, `COURSE_DESCRIPTION`, `COURSE_LANGUAGE`, `COURSE_ACCESS`, `INSTITUTION_ID`, `FACULTY_ID`, `AREA_ID`, `DEPARTMENT_ID`, `USER_ID`, `COURSE_ACTIVE`) VALUES (1, 'CURSO PHP', 'PROGRAMANDO PHP', 'es_ES', 0, 2, 0, 0, 3, 2, 0)</query>
+		<query>INSERT INTO `course` (`COURSE_ID`, `COURSE_NAME`, `COURSE_DESCRIPTION`, `COURSE_LANGUAGE`, `COURSE_ACCESS`, `INSTITUTION_ID`, `FACULTY_ID`, `AREA_ID`, `DEPARTMENT_ID`, `USER_ID`, `COURSE_ACTIVE`) VALUES (2, 'Operando', 'Operaciones básicas', 'es_ES', 0, 1, 2, 2, 2, 2, 0)</query>
+		<query>INSERT INTO `course` (`COURSE_ID`, `COURSE_NAME`, `COURSE_DESCRIPTION`, `COURSE_LANGUAGE`, `COURSE_ACCESS`, `INSTITUTION_ID`, `FACULTY_ID`, `AREA_ID`, `DEPARTMENT_ID`, `USER_ID`, `COURSE_ACTIVE`) VALUES (3, 'Energia', 'Cálculo numérico', 'es_ES', 0, 1, 2, 2, 2, 1, 0)</query>
+	</sql>
+	<table name="course_module">
+		<field name="COURSE_ID" type="I" size="11">
+			<PRIMARY/>
+			<DEFAULT value="0"/>
+		</field>
+		<field name="MODULE_ID" type="I" size="11">
+			<PRIMARY/>
+			<DEFAULT value="0"/>
+		</field>
+	</table>
+	<table name="department">
+		<field name="DEPARTMENT_ID" type="I" size="11">
+			<PRIMARY/>
+			<AUTOINCREMENT/>
+		</field>
+		<field name="FACULTY_ID" type="I" size="11">
+			<PRIMARY/>
+			<DEFAULT value="0"/>
+		</field>
+		<field name="INSTITUTION_ID" type="I" size="11">
+			<PRIMARY/>
+			<DEFAULT value="0"/>
+		</field>
+		<field name="DEPARTMENT_PARENT_ID" type="I" size="11">
+			<NOTNULL/>
+			<DEFAULT value="0"/>
+		</field>
+		<field name="DEPARTMENT_NAME" type="C" size="70">
+			<NOTNULL/>
+		</field>
+		<field name="DEPARTMENT_DESCRIPTION" type="C" size="100">
+			<NOTNULL/>
+		</field>
+		<field name="DEPARTMENT_RESPONSABLE" type="C" size="80">
+			<NOTNULL/>
+		</field>
+		<field name="DEPARTMENT_ADDRESS" type="C" size="100">
+			<NOTNULL/>
+		</field>
+		<field name="DEPARMENT_URL" type="C" size="30">
+			<NOTNULL/>
+		</field>
+		<field name="DEPARTMENT_MAIL" type="C" size="30">
+			<NOTNULL/>
+		</field>
+		<index name="DEPARTMENT_PARENT_ID">
+			<col>DEPARTMENT_PARENT_ID</col>
+		</index>
+	</table>
+	<sql>
+		<query>INSERT INTO `department` (`DEPARTMENT_ID`, `FACULTY_ID`, `INSTITUTION_ID`, `DEPARTMENT_PARENT_ID`, `DEPARTMENT_NAME`, `DEPARTMENT_DESCRIPTION`, `DEPARTMENT_RESPONSABLE`, `DEPARTMENT_ADDRESS`, `DEPARMENT_URL`, `DEPARTMENT_MAIL`) VALUES (1, 1, 1, 0, 'Departamento Electrónica', 'Ingeniería Electrónica', 'El elestricista', '', '', '')</query>
+		<query>INSERT INTO `department` (`DEPARTMENT_ID`, `FACULTY_ID`, `INSTITUTION_ID`, `DEPARTMENT_PARENT_ID`, `DEPARTMENT_NAME`, `DEPARTMENT_DESCRIPTION`, `DEPARTMENT_RESPONSABLE`, `DEPARTMENT_ADDRESS`, `DEPARMENT_URL`, `DEPARTMENT_MAIL`) VALUES (2, 2, 1, 0, 'Enfermería', 'Enfermeras cachondas', 'Tetas grandes', '', '', '')</query>
+		<query>INSERT INTO `department` (`DEPARTMENT_ID`, `FACULTY_ID`, `INSTITUTION_ID`, `DEPARTMENT_PARENT_ID`, `DEPARTMENT_NAME`, `DEPARTMENT_DESCRIPTION`, `DEPARTMENT_RESPONSABLE`, `DEPARTMENT_ADDRESS`, `DEPARMENT_URL`, `DEPARTMENT_MAIL`) VALUES (3, 0, 2, 0, 'Pruebas', 'Probando', '', '', '', '')</query>
+	</sql>
+	<table name="department_course">
+		<field name="INSTITUTION_ID" type="I" size="11">
+			<PRIMARY/>
+			<DEFAULT value="0"/>
+		</field>
+		<field name="DEPARTMENT_ID" type="I" size="11">
+			<PRIMARY/>
+			<DEFAULT value="0"/>
+		</field>
+		<field name="COURSE_ID" type="I" size="11">
+			<PRIMARY/>
+			<DEFAULT value="0"/>
+		</field>
+	</table>
+	<table name="document">
+		<field name="DOCUMENT_ID" type="I" size="11">
+			<PRIMARY/>
+			<DEFAULT value="0"/>
+		</field>
+		<field name="DOCUMENT_COMMENT" type="C" size="255">
+			<NOTNULL/>
+		</field>
+		<field name="DOCUMENT_VISIBILITY4ALL" type="I" size="1">
+			<NOTNULL/>
+			<DEFAULT value="0"/>
+		</field>
+		<field name="DOCUMENT_ACCEPTED" type="I" size="1">
+			<NOTNULL/>
+			<DEFAULT value="0"/>
+		</field>
+		<field name="DOCUMENT_MIME" type="C" size="30">
+			<NOTNULL/>
+		</field>
+		<field name="DATE_PUBLISH" type="D">
+			<NOTNULL/>
+			<DEFAULT value="0000-00-00"/>
+		</field>
+		<field name="DOCUMENT_ACTIVE" type="I" size="1">
+			<NOTNULL/>
+			<DEFAULT value="0"/>
+		</field>
+	</table>
+	<table name="document_exercise">
+		<field name="DOCUMENT_ID" type="I" size="11">
+			<PRIMARY/>
+			<DEFAULT value="0"/>
+		</field>
+		<field name="EXERCISE_ID" type="I" size="11">
+			<PRIMARY/>
+			<DEFAULT value="0"/>
+		</field>
+	</table>
+	<table name="event_type">
+		<field name="EVENT_TYPE_ID" type="I" size="11">
+			<PRIMARY/>
+			<DEFAULT value="0"/>
+		</field>
+		<field name="EVENT_TYPE_DESCRIPTION" type="C" size="30">
+			<NOTNULL/>
+		</field>
+	</table>
+	<table name="exercise">
+		<field name="EXERCISE_ID" type="I" size="11">
+			<PRIMARY/>
+			<DEFAULT value="0"/>
+		</field>
+		<field name="EXERCISE_TITLE" type="C" size="100">
+			<NOTNULL/>
+		</field>
+		<field name="EXERCISE_DESCRIPTION" type="C" size="255">
+			<NOTNULL/>
+		</field>
+		<field name="EXERCISE_TYPE" type="I" size="4">
+			<NOTNULL/>
+			<DEFAULT value="0"/>
+		</field>
+		<field name="EXERCISE_RANDOM" type="I" size="1">
+			<NOTNULL/>
+			<DEFAULT value="0"/>
+		</field>
+		<field name="EXERCISE_ACTIVE" type="I" size="1">
+			<NOTNULL/>
+			<DEFAULT value="0"/>
+		</field>
+		<field name="EXERCISE_AUTOEVALUACION" type="I" size="1">
+			<NOTNULL/>
+			<DEFAULT value="0"/>
+		</field>
+		<field name="EXERCISE_POSITION" type="I" size="4">
+			<NOTNULL/>
+			<DEFAULT value="0"/>
+		</field>
+	</table>
+	<table name="exercise_question">
+		<field name="EXERCICE_ID" type="I" size="11">
+			<PRIMARY/>
+			<DEFAULT value="0"/>
+		</field>
+		<field name="QUESTION_ID" type="I" size="11">
+			<PRIMARY/>
+			<DEFAULT value="0"/>
+		</field>
+		<field name="EQ_POSITION" type="I" size="4">
+			<NOTNULL/>
+			<DEFAULT value="0"/>
+		</field>
+		<field name="EQ_WEIGHT" type="I" size="4">
+			<NOTNULL/>
+			<DEFAULT value="0"/>
+		</field>
+	</table>
+	<table name="exercise_result">
+		<field name="USER_ID" type="I" size="11">
+			<PRIMARY/>
+			<DEFAULT value="0"/>
+		</field>
+		<field name="QUESTION_ID" type="I" size="11">
+			<PRIMARY/>
+			<DEFAULT value="0"/>
+		</field>
+		<field name="EXERCISE_ID" type="I" size="11">
+			<PRIMARY/>
+			<DEFAULT value="0"/>
+		</field>
+		<field name="DATE_EXERCICE" type="T" size="14">
+			<PRIMARY/>
+		</field>
+		<field name="ANSWER_GIVEN" type="C" size="255"></field>
+		<field name="CALIFICATION" type="N"></field>
+	</table>
+	<table name="faculty">
+		<field name="FACULTY_ID" type="I" size="11">
+			<PRIMARY/>
+			<AUTOINCREMENT/>
+		</field>
+		<field name="INSTITUTION_ID" type="I" size="11">
+			<PRIMARY/>
+			<DEFAULT value="0"/>
+		</field>
+		<field name="FACULTY_NAME" type="C" size="70">
+			<NOTNULL/>
+		</field>
+		<field name="FACULTY_DESCRIPTION" type="C" size="100">
+			<NOTNULL/>
+		</field>
+		<field name="FACULTY_RESPONSABLE" type="C" size="80">
+			<NOTNULL/>
+		</field>
+		<field name="FACULTY_ADDRESS" type="C" size="100">
+			<NOTNULL/>
+		</field>
+		<field name="FACULTY_URL" type="C" size="30">
+			<NOTNULL/>
+		</field>
+		<field name="FACULTY_MAIL" type="C" size="30">
+			<NOTNULL/>
+		</field>
+	</table>
+	<sql>
+		<query>INSERT INTO `faculty` (`FACULTY_ID`, `INSTITUTION_ID`, `FACULTY_NAME`, `FACULTY_DESCRIPTION`, `FACULTY_RESPONSABLE`, `FACULTY_ADDRESS`, `FACULTY_URL`, `FACULTY_MAIL`) VALUES (1, 1, 'Facultad de Ciencias', 'Puteamos a los estudiantes', 'Catedrático chungo', 'EPS', 'http://www.eps.ujaen.es', 'eps@ujaen.es')</query>
+		<query>INSERT INTO `faculty` (`FACULTY_ID`, `INSTITUTION_ID`, `FACULTY_NAME`, `FACULTY_DESCRIPTION`, `FACULTY_RESPONSABLE`, `FACULTY_ADDRESS`, `FACULTY_URL`, `FACULTY_MAIL`) VALUES (2, 1, 'Facultad de Medicina', 'Mata sanos y enfermeras', 'Catedrático muy malo', 'Hopital Salvese quien pueda', '', '')</query>
+	</sql>
+	<table name="folder">
+		<field name="FOLDER_ID" type="I" size="11">
+			<PRIMARY/>
+			<DEFAULT value="0"/>
+		</field>
+		<field name="DOCUMENT_ID" type="I" size="11">
+			<PRIMARY/>
+			<DEFAULT value="0"/>
+		</field>
+		<field name="DOCUMENT_PARENT_ID" type="I" size="11">
+			<NOTNULL/>
+			<DEFAULT value="0"/>
+		</field>
+		<field name="FOLDER_PARENT_ID" type="I" size="11">
+			<NOTNULL/>
+			<DEFAULT value="0"/>
+		</field>
+		<field name="FOLDER_NAME" type="C" size="100">
+			<NOTNULL/>
+		</field>
+		<field name="FOLDER_COMMENT" type="C" size="255">
+			<NOTNULL/>
+		</field>
+		<field name="FOLDER_VISIBILITY" type="I" size="11">
+			<NOTNULL/>
+			<DEFAULT value="0"/>
+		</field>
+		<field name="FOLDER_DATE" type="D">
+			<NOTNULL/>
+			<DEFAULT value="0000-00-00"/>
+		</field>
+		<field name="FOLDER_MODULE_ID" type="I" size="11">
+			<NOTNULL/>
+			<DEFAULT value="0"/>
+		</field>
+		<index name="FOLDER_MODULE_ID">
+			<col>FOLDER_MODULE_ID</col>
+		</index>
+	</table>
+	<table name="forum">
+		<field name="FORUM_ID" type="I" size="11">
+			<PRIMARY/>
+			<AUTOINCREMENT/>
+		</field>
+		<field name="FORUM_NAME" type="C" size="30">
+			<NOTNULL/>
+		</field>
+		<field name="FORUM_DESCRIPTION" type="C" size="100">
+			<NOTNULL/>
+		</field>
+		<field name="FORUM_MODERATOR" type="I" size="1">
+			<NOTNULL/>
+			<DEFAULT value="0"/>
+		</field>
+		<field name="FORUM_ACCESS" type="I" size="4">
+			<NOTNULL/>
+			<DEFAULT value="0"/>
+		</field>
+		<field name="FORUM_CAT_ID" type="I" size="11">
+			<NOTNULL/>
+			<DEFAULT value="0"/>
+		</field>
+		<index name="FORUM_CAT_ID">
+			<col>FORUM_CAT_ID</col>
+		</index>
+	</table>
+	<sql>
+		<query>INSERT INTO `forum` (`FORUM_ID`, `FORUM_NAME`, `FORUM_DESCRIPTION`, `FORUM_MODERATOR`, `FORUM_ACCESS`, `FORUM_CAT_ID`) VALUES (1, 'prueba', 'primer_foro', 0, 0, 0)</query>
+	</sql>
+	<table name="forum_category">
+		<field name="FORUM_CATEGORY_ID" type="I" size="11">
+			<PRIMARY/>
+			<AUTOINCREMENT/>
+		</field>
+		<field name="FORUM_CATEGORY_DESCRIPTION" type="C" size="255">
+			<NOTNULL/>
+		</field>
+		<field name="COURSE_ID" type="I" size="11">
+			<NOTNULL/>
+			<DEFAULT value="0"/>
+		</field>
+		<field name="GROUP_ID" type="I" size="11">
+			<NOTNULL/>
+			<DEFAULT value="0"/>
+		</field>
+		<index name="COURSE_ID">
+			<col>COURSE_ID</col>
+		</index>
+		<index name="GROUP_ID">
+			<col>GROUP_ID</col>
+		</index>
+	</table>
+	<table name="forum_post">
+		<field name="FORUM_POST_ID" type="I" size="11">
+			<PRIMARY/>
+			<AUTOINCREMENT/>
+		</field>
+		<field name="FORUM_TOPIC_ID" type="I" size="11">
+			<NOTNULL/>
+			<DEFAULT value="0"/>
+		</field>
+		<field name="FORUM_ID" type="I" size="11">
+			<NOTNULL/>
+			<DEFAULT value="0"/>
+		</field>
+		<field name="FORUM_POST_TEXT" type="C" size="255">
+			<NOTNULL/>
+		</field>
+		<field name="FORUM_POST_POSTER" type="I" size="11">
+			<NOTNULL/>
+			<DEFAULT value="0"/>
+		</field>
+		<field name="FORUM_POST_TIME" type="D">
+			<NOTNULL/>
+			<DEFAULT value="0000-00-00"/>
+		</field>
+		<field name="FORUM_POST_IP" type="C" size="15">
+			<NOTNULL/>
+		</field>
+		<index name="FORUM_TOPIC_ID">
+			<col>FORUM_TOPIC_ID</col>
+		</index>
+		<index name="FORUM_ID">
+			<col>FORUM_ID</col>
+		</index>
+	</table>
+	<table name="forum_topic">
+		<field name="FORUM_TOPIC_ID" type="I" size="11">
+			<PRIMARY/>
+			<AUTOINCREMENT/>
+		</field>
+		<field name="FORUM_TOPIC_TITLE" type="C" size="30">
+			<NOTNULL/>
+		</field>
+		<field name="FORUM_TOPIC_NUMVIEW" type="I" size="11">
+			<NOTNULL/>
+			<DEFAULT value="0"/>
+		</field>
+		<field name="FORUM_TOPIC_REPLIES" type="I" size="11">
+			<NOTNULL/>
+			<DEFAULT value="0"/>
+		</field>
+		<field name="FORUM_TOPIC_NOTIFY" type="I" size="1">
+			<NOTNULL/>
+			<DEFAULT value="0"/>
+		</field>
+		<field name="FORUM_TOPIC_STATUS" type="I" size="4">
+			<NOTNULL/>
+			<DEFAULT value="0"/>
+		</field>
+		<field name="FORUM_TOPIC_POSTER" type="I" size="11">
+			<NOTNULL/>
+			<DEFAULT value="0"/>
+		</field>
+		<field name="FORUM_TOPIC_DATE" type="D">
+			<NOTNULL/>
+			<DEFAULT value="0000-00-00"/>
+		</field>
+		<field name="FORUM_ID" type="I" size="11">
+			<PRIMARY/>
+			<DEFAULT value="0"/>
+		</field>
+		<field name="NUMBER_OF_VISITS" type="I" size="11">
+			<NOTNULL/>
+			<DEFAULT value="0"/>
+		</field>
+		<field name="NUMBER_OF_POSTS" type="I" size="4">
+			<NOTNULL/>
+			<DEFAULT value="0"/>
+		</field>
+		<field name="LAST_POST_ID" type="I" size="11">
+			<NOTNULL/>
+			<DEFAULT value="0"/>
+		</field>
+		<index name="LAST_POST_ID">
+			<col>LAST_POST_ID</col>
+		</index>
+	</table>
+	<sql>
+		<query>INSERT INTO `forum_topic` (`FORUM_TOPIC_ID`, `FORUM_TOPIC_TITLE`, `FORUM_TOPIC_NUMVIEW`, `FORUM_TOPIC_REPLIES`, `FORUM_TOPIC_NOTIFY`, `FORUM_TOPIC_STATUS`, `FORUM_TOPIC_POSTER`, `FORUM_TOPIC_DATE`, `FORUM_ID`, `NUMBER_OF_VISITS`, `NUMBER_OF_POSTS`, `LAST_POST_ID`) VALUES (1, 'Primera noticia', 0, 0, 0, 0, 0, '0000-00-00', 1, 0, 0, 0)</query>
+	</sql>
+	<table name="gacl_acl">
+		<field name="id" type="I" size="11">
+			<PRIMARY/>
+			<DEFAULT value="0"/>
+		</field>
+		<field name="section_value" type="C" size="230">
+			<NOTNULL/>
+			<DEFAULT value="system"/>
+		</field>
+		<field name="allow" type="I" size="11">
+			<NOTNULL/>
+			<DEFAULT value="0"/>
+		</field>
+		<field name="enabled" type="I" size="11">
+			<NOTNULL/>
+			<DEFAULT value="0"/>
+		</field>
+		<field name="return_value" type="X"></field>
+		<field name="note" type="X"></field>
+		<field name="updated_date" type="I" size="11">
+			<NOTNULL/>
+			<DEFAULT value="0"/>
+		</field>
+		<index name="id_enabled_acl">
+			<col>id</col>
+			<col>enabled</col>
+		</index>
+		<index name="section_value_acl">
+			<col>section_value</col>
+		</index>
+		<index name="updated_date_acl">
+			<col>updated_date</col>
+		</index>
+	</table>
+	<sql>
+		<query>INSERT INTO `gacl_acl` (`id`, `section_value`, `allow`, `enabled`, `return_value`, `note`, `updated_date`) VALUES (10, 'user', 0, 1, '', '', 1075199673)</query>
+		<query>INSERT INTO `gacl_acl` (`id`, `section_value`, `allow`, `enabled`, `return_value`, `note`, `updated_date`) VALUES (11, 'user', 1, 1, '', '', 1075199712)</query>
+		<query>INSERT INTO `gacl_acl` (`id`, `section_value`, `allow`, `enabled`, `return_value`, `note`, `updated_date`) VALUES (12, 'user', 0, 1, '', '', 1075200237)</query>
+		<query>INSERT INTO `gacl_acl` (`id`, `section_value`, `allow`, `enabled`, `return_value`, `note`, `updated_date`) VALUES (13, 'user', 1, 1, '', '', 1075200258)</query>
+		<query>INSERT INTO `gacl_acl` (`id`, `section_value`, `allow`, `enabled`, `return_value`, `note`, `updated_date`) VALUES (14, 'user', 1, 1, '', '', 1075201682)</query>
+		<query>INSERT INTO `gacl_acl` (`id`, `section_value`, `allow`, `enabled`, `return_value`, `note`, `updated_date`) VALUES (15, 'user', 0, 1, '', '', 1075201707)</query>
+		<query>INSERT INTO `gacl_acl` (`id`, `section_value`, `allow`, `enabled`, `return_value`, `note`, `updated_date`) VALUES (16, 'user', 1, 1, '', '', 1075201741)</query>
+		<query>INSERT INTO `gacl_acl` (`id`, `section_value`, `allow`, `enabled`, `return_value`, `note`, `updated_date`) VALUES (17, 'user', 0, 1, '', '', 1075201755)</query>
+		<query>INSERT INTO `gacl_acl` (`id`, `section_value`, `allow`, `enabled`, `return_value`, `note`, `updated_date`) VALUES (18, 'user', 1, 1, '', '', 1075201779)</query>
+		<query>INSERT INTO `gacl_acl` (`id`, `section_value`, `allow`, `enabled`, `return_value`, `note`, `updated_date`) VALUES (19, 'user', 0, 1, '', '', 1075201795)</query>
+		<query>INSERT INTO `gacl_acl` (`id`, `section_value`, `allow`, `enabled`, `return_value`, `note`, `updated_date`) VALUES (20, 'user', 1, 1, '', '', 1075201822)</query>
+		<query>INSERT INTO `gacl_acl` (`id`, `section_value`, `allow`, `enabled`, `return_value`, `note`, `updated_date`) VALUES (21, 'user', 0, 1, '', '', 1075201838)</query>
+		<query>INSERT INTO `gacl_acl` (`id`, `section_value`, `allow`, `enabled`, `return_value`, `note`, `updated_date`) VALUES (22, 'user', 1, 1, '', '', 1075201902)</query>
+		<query>INSERT INTO `gacl_acl` (`id`, `section_value`, `allow`, `enabled`, `return_value`, `note`, `updated_date`) VALUES (23, 'user', 0, 1, '', '', 1075201919)</query>
+		<query>INSERT INTO `gacl_acl` (`id`, `section_value`, `allow`, `enabled`, `return_value`, `note`, `updated_date`) VALUES (24, 'user', 1, 1, '', '', 1075201940)</query>
+		<query>INSERT INTO `gacl_acl` (`id`, `section_value`, `allow`, `enabled`, `return_value`, `note`, `updated_date`) VALUES (25, 'user', 0, 1, '', '', 1075201960)</query>
+		<query>INSERT INTO `gacl_acl` (`id`, `section_value`, `allow`, `enabled`, `return_value`, `note`, `updated_date`) VALUES (26, 'user', 1, 1, '', '', 1075201980)</query>
+	</sql>
+	<table name="gacl_acl_sections">
+		<field name="id" type="I" size="11">
+			<PRIMARY/>
+			<DEFAULT value="0"/>
+		</field>
+		<field name="value" type="C" size="230">
+			<NOTNULL/>
+		</field>
+		<field name="order_value" type="I" size="11">
+			<NOTNULL/>
+			<DEFAULT value="0"/>
+		</field>
+		<field name="name" type="C" size="230">
+			<NOTNULL/>
+		</field>
+		<field name="hidden" type="I" size="11">
+			<NOTNULL/>
+			<DEFAULT value="0"/>
+		</field>
+		<index name="value_acl_sections">
+			<UNIQUE/>
+			<col>value</col>
+		</index>
+		<index name="hidden_acl_sections">
+			<col>hidden</col>
+		</index>
+	</table>
+	<sql>
+		<query>INSERT INTO `gacl_acl_sections` (`id`, `value`, `order_value`, `name`, `hidden`) VALUES (1, 'system', 1, 'System', 0)</query>
+		<query>INSERT INTO `gacl_acl_sections` (`id`, `value`, `order_value`, `name`, `hidden`) VALUES (2, 'user', 2, 'User', 0)</query>
+	</sql>
+	<table name="gacl_acl_seq">
+		<field name="id" type="I" size="11">
+			<NOTNULL/>
+			<DEFAULT value="0"/>
+		</field>
+	</table>
+	<sql>
+		<query>INSERT INTO `gacl_acl_seq` (`id`) VALUES (26)</query>
+	</sql>
+	<table name="gacl_aco">
+		<field name="id" type="I" size="11">
+			<PRIMARY/>
+			<DEFAULT value="0"/>
+		</field>
+		<field name="section_value" type="C" size="240">
+			<NOTNULL/>
+			<DEFAULT value="0"/>
+		</field>
+		<field name="value" type="C" size="240">
+			<NOTNULL/>
+		</field>
+		<field name="order_value" type="I" size="11">
+			<NOTNULL/>
+			<DEFAULT value="0"/>
+		</field>
+		<field name="name" type="C" size="255">
+			<NOTNULL/>
+		</field>
+		<field name="hidden" type="I" size="11">
+			<NOTNULL/>
+			<DEFAULT value="0"/>
+		</field>
+		<index name="section_value_value_aco">
+			<UNIQUE/>
+			<col>section_value</col>
+			<col>value</col>
+		</index>
+		<index name="hidden_aco">
+			<col>hidden</col>
+		</index>
+	</table>
+	<sql>
+		<query>INSERT INTO `gacl_aco` (`id`, `section_value`, `value`, `order_value`, `name`, `hidden`) VALUES (10, 'miguel_VMenu', 'listcourses', 1, 'Listar cursos', 0)</query>
+		<query>INSERT INTO `gacl_aco` (`id`, `section_value`, `value`, `order_value`, `name`, `hidden`) VALUES (11, 'miguel_VMenu', 'todo', 2, 'Sugerencias', 0)</query>
+		<query>INSERT INTO `gacl_aco` (`id`, `section_value`, `value`, `order_value`, `name`, `hidden`) VALUES (12, 'miguel_VMenu', 'forum', 3, 'Foros', 0)</query>
+		<query>INSERT INTO `gacl_aco` (`id`, `section_value`, `value`, `order_value`, `name`, `hidden`) VALUES (13, 'miguel_VMenu', 'admin', 4, 'Administración', 0)</query>
+		<query>INSERT INTO `gacl_aco` (`id`, `section_value`, `value`, `order_value`, `name`, `hidden`) VALUES (14, 'miguel_VMenu', 'newcourse', 5, 'Nuevo curso', 0)</query>
+		<query>INSERT INTO `gacl_aco` (`id`, `section_value`, `value`, `order_value`, `name`, `hidden`) VALUES (15, 'miguel_VMenu', 'inscrip', 6, 'Inscripción en el Campus Virtual', 0)</query>
+		<query>INSERT INTO `gacl_aco` (`id`, `section_value`, `value`, `order_value`, `name`, `hidden`) VALUES (16, 'miguel_VMenu', 'prefs', 7, 'Preferencias de Usuario', 0)</query>
+		<query>INSERT INTO `gacl_aco` (`id`, `section_value`, `value`, `order_value`, `name`, `hidden`) VALUES (17, 'miguel_VMenu', 'askpassword', 8, 'Preguntas Clave', 0)</query>
+		<query>INSERT INTO `gacl_aco` (`id`, `section_value`, `value`, `order_value`, `name`, `hidden`) VALUES (18, 'miguel_VMenu', 'logout', 9, 'Salir', 0)</query>
+	</sql>
+	<table name="gacl_aco_map">
+		<field name="acl_id" type="I" size="11">
+			<NOTNULL/>
+			<DEFAULT value="0"/>
+		</field>
+		<field name="section_value" type="C" size="230">
+			<NOTNULL/>
+			<DEFAULT value="0"/>
+		</field>
+		<field name="value" type="C" size="230">
+			<NOTNULL/>
+		</field>
+		<index name="acl_id_aco_map">
+			<col>acl_id</col>
+		</index>
+	</table>
+	<sql>
+		<query>INSERT INTO `gacl_aco_map` (`acl_id`, `section_value`, `value`) VALUES (10, 'miguel_VMenu', 'admin')</query>
+		<query>INSERT INTO `gacl_aco_map` (`acl_id`, `section_value`, `value`) VALUES (11, 'miguel_VMenu', 'admin')</query>
+		<query>INSERT INTO `gacl_aco_map` (`acl_id`, `section_value`, `value`) VALUES (12, 'miguel_VMenu', 'inscrip')</query>
+		<query>INSERT INTO `gacl_aco_map` (`acl_id`, `section_value`, `value`) VALUES (13, 'miguel_VMenu', 'inscrip')</query>
+		<query>INSERT INTO `gacl_aco_map` (`acl_id`, `section_value`, `value`) VALUES (14, 'miguel_VMenu', 'listcourses')</query>
+		<query>INSERT INTO `gacl_aco_map` (`acl_id`, `section_value`, `value`) VALUES (15, 'miguel_VMenu', 'listcourses')</query>
+		<query>INSERT INTO `gacl_aco_map` (`acl_id`, `section_value`, `value`) VALUES (16, 'miguel_VMenu', 'todo')</query>
+		<query>INSERT INTO `gacl_aco_map` (`acl_id`, `section_value`, `value`) VALUES (17, 'miguel_VMenu', 'todo')</query>
+		<query>INSERT INTO `gacl_aco_map` (`acl_id`, `section_value`, `value`) VALUES (18, 'miguel_VMenu', 'forum')</query>
+		<query>INSERT INTO `gacl_aco_map` (`acl_id`, `section_value`, `value`) VALUES (19, 'miguel_VMenu', 'forum')</query>
+		<query>INSERT INTO `gacl_aco_map` (`acl_id`, `section_value`, `value`) VALUES (20, 'miguel_VMenu', 'newcourse')</query>
+		<query>INSERT INTO `gacl_aco_map` (`acl_id`, `section_value`, `value`) VALUES (21, 'miguel_VMenu', 'newcourse')</query>
+		<query>INSERT INTO `gacl_aco_map` (`acl_id`, `section_value`, `value`) VALUES (22, 'miguel_VMenu', 'prefs')</query>
+		<query>INSERT INTO `gacl_aco_map` (`acl_id`, `section_value`, `value`) VALUES (23, 'miguel_VMenu', 'prefs')</query>
+		<query>INSERT INTO `gacl_aco_map` (`acl_id`, `section_value`, `value`) VALUES (24, 'miguel_VMenu', 'askpassword')</query>
+		<query>INSERT INTO `gacl_aco_map` (`acl_id`, `section_value`, `value`) VALUES (25, 'miguel_VMenu', 'askpassword')</query>
+		<query>INSERT INTO `gacl_aco_map` (`acl_id`, `section_value`, `value`) VALUES (26, 'miguel_VMenu', 'logout')</query>
+	</sql>
+	<table name="gacl_aco_sections">
+		<field name="id" type="I" size="11">
+			<PRIMARY/>
+			<DEFAULT value="0"/>
+		</field>
+		<field name="value" type="C" size="230">
+			<NOTNULL/>
+		</field>
+		<field name="order_value" type="I" size="11">
+			<NOTNULL/>
+			<DEFAULT value="0"/>
+		</field>
+		<field name="name" type="C" size="230">
+			<NOTNULL/>
+		</field>
+		<field name="hidden" type="I" size="11">
+			<NOTNULL/>
+			<DEFAULT value="0"/>
+		</field>
+		<index name="value_aco_sections">
+			<UNIQUE/>
+			<col>value</col>
+		</index>
+		<index name="hidden_aco_sections">
+			<col>hidden</col>
+		</index>
+	</table>
+	<sql>
+		<query>INSERT INTO `gacl_aco_sections` (`id`, `value`, `order_value`, `name`, `hidden`) VALUES (10, 'module', 10, 'Módulos de miguelOO', 0)</query>
+		<query>INSERT INTO `gacl_aco_sections` (`id`, `value`, `order_value`, `name`, `hidden`) VALUES (11, 'window', 20, 'Pantallas de miguelOO', 0)</query>
+		<query>INSERT INTO `gacl_aco_sections` (`id`, `value`, `order_value`, `name`, `hidden`) VALUES (12, 'element', 30, 'Elementos atómicos de miguelOO', 0)</query>
+		<query>INSERT INTO `gacl_aco_sections` (`id`, `value`, `order_value`, `name`, `hidden`) VALUES (13, 'miguel_VMenu', 24, 'Barra de menu genérica de miguelOO', 0)</query>
+	</sql>
+	<table name="gacl_aco_sections_seq">
+		<field name="id" type="I" size="11">
+			<NOTNULL/>
+			<DEFAULT value="0"/>
+		</field>
+	</table>
+	<sql>
+		<query>INSERT INTO `gacl_aco_sections_seq` (`id`) VALUES (13)</query>
+	</sql>
+	<table name="gacl_aco_seq">
+		<field name="id" type="I" size="11">
+			<NOTNULL/>
+			<DEFAULT value="0"/>
+		</field>
+	</table>
+	<sql>
+		<query>INSERT INTO `gacl_aco_seq` (`id`) VALUES (18)</query>
+	</sql>
+	<table name="gacl_aro">
+		<field name="id" type="I" size="11">
+			<PRIMARY/>
+			<DEFAULT value="0"/>
+		</field>
+		<field name="section_value" type="C" size="240">
+			<NOTNULL/>
+			<DEFAULT value="0"/>
+		</field>
+		<field name="value" type="C" size="240">
+			<NOTNULL/>
+		</field>
+		<field name="order_value" type="I" size="11">
+			<NOTNULL/>
+			<DEFAULT value="0"/>
+		</field>
+		<field name="name" type="C" size="255">
+			<NOTNULL/>
+		</field>
+		<field name="hidden" type="I" size="11">
+			<NOTNULL/>
+			<DEFAULT value="0"/>
+		</field>
+		<index name="section_value_value_aro">
+			<UNIQUE/>
+			<col>section_value</col>
+			<col>value</col>
+		</index>
+		<index name="hidden_aro">
+			<col>hidden</col>
+		</index>
+	</table>
+	<sql>
+		<query>INSERT INTO `gacl_aro` (`id`, `section_value`, `value`, `order_value`, `name`, `hidden`) VALUES (10, 'profile', '1', 1, 'Administrador de miguelOO', 0)</query>
+		<query>INSERT INTO `gacl_aro` (`id`, `section_value`, `value`, `order_value`, `name`, `hidden`) VALUES (11, 'profile', '2', 10, 'Tutor registrado', 0)</query>
+		<query>INSERT INTO `gacl_aro` (`id`, `section_value`, `value`, `order_value`, `name`, `hidden`) VALUES (12, 'profile', '3', 20, 'Profesor autorizado', 0)</query>
+		<query>INSERT INTO `gacl_aro` (`id`, `section_value`, `value`, `order_value`, `name`, `hidden`) VALUES (13, 'profile', '4', 30, 'Alumno registrado', 0)</query>
+		<query>INSERT INTO `gacl_aro` (`id`, `section_value`, `value`, `order_value`, `name`, `hidden`) VALUES (14, 'profile', '5', 50, 'Secretaria', 0)</query>
+		<query>INSERT INTO `gacl_aro` (`id`, `section_value`, `value`, `order_value`, `name`, `hidden`) VALUES (15, 'profile', '6', 99, 'Invitado (usuario no registrado)', 0)</query>
+	</sql>
+	<table name="gacl_aro_groups">
+		<field name="id" type="I" size="11">
+			<PRIMARY/>
+			<DEFAULT value="0"/>
+		</field>
+		<field name="parent_id" type="I" size="11">
+			<NOTNULL/>
+			<DEFAULT value="0"/>
+		</field>
+		<field name="name" type="C" size="255">
+			<NOTNULL/>
+		</field>
+		<index name="parent_id_aro_groups">
+			<col>parent_id</col>
+		</index>
+	</table>
+	<table name="gacl_aro_groups_map">
+		<field name="acl_id" type="I" size="11">
+			<PRIMARY/>
+			<DEFAULT value="0"/>
+		</field>
+		<field name="group_id" type="I" size="11">
+			<PRIMARY/>
+			<DEFAULT value="0"/>
+		</field>
+		<index name="acl_id_group_id_aro_groups_map">
+			<UNIQUE/>
+			<col>acl_id</col>
+			<col>group_id</col>
+		</index>
+	</table>
+	<table name="gacl_aro_groups_path">
+		<field name="id" type="I" size="11">
+			<PRIMARY/>
+			<DEFAULT value="0"/>
+		</field>
+		<field name="group_id" type="I" size="11">
+			<PRIMARY/>
+			<DEFAULT value="0"/>
+		</field>
+		<field name="tree_level" type="I" size="11">
+			<PRIMARY/>
+			<DEFAULT value="0"/>
+		</field>
+		<index name="id_group_id_tree_level_aro_groups_path">
+			<UNIQUE/>
+			<col>id</col>
+			<col>group_id</col>
+			<col>tree_level</col>
+		</index>
+	</table>
+	<sql>
+		<query>INSERT INTO `gacl_aro_groups_path` (`id`, `group_id`, `tree_level`) VALUES (10, 0, 0)</query>
+	</sql>
+	<table name="gacl_aro_groups_path_id_seq">
+		<field name="id" type="I" size="11">
+			<NOTNULL/>
+			<DEFAULT value="0"/>
+		</field>
+	</table>
+	<sql>
+		<query>INSERT INTO `gacl_aro_groups_path_id_seq` (`id`) VALUES (10)</query>
+	</sql>
+	<table name="gacl_aro_groups_path_map">
+		<field name="path_id" type="I" size="11">
+			<PRIMARY/>
+			<DEFAULT value="0"/>
+		</field>
+		<field name="group_id" type="I" size="11">
+			<PRIMARY/>
+			<DEFAULT value="0"/>
+		</field>
+		<index name="path_id_group_id_aro_groups_path_map">
+			<UNIQUE/>
+			<col>path_id</col>
+			<col>group_id</col>
+		</index>
+	</table>
+	<sql>
+		<query>INSERT INTO `gacl_aro_groups_path_map` (`path_id`, `group_id`) VALUES (10, 10)</query>
+	</sql>
+	<table name="gacl_aro_map">
+		<field name="acl_id" type="I" size="11">
+			<NOTNULL/>
+			<DEFAULT value="0"/>
+		</field>
+		<field name="section_value" type="C" size="230">
+			<NOTNULL/>
+			<DEFAULT value="0"/>
+		</field>
+		<field name="value" type="C" size="230">
+			<NOTNULL/>
+		</field>
+		<index name="acl_id_aro_map">
+			<col>acl_id</col>
+		</index>
+	</table>
+	<sql>
+		<query>INSERT INTO `gacl_aro_map` (`acl_id`, `section_value`, `value`) VALUES (10, 'profile', '2')</query>
+		<query>INSERT INTO `gacl_aro_map` (`acl_id`, `section_value`, `value`) VALUES (10, 'profile', '3')</query>
+		<query>INSERT INTO `gacl_aro_map` (`acl_id`, `section_value`, `value`) VALUES (10, 'profile', '4')</query>
+		<query>INSERT INTO `gacl_aro_map` (`acl_id`, `section_value`, `value`) VALUES (10, 'profile', '5')</query>
+		<query>INSERT INTO `gacl_aro_map` (`acl_id`, `section_value`, `value`) VALUES (10, 'profile', '6')</query>
+		<query>INSERT INTO `gacl_aro_map` (`acl_id`, `section_value`, `value`) VALUES (11, 'profile', '1')</query>
+		<query>INSERT INTO `gacl_aro_map` (`acl_id`, `section_value`, `value`) VALUES (12, 'profile', '1')</query>
+		<query>INSERT INTO `gacl_aro_map` (`acl_id`, `section_value`, `value`) VALUES (12, 'profile', '2')</query>
+		<query>INSERT INTO `gacl_aro_map` (`acl_id`, `section_value`, `value`) VALUES (12, 'profile', '3')</query>
+		<query>INSERT INTO `gacl_aro_map` (`acl_id`, `section_value`, `value`) VALUES (12, 'profile', '4')</query>
+		<query>INSERT INTO `gacl_aro_map` (`acl_id`, `section_value`, `value`) VALUES (12, 'profile', '5')</query>
+		<query>INSERT INTO `gacl_aro_map` (`acl_id`, `section_value`, `value`) VALUES (13, 'profile', '6')</query>
+		<query>INSERT INTO `gacl_aro_map` (`acl_id`, `section_value`, `value`) VALUES (14, 'profile', '2')</query>
+		<query>INSERT INTO `gacl_aro_map` (`acl_id`, `section_value`, `value`) VALUES (14, 'profile', '3')</query>
+		<query>INSERT INTO `gacl_aro_map` (`acl_id`, `section_value`, `value`) VALUES (14, 'profile', '4')</query>
+		<query>INSERT INTO `gacl_aro_map` (`acl_id`, `section_value`, `value`) VALUES (14, 'profile', '6')</query>
+		<query>INSERT INTO `gacl_aro_map` (`acl_id`, `section_value`, `value`) VALUES (15, 'profile', '1')</query>
+		<query>INSERT INTO `gacl_aro_map` (`acl_id`, `section_value`, `value`) VALUES (15, 'profile', '5')</query>
+		<query>INSERT INTO `gacl_aro_map` (`acl_id`, `section_value`, `value`) VALUES (16, 'profile', '2')</query>
+		<query>INSERT INTO `gacl_aro_map` (`acl_id`, `section_value`, `value`) VALUES (16, 'profile', '3')</query>
+		<query>INSERT INTO `gacl_aro_map` (`acl_id`, `section_value`, `value`) VALUES (16, 'profile', '4')</query>
+		<query>INSERT INTO `gacl_aro_map` (`acl_id`, `section_value`, `value`) VALUES (16, 'profile', '6')</query>
+		<query>INSERT INTO `gacl_aro_map` (`acl_id`, `section_value`, `value`) VALUES (17, 'profile', '1')</query>
+		<query>INSERT INTO `gacl_aro_map` (`acl_id`, `section_value`, `value`) VALUES (17, 'profile', '5')</query>
+		<query>INSERT INTO `gacl_aro_map` (`acl_id`, `section_value`, `value`) VALUES (18, 'profile', '2')</query>
+		<query>INSERT INTO `gacl_aro_map` (`acl_id`, `section_value`, `value`) VALUES (18, 'profile', '3')</query>
+		<query>INSERT INTO `gacl_aro_map` (`acl_id`, `section_value`, `value`) VALUES (18, 'profile', '4')</query>
+		<query>INSERT INTO `gacl_aro_map` (`acl_id`, `section_value`, `value`) VALUES (19, 'profile', '1')</query>
+		<query>INSERT INTO `gacl_aro_map` (`acl_id`, `section_value`, `value`) VALUES (19, 'profile', '5')</query>
+		<query>INSERT INTO `gacl_aro_map` (`acl_id`, `section_value`, `value`) VALUES (19, 'profile', '6')</query>
+		<query>INSERT INTO `gacl_aro_map` (`acl_id`, `section_value`, `value`) VALUES (20, 'profile', '2')</query>
+		<query>INSERT INTO `gacl_aro_map` (`acl_id`, `section_value`, `value`) VALUES (20, 'profile', '5')</query>
+		<query>INSERT INTO `gacl_aro_map` (`acl_id`, `section_value`, `value`) VALUES (21, 'profile', '1')</query>
+		<query>INSERT INTO `gacl_aro_map` (`acl_id`, `section_value`, `value`) VALUES (21, 'profile', '3')</query>
+		<query>INSERT INTO `gacl_aro_map` (`acl_id`, `section_value`, `value`) VALUES (21, 'profile', '4')</query>
+		<query>INSERT INTO `gacl_aro_map` (`acl_id`, `section_value`, `value`) VALUES (21, 'profile', '6')</query>
+		<query>INSERT INTO `gacl_aro_map` (`acl_id`, `section_value`, `value`) VALUES (22, 'profile', '1')</query>
+		<query>INSERT INTO `gacl_aro_map` (`acl_id`, `section_value`, `value`) VALUES (22, 'profile', '2')</query>
+		<query>INSERT INTO `gacl_aro_map` (`acl_id`, `section_value`, `value`) VALUES (22, 'profile', '3')</query>
+		<query>INSERT INTO `gacl_aro_map` (`acl_id`, `section_value`, `value`) VALUES (22, 'profile', '4')</query>
+		<query>INSERT INTO `gacl_aro_map` (`acl_id`, `section_value`, `value`) VALUES (22, 'profile', '5')</query>
+		<query>INSERT INTO `gacl_aro_map` (`acl_id`, `section_value`, `value`) VALUES (23, 'profile', '6')</query>
+		<query>INSERT INTO `gacl_aro_map` (`acl_id`, `section_value`, `value`) VALUES (24, 'profile', '6')</query>
+		<query>INSERT INTO `gacl_aro_map` (`acl_id`, `section_value`, `value`) VALUES (25, 'profile', '1')</query>
+		<query>INSERT INTO `gacl_aro_map` (`acl_id`, `section_value`, `value`) VALUES (25, 'profile', '2')</query>
+		<query>INSERT INTO `gacl_aro_map` (`acl_id`, `section_value`, `value`) VALUES (25, 'profile', '3')</query>
+		<query>INSERT INTO `gacl_aro_map` (`acl_id`, `section_value`, `value`) VALUES (26, 'profile', '1')</query>
+		<query>INSERT INTO `gacl_aro_map` (`acl_id`, `section_value`, `value`) VALUES (26, 'profile', '2')</query>
+		<query>INSERT INTO `gacl_aro_map` (`acl_id`, `section_value`, `value`) VALUES (26, 'profile', '3')</query>
+		<query>INSERT INTO `gacl_aro_map` (`acl_id`, `section_value`, `value`) VALUES (26, 'profile', '4')</query>
+		<query>INSERT INTO `gacl_aro_map` (`acl_id`, `section_value`, `value`) VALUES (26, 'profile', '5')</query>
+		<query>INSERT INTO `gacl_aro_map` (`acl_id`, `section_value`, `value`) VALUES (26, 'profile', '6')</query>
+	</sql>
+	<table name="gacl_aro_sections">
+		<field name="id" type="I" size="11">
+			<PRIMARY/>
+			<DEFAULT value="0"/>
+		</field>
+		<field name="value" type="C" size="230">
+			<NOTNULL/>
+		</field>
+		<field name="order_value" type="I" size="11">
+			<NOTNULL/>
+			<DEFAULT value="0"/>
+		</field>
+		<field name="name" type="C" size="230">
+			<NOTNULL/>
+		</field>
+		<field name="hidden" type="I" size="11">
+			<NOTNULL/>
+			<DEFAULT value="0"/>
+		</field>
+		<index name="value_aro_sections">
+			<UNIQUE/>
+			<col>value</col>
+		</index>
+		<index name="hidden_aro_sections">
+			<col>hidden</col>
+		</index>
+	</table>
+	<sql>
+		<query>INSERT INTO `gacl_aro_sections` (`id`, `value`, `order_value`, `name`, `hidden`) VALUES (10, 'profile', 10, 'Perfil de usuario de miguelOO', 0)</query>
+	</sql>
+	<table name="gacl_aro_sections_seq">
+		<field name="id" type="I" size="11">
+			<NOTNULL/>
+			<DEFAULT value="0"/>
+		</field>
+	</table>
+	<sql>
+		<query>INSERT INTO `gacl_aro_sections_seq` (`id`) VALUES (10)</query>
+	</sql>
+	<table name="gacl_aro_seq">
+		<field name="id" type="I" size="11">
+			<NOTNULL/>
+			<DEFAULT value="0"/>
+		</field>
+	</table>
+	<sql>
+		<query>INSERT INTO `gacl_aro_seq` (`id`) VALUES (15)</query>
+	</sql>
+	<table name="gacl_axo">
+		<field name="id" type="I" size="11">
+			<PRIMARY/>
+			<DEFAULT value="0"/>
+		</field>
+		<field name="section_value" type="C" size="240">
+			<NOTNULL/>
+			<DEFAULT value="0"/>
+		</field>
+		<field name="value" type="C" size="240">
+			<NOTNULL/>
+		</field>
+		<field name="order_value" type="I" size="11">
+			<NOTNULL/>
+			<DEFAULT value="0"/>
+		</field>
+		<field name="name" type="C" size="255">
+			<NOTNULL/>
+		</field>
+		<field name="hidden" type="I" size="11">
+			<NOTNULL/>
+			<DEFAULT value="0"/>
+		</field>
+		<index name="section_value_value_axo">
+			<UNIQUE/>
+			<col>section_value</col>
+			<col>value</col>
+		</index>
+		<index name="hidden_axo">
+			<col>hidden</col>
+		</index>
+	</table>
+	<table name="gacl_axo_groups">
+		<field name="id" type="I" size="11">
+			<PRIMARY/>
+			<DEFAULT value="0"/>
+		</field>
+		<field name="parent_id" type="I" size="11">
+			<NOTNULL/>
+			<DEFAULT value="0"/>
+		</field>
+		<field name="name" type="C" size="255">
+			<NOTNULL/>
+		</field>
+		<index name="parent_id_axo_groups">
+			<col>parent_id</col>
+		</index>
+	</table>
+	<table name="gacl_axo_groups_map">
+		<field name="acl_id" type="I" size="11">
+			<PRIMARY/>
+			<DEFAULT value="0"/>
+		</field>
+		<field name="group_id" type="I" size="11">
+			<PRIMARY/>
+			<DEFAULT value="0"/>
+		</field>
+		<index name="acl_id_group_id_axo_groups_map">
+			<UNIQUE/>
+			<col>acl_id</col>
+			<col>group_id</col>
+		</index>
+	</table>
+	<table name="gacl_axo_groups_path">
+		<field name="id" type="I" size="11">
+			<PRIMARY/>
+			<DEFAULT value="0"/>
+		</field>
+		<field name="group_id" type="I" size="11">
+			<PRIMARY/>
+			<DEFAULT value="0"/>
+		</field>
+		<field name="tree_level" type="I" size="11">
+			<PRIMARY/>
+			<DEFAULT value="0"/>
+		</field>
+		<index name="id_group_id_tree_level_axo_groups_path">
+			<UNIQUE/>
+			<col>id</col>
+			<col>group_id</col>
+			<col>tree_level</col>
+		</index>
+	</table>
+	<table name="gacl_axo_groups_path_map">
+		<field name="path_id" type="I" size="11">
+			<PRIMARY/>
+			<DEFAULT value="0"/>
+		</field>
+		<field name="group_id" type="I" size="11">
+			<PRIMARY/>
+			<DEFAULT value="0"/>
+		</field>
+		<index name="path_id_group_id_axo_groups_path_map">
+			<UNIQUE/>
+			<col>path_id</col>
+			<col>group_id</col>
+		</index>
+	</table>
+	<table name="gacl_axo_map">
+		<field name="acl_id" type="I" size="11">
+			<NOTNULL/>
+			<DEFAULT value="0"/>
+		</field>
+		<field name="section_value" type="C" size="230">
+			<NOTNULL/>
+			<DEFAULT value="0"/>
+		</field>
+		<field name="value" type="C" size="230">
+			<NOTNULL/>
+		</field>
+		<index name="acl_id_axo_map">
+			<col>acl_id</col>
+		</index>
+	</table>
+	<table name="gacl_axo_sections">
+		<field name="id" type="I" size="11">
+			<PRIMARY/>
+			<DEFAULT value="0"/>
+		</field>
+		<field name="value" type="C" size="230">
+			<NOTNULL/>
+		</field>
+		<field name="order_value" type="I" size="11">
+			<NOTNULL/>
+			<DEFAULT value="0"/>
+		</field>
+		<field name="name" type="C" size="230">
+			<NOTNULL/>
+		</field>
+		<field name="hidden" type="I" size="11">
+			<NOTNULL/>
+			<DEFAULT value="0"/>
+		</field>
+		<index name="value_axo_sections">
+			<UNIQUE/>
+			<col>value</col>
+		</index>
+		<index name="hidden_axo_sections">
+			<col>hidden</col>
+		</index>
+	</table>
+	<table name="gacl_groups_aro_map">
+		<field name="group_id" type="I" size="11">
+			<NOTNULL/>
+			<DEFAULT value="0"/>
+		</field>
+		<field name="section_value" type="C" size="240">
+			<PRIMARY/>
+		</field>
+		<field name="value" type="C" size="240">
+			<PRIMARY/>
+		</field>
+		<index name="group_id_aro_id_groups_aro_map">
+			<UNIQUE/>
+			<col>section_value</col>
+			<col>value</col>
+		</index>
+	</table>
+	<sql>
+		<query>INSERT INTO `gacl_groups_aro_map` (`group_id`, `section_value`, `value`) VALUES (10, 'profile', 'admin')</query>
+	</sql>
+	<table name="gacl_groups_axo_map">
+		<field name="group_id" type="I" size="11">
+			<NOTNULL/>
+			<DEFAULT value="0"/>
+		</field>
+		<field name="section_value" type="C" size="240">
+			<PRIMARY/>
+		</field>
+		<field name="value" type="C" size="240">
+			<PRIMARY/>
+		</field>
+		<index name="group_id_axo_id_groups_axo_map">
+			<UNIQUE/>
+			<col>section_value</col>
+			<col>value</col>
+		</index>
+	</table>
+	<table name="gacl_groups_id_seq">
+		<field name="id" type="I" size="11">
+			<NOTNULL/>
+			<DEFAULT value="0"/>
+		</field>
+	</table>
+	<sql>
+		<query>INSERT INTO `gacl_groups_id_seq` (`id`) VALUES (10)</query>
+	</sql>
+	<table name="gacl_phpgacl">
+		<field name="name" type="C" size="230">
+			<PRIMARY/>
+		</field>
+		<field name="value" type="C" size="230">
+			<NOTNULL/>
+		</field>
+	</table>
+	<sql>
+		<query>INSERT INTO `gacl_phpgacl` (`name`, `value`) VALUES ('version', '3.2.2')</query>
+		<query>INSERT INTO `gacl_phpgacl` (`name`, `value`) VALUES ('schema_version', '2.0')</query>
+	</sql>
+	<table name="glossary">
+		<field name="COURSE_ID" type="I" size="11">
+			<PRIMARY/>
+			<DEFAULT value="0"/>
+		</field>
+		<field name="GLOSSARY_ID" type="I" size="11">
+			<PRIMARY/>
+			<DEFAULT value="0"/>
+		</field>
+		<field name="GLOSSARY_NAME" type="C" size="30">
+			<NOTNULL/>
+		</field>
+		<field name="GLOSSARY_DESCRIPTION" type="C" size="255">
+			<NOTNULL/>
+		</field>
+	</table>
+	<table name="institution">
+		<field name="INSTITUTION_ID" type="I" size="11">
+			<PRIMARY/>
+			<AUTOINCREMENT/>
+		</field>
+		<field name="INSTITUTION_HASH_ID" type="C" size="40">
+			<NOTNULL/>
+		</field>
+		<field name="INSTITUTION_NAME" type="C" size="70">
+			<NOTNULL/>
+		</field>
+		<field name="INSTITUTION_DESCRIPTION" type="C" size="100">
+			<NOTNULL/>
+		</field>
+		<field name="INSTITUTION_RESPONSABLE" type="C" size="80">
+			<NOTNULL/>
+		</field>
+		<field name="INSTITUTION_PHONE" type="C" size="12">
+			<NOTNULL/>
+		</field>
+		<field name="INSTITUTION_URL" type="C" size="30">
+			<NOTNULL/>
+		</field>
+		<field name="INSTITUTION_MAIL" type="C" size="20">
+			<NOTNULL/>
+		</field>
+		<field name="INSTITUTION_ADDRESS" type="C" size="100">
+			<NOTNULL/>
+		</field>
+		<field name="INSTITUTION_THEME" type="C" size="20">
+			<NOTNULL/>
+		</field>
+		<field name="INSTITUTION_LANGUAGE" type="C" size="5">
+			<NOTNULL/>
+		</field>
+		<field name="INSTITUTION_FORUM_TYPE_BB" type="I" size="1">
+			<NOTNULL/>
+			<DEFAULT value="0"/>
+		</field>
+		<field name="INSTITUTION_MAIN_PAGE_ID" type="I" size="11">
+			<NOTNULL/>
+			<DEFAULT value="0"/>
+		</field>
+		<index name="INSTITUTION_MAIN_PAGE_ID">
+			<col>INSTITUTION_MAIN_PAGE_ID</col>
+		</index>
+	</table>
+	<sql>
+		<query>INSERT INTO `institution` (`INSTITUTION_ID`, `INSTITUTION_HASH_ID`, `INSTITUTION_NAME`, `INSTITUTION_DESCRIPTION`, `INSTITUTION_RESPONSABLE`, `INSTITUTION_PHONE`, `INSTITUTION_URL`, `INSTITUTION_MAIL`, `INSTITUTION_ADDRESS`, `INSTITUTION_THEME`, `INSTITUTION_LANGUAGE`, `INSTITUTION_FORUM_TYPE_BB`, `INSTITUTION_MAIN_PAGE_ID`) VALUES (1, '', 'Universidad de Jaén', 'Es una Universidad mu bonica', 'Antonio', '123456789', 'http://www.ujaen.es', 'virtual@ujaen.es', 'Jaén', 'NORMAL', 'ES_ES', 0, 0)</query>
+		<query>INSERT INTO `institution` (`INSTITUTION_ID`, `INSTITUTION_HASH_ID`, `INSTITUTION_NAME`, `INSTITUTION_DESCRIPTION`, `INSTITUTION_RESPONSABLE`, `INSTITUTION_PHONE`, `INSTITUTION_URL`, `INSTITUTION_MAIL`, `INSTITUTION_ADDRESS`, `INSTITUTION_THEME`, `INSTITUTION_LANGUAGE`, `INSTITUTION_FORUM_TYPE_BB`, `INSTITUTION_MAIN_PAGE_ID`) VALUES (2, '', 'Academia CSET', 'Academia la más bonica', 'Antonio', '123456789', 'http://www.cset.com', 'formacion@cset.com', 'Martos', 'NORMAL', 'ES_ES', 0, 0)</query>
+	</sql>
+	<table name="link">
+		<field name="LINK_ID" type="I" size="11">
+			<PRIMARY/>
+			<DEFAULT value="0"/>
+		</field>
+		<field name="LINK_CATEGORY_ID" type="I" size="11">
+			<NOTNULL/>
+			<DEFAULT value="0"/>
+		</field>
+		<field name="LINK_NAME" type="C" size="30">
+			<NOTNULL/>
+		</field>
+		<field name="LINK_DESCRIPTION" type="C" size="255">
+			<NOTNULL/>
+		</field>
+		<field name="LINK_URL" type="C" size="100">
+			<NOTNULL/>
+		</field>
+		<field name="LINK_BROKEN" type="I" size="1">
+			<NOTNULL/>
+			<DEFAULT value="0"/>
+		</field>
+		<field name="LINK_PUNTUACION" type="N">
+			<NOTNULL/>
+			<DEFAULT value="0"/>
+		</field>
+	</table>
+	<table name="link_category">
+		<field name="LINK_CATEGORY_ID" type="I" size="11">
+			<PRIMARY/>
+			<DEFAULT value="0"/>
+		</field>
+		<field name="LINK_CATEGORY_DESCRIPTION" type="C" size="100">
+			<NOTNULL/>
+		</field>
+	</table>
+	<table name="link_comment">
+		<field name="LINK_COMMENT_ID" type="I" size="11">
+			<PRIMARY/>
+			<DEFAULT value="0"/>
+		</field>
+		<field name="LINK_COMMENT_DESCRIPTION" type="C" size="255">
+			<NOTNULL/>
+		</field>
+		<field name="LINK_COMMENT_PUNTUACION" type="I" size="4">
+			<NOTNULL/>
+			<DEFAULT value="0"/>
+		</field>
+		<field name="LINK_COMMENT_USER_ID" type="I" size="11">
+			<NOTNULL/>
+			<DEFAULT value="0"/>
+		</field>
+		<field name="LINK_ID" type="I" size="11">
+			<PRIMARY/>
+			<DEFAULT value="0"/>
+		</field>
+		<index name="LINK_COMMETS_USER_ID">
+			<col>LINK_COMMENT_USER_ID</col>
+		</index>
+	</table>
+	<table name="log_action">
+		<field name="MODULE_ID" type="I" size="11">
+			<PRIMARY/>
+			<DEFAULT value="0"/>
+		</field>
+		<field name="COURSE_ID" type="I" size="11">
+			<PRIMARY/>
+			<DEFAULT value="0"/>
+		</field>
+		<field name="USER_ID" type="I" size="11">
+			<PRIMARY/>
+			<DEFAULT value="0"/>
+		</field>
+		<field name="EVENT" type="C" size="10">
+			<NOTNULL/>
+		</field>
+		<field name="DATE" type="D">
+			<PRIMARY/>
+			<DEFAULT value="0000-00-00"/>
+		</field>
+		<index name="USER_ID">
+			<col>USER_ID</col>
+		</index>
+		<index name="MODULE_ID">
+			<col>MODULE_ID</col>
+		</index>
+	</table>
+	<table name="loginout">
+		<field name="idLog" type="I" size="9">
+			<PRIMARY/>
+			<AUTOINCREMENT/>
+		</field>
+		<field name="id_user" type="I" size="9">
+			<NOTNULL/>
+			<DEFAULT value="0"/>
+		</field>
+		<field name="ip" type="C" size="16">
+			<NOTNULL/>
+			<DEFAULT value="0.0.0.0"/>
+		</field>
+		<field name="log_when" type="T">
+			<NOTNULL/>
+			<DEFAULT value="0000-00-00 00:00:00"/>
+		</field>
+		<field name="log_action" type="N">
+			<NOTNULL/>
+			<DEFAULT value="LOGIN"/>
+		</field>
+	</table>
+	<table name="module">
+		<field name="MODULE_ID" type="I" size="11">
+			<PRIMARY/>
+			<DEFAULT value="0"/>
+		</field>
+		<field name="MODULE_NAME" type="C" size="30">
+			<NOTNULL/>
+		</field>
+		<field name="MODULE_DESCRIPTION" type="C" size="100">
+			<NOTNULL/>
+		</field>
+	</table>
+	<table name="module_document">
+		<field name="MODULE_ID" type="I" size="11">
+			<PRIMARY/>
+			<DEFAULT value="0"/>
+		</field>
+		<field name="DOCUMENT_ID" type="I" size="11">
+			<PRIMARY/>
+			<DEFAULT value="0"/>
+		</field>
+	</table>
+	<table name="person">
+		<field name="PERSON_ID" type="I" size="11">
+			<PRIMARY/>
+			<AUTOINCREMENT/>
+		</field>
+		<field name="PERSON_JABBER" type="C" size="20">
+			<NOTNULL/>
+		</field>
+		<field name="PERSON_NAME" type="C" size="30">
+			<NOTNULL/>
+		</field>
+		<field name="PERSON_SURNAME" type="C" size="50">
+			<NOTNULL/>
+		</field>
+		<field name="TREATMENT_ID" type="I" size="4">
+			<NOTNULL/>
+			<DEFAULT value="0"/>
+		</field>
+		<field name="CARGO" type="C" size="10">
+			<NOTNULL/>
+		</field>
+		<index name="TREATMENT_ID">
+			<col>TREATMENT_ID</col>
+		</index>
+	</table>
+	<sql>
+		<query>INSERT INTO `person` (`PERSON_ID`, `PERSON_JABBER`, `PERSON_NAME`, `PERSON_SURNAME`, `TREATMENT_ID`, `CARGO`) VALUES (1, '', 'Invitado', '', 1, '')</query>
+		<query>INSERT INTO `person` (`PERSON_ID`, `PERSON_JABBER`, `PERSON_NAME`, `PERSON_SURNAME`, `TREATMENT_ID`, `CARGO`) VALUES (2, 'antoniofcano', 'Antonio Francisco', 'Cano Damas', 2, 'Jefe Proy.')</query>
+	</sql>
+	<table name="profile">
+		<field name="ID_PROFILE" type="I" size="4">
+			<PRIMARY/>
+			<AUTOINCREMENT/>
+		</field>
+		<field name="PROFILE_DESCRIPTION" type="C" size="20">
+			<NOTNULL/>
+		</field>
+	</table>
+	<sql>
+		<query>INSERT INTO `profile` (`ID_PROFILE`, `PROFILE_DESCRIPTION`) VALUES (1, 'Administrador')</query>
+		<query>INSERT INTO `profile` (`ID_PROFILE`, `PROFILE_DESCRIPTION`) VALUES (2, 'Tutor')</query>
+		<query>INSERT INTO `profile` (`ID_PROFILE`, `PROFILE_DESCRIPTION`) VALUES (3, 'Profesor')</query>
+		<query>INSERT INTO `profile` (`ID_PROFILE`, `PROFILE_DESCRIPTION`) VALUES (4, 'Alumno')</query>
+		<query>INSERT INTO `profile` (`ID_PROFILE`, `PROFILE_DESCRIPTION`) VALUES (5, 'Secretaria')</query>
+		<query>INSERT INTO `profile` (`ID_PROFILE`, `PROFILE_DESCRIPTION`) VALUES (6, 'Visitante')</query>
+	</sql>>
+	<table name="question">
+		<field name="QUESTION_ID" type="I" size="11">
+			<PRIMARY/>
+			<DEFAULT value="0"/>
+		</field>
+		<field name="QUESTION_TITLE" type="C" size="100">
+			<NOTNULL/>
+		</field>
+		<field name="QUESTION_DESCRIPTION" type="I" size="4">
+			<NOTNULL/>
+			<DEFAULT value="0"/>
+		</field>
+		<field name="QUESTION_VIEWS" type="I" size="4">
+			<NOTNULL/>
+			<DEFAULT value="0"/>
+		</field>
+		<field name="QUESTION_NUM_OK" type="I" size="4">
+			<NOTNULL/>
+			<DEFAULT value="0"/>
+		</field>
+	</table>
+	<table name="question_link">
+		<field name="QUESTION_ID" type="I" size="11">
+			<PRIMARY/>
+			<DEFAULT value="0"/>
+		</field>
+		<field name="LINK_ID" type="I" size="11">
+			<PRIMARY/>
+			<DEFAULT value="0"/>
+		</field>
+	</table>
+	<table name="suggestion">
+		<field name="SUGGESTION_ID" type="I" size="11">
+			<PRIMARY/>
+			<AUTOINCREMENT/>
+		</field>
+		<field name="SUGGESTION_DESCRIPTION" type="C" size="255">
+			<NOTNULL/>
+		</field>
+		<field name="SUGGESTION_READ" type="I" size="1">
+			<NOTNULL/>
+			<DEFAULT value="0"/>
+		</field>
+		<field name="SUGGESTION_DATE_SENT" type="D">
+			<NOTNULL/>
+			<DEFAULT value="0000-00-00"/>
+		</field>
+		<field name="SUGGESTION_PRIORITY" type="I" size="4">
+			<NOTNULL/>
+			<DEFAULT value="0"/>
+		</field>
+		<field name="USER_ID" type="I" size="11">
+			<NOTNULL/>
+			<DEFAULT value="0"/>
+		</field>
+		<field name="SUGGESTION_NAME" type="C" size="255">
+			<NOTNULL/>
+		</field>
+		<field name="SUGGESTION_EMAIL" type="C" size="255">
+			<NOTNULL/>
+		</field>
+		<index name="USER_ID">
+			<col>USER_ID</col>
+		</index>
+	</table>
+	<table name="todo">
+		<field name="id" type="I" size="9">
+			<PRIMARY/>
+			<AUTOINCREMENT/>
+		</field>
+		<field name="contenu" type="X"></field>
+		<field name="temps" type="T">
+			<DEFAULT value="0000-00-00 00:00:00"/>
+		</field>
+		<field name="auteur" type="C" size="80"></field>
+		<field name="email" type="C" size="80"></field>
+		<field name="priority" type="I" size="4">
+			<DEFAULT value="0"/>
+		</field>
+		<field name="type" type="C" size="8"></field>
+		<field name="cible" type="C" size="30"></field>
+		<field name="statut" type="C" size="8"></field>
+		<field name="assignTo" type="I" size="9"></field>
+		<field name="showToUsers" type="N">
+			<NOTNULL/>
+			<DEFAULT value="YES"/>
+		</field>
+		<index name="temps">
+			<col>temps</col>
+		</index>
+	</table>
+	<table name="treatment">
+		<field name="TREATMENT_ID" type="I" size="4">
+			<PRIMARY/>
+			<AUTOINCREMENT/>
+		</field>
+		<field name="TREATMENT_DESCRIPTION" type="C" size="20">
+			<NOTNULL/>
+		</field>
+	</table>
+	<sql>
+		<query>INSERT INTO `treatment` (`TREATMENT_ID`, `TREATMENT_DESCRIPTION`) VALUES (1, '')</query>
+		<query>INSERT INTO `treatment` (`TREATMENT_ID`, `TREATMENT_DESCRIPTION`) VALUES (2, 'Don')</query>
+		<query>INSERT INTO `treatment` (`TREATMENT_ID`, `TREATMENT_DESCRIPTION`) VALUES (3, 'Doña')</query>
+		<query>INSERT INTO `treatment` (`TREATMENT_ID`, `TREATMENT_DESCRIPTION`) VALUES (4, 'Señor')</query>
+		<query>INSERT INTO `treatment` (`TREATMENT_ID`, `TREATMENT_DESCRIPTION`) VALUES (5, 'Señora')</query>
+		<query>INSERT INTO `treatment` (`TREATMENT_ID`, `TREATMENT_DESCRIPTION`) VALUES (6, 'Doctor')</query>
+		<query>INSERT INTO `treatment` (`TREATMENT_ID`, `TREATMENT_DESCRIPTION`) VALUES (7, 'Doctora')</query>
+		<query>INSERT INTO `treatment` (`TREATMENT_ID`, `TREATMENT_DESCRIPTION`) VALUES (8, 'Catedrático')</query>
+		<query>INSERT INTO `treatment` (`TREATMENT_ID`, `TREATMENT_DESCRIPTION`) VALUES (9, 'Catedrática')</query>
+	</sql>
+	<table name="user">
+		<field name="USER_ID" type="I" size="11">
+			<PRIMARY/>
+			<AUTOINCREMENT/>
+		</field>
+		<field name="USER_ALIAS" type="C" size="10">
+			<NOTNULL/>
+		</field>
+		<field name="THEME" type="C" size="20">
+			<NOTNULL/>
+		</field>
+		<field name="LANGUAGE" type="C" size="5">
+			<NOTNULL/>
+		</field>
+		<field name="USER_PASSWORD" type="C" size="255">
+			<NOTNULL/>
+		</field>
+		<field name="ACTIVE" type="C" size="1">
+			<NOTNULL/>
+		</field>
+		<field name="ACTIVATE_HASH" type="C" size="16">
+			<NOTNULL/>
+		</field>
+		<field name="INSTITUTION_ID" type="I" size="11">
+			<NOTNULL/>
+			<DEFAULT value="0"/>
+		</field>
+		<field name="FORUM_TYPE_BB" type="I" size="1">
+			<NOTNULL/>
+			<DEFAULT value="0"/>
+		</field>
+		<field name="MAIN_PAGE_ID" type="I" size="11">
+			<NOTNULL/>
+			<DEFAULT value="0"/>
+		</field>
+		<field name="PERSON_ID" type="I" size="11">
+			<NOTNULL/>
+			<DEFAULT value="0"/>
+		</field>
+		<field name="ID_PROFILE" type="I" size="4">
+			<NOTNULL/>
+			<DEFAULT value="0"/>
+		</field>
+		<field name="TREATMENT_ID" type="I" size="4">
+			<NOTNULL/>
+			<DEFAULT value="0"/>
+		</field>
+		<field name="EMAIL" type="C" size="100">
+			<NOTNULL/>
+		</field>
+		<index name="INSTITUTION_ID">
+			<col>INSTITUTION_ID</col>
+		</index>
+		<index name="MAIN_PAGE_ID">
+			<col>MAIN_PAGE_ID</col>
+		</index>
+		<index name="PERSON_ID">
+			<col>PERSON_ID</col>
+		</index>
+		<index name="ID_PROFILE">
+			<col>ID_PROFILE</col>
+		</index>
+		<index name="TREATMENT_ID">
+			<col>TREATMENT_ID</col>
+		</index>
+	</table>
+	<sql>
+		<query>INSERT INTO `user` (`USER_ID`, `USER_ALIAS`, `THEME`, `LANGUAGE`, `USER_PASSWORD`, `ACTIVE`, `ACTIVATE_HASH`, `INSTITUTION_ID`, `FORUM_TYPE_BB`, `MAIN_PAGE_ID`, `PERSON_ID`, `ID_PROFILE`, `TREATMENT_ID`, `EMAIL`) VALUES (1, 'guest', 'default', 'es_ES', 'guest', '1', '', 0, 0, 0, 1, 6, 1, '')</query>
+		<query>INSERT INTO `user` (`USER_ID`, `USER_ALIAS`, `THEME`, `LANGUAGE`, `USER_PASSWORD`, `ACTIVE`, `ACTIVATE_HASH`, `INSTITUTION_ID`, `FORUM_TYPE_BB`, `MAIN_PAGE_ID`, `PERSON_ID`, `ID_PROFILE`, `TREATMENT_ID`, `EMAIL`) VALUES (2, 'antonio', 'default', 'es_ES', 'tonino007', '1', '', 1, 0, 0, 2, 1, 2, '')</query>
+	</sql>
+	<table name="user_classroom">
+		<field name="USER_ID" type="I" size="11">
+			<PRIMARY/>
+			<DEFAULT value="0"/>
+		</field>
+		<field name="GROUP_ID" type="I" size="11">
+			<PRIMARY/>
+			<DEFAULT value="0"/>
+		</field>
+	</table>
+	<table name="user_course">
+		<field name="USER_ID" type="I" size="11">
+			<PRIMARY/>
+			<DEFAULT value="0"/>
+		</field>
+		<field name="COURSE_ID" type="I" size="11">
+			<PRIMARY/>
+			<DEFAULT value="0"/>
+		</field>
+		<field name="UD_DATE" type="D">
+			<NOTNULL/>
+			<DEFAULT value="0000-00-00"/>
+		</field>
+		<field name="UC_UID" type="I" size="11">
+			<NOTNULL/>
+			<DEFAULT value="0"/>
+		</field>
+		<index name="UC_UID">
+			<col>UC_UID</col>
+		</index>
+		<index name="COURSE_ID">
+			<col>COURSE_ID</col>
+		</index>
+	</table>
+	<sql>
+		<query>INSERT INTO `user_course` (`USER_ID`, `COURSE_ID`, `UD_DATE`, `UC_UID`) VALUES (2, 1, '0000-00-00', 0)</query>
+		<query>INSERT INTO `user_course` (`USER_ID`, `COURSE_ID`, `UD_DATE`, `UC_UID`) VALUES (2, 2, '0000-00-00', 0)</query>
+		<query>INSERT INTO `user_course` (`USER_ID`, `COURSE_ID`, `UD_DATE`, `UC_UID`) VALUES (2, 3, '0000-00-00', 0)</query>
+	</sql>
+	<table name="user_course_old">
+		<field name="USER_ID" type="I" size="11">
+			<PRIMARY/>
+			<DEFAULT value="0"/>
+		</field>
+		<field name="COURSE_ID" type="I" size="11">
+			<PRIMARY/>
+			<DEFAULT value="0"/>
+		</field>
+		<field name="USER_ROLE_ID" type="I" size="11">
+			<NOTNULL/>
+			<DEFAULT value="0"/>
+		</field>
+		<field name="UD_DATE" type="D">
+			<NOTNULL/>
+			<DEFAULT value="0000-00-00"/>
+		</field>
+		<field name="UC_UID" type="I" size="11">
+			<NOTNULL/>
+			<DEFAULT value="0"/>
+		</field>
+		<index name="UC_UID">
+			<col>UC_UID</col>
+		</index>
+		<index name="USER_ROLE_ID">
+			<col>USER_ROLE_ID</col>
+		</index>
+		<index name="COURSE_ID">
+			<col>COURSE_ID</col>
+		</index>
+	</table>
+	<table name="user_treatment">
+		<field name="TREATMENT_ID" type="I" size="4">
+			<PRIMARY/>
+			<DEFAULT value="0"/>
+		</field>
+		<field name="TREATMENT_DESCRIPTION" type="C" size="10">
+			<NOTNULL/>
+		</field>
+	</table>
+	<sql>
+		<query>INSERT INTO `user_treatment` (`TREATMENT_ID`, `TREATMENT_DESCRIPTION`) VALUES (0, '')</query>
+		<query>INSERT INTO `user_treatment` (`TREATMENT_ID`, `TREATMENT_DESCRIPTION`) VALUES (1, 'Señor')</query>
+		<query>INSERT INTO `user_treatment` (`TREATMENT_ID`, `TREATMENT_DESCRIPTION`) VALUES (2, 'Señora')</query>
+		<query>INSERT INTO `user_treatment` (`TREATMENT_ID`, `TREATMENT_DESCRIPTION`) VALUES (3, 'Profesor')</query>
+		<query>INSERT INTO `user_treatment` (`TREATMENT_ID`, `TREATMENT_DESCRIPTION`) VALUES (4, 'Profesora')</query>
+	</sql>
+</schema>

@@ -1,0 +1,26 @@
+<?xml version="1.0"?>
+ <config>
+  <ddbbSgbd> mysql </ddbbSgbd>
+  <ddbbMainDb> migueloo_desa </ddbbMainDb>
+  <ddbbServer> localhost </ddbbServer>
+  <ddbbUser> apache </ddbbUser>
+  <ddbbPassword> apache </ddbbPassword>
+  <siteName> miguel (OO) </siteName>
+  <Institution> Su Institución </Institution>
+  <InstitutionUrl> http:// </InstitutionUrl>
+  <language> es_ES </language>
+  <emailAdministrator> root@localhost </emailAdministrator>
+  <administratorName> Juan </administratorName>
+  <administratorSurname> Español </administratorSurname>
+  <educationManager> Juan Español </educationManager>
+  <telephone> (515) 648 208 </telephone>
+  <maxFilledSpaceUser> 100000 </maxFilledSpaceUser>
+  <maxFilledSpaceAdmin> 1000000 </maxFilledSpaceAdmin>
+  <mainInterfaceWidth> 100% </mainInterfaceWidth>
+  <mainInterfaceType> toolbar </mainInterfaceType>
+  <miguelVersion> 0.5 </miguelVersion>
+  <versionDb> 2.0 </versionDb>
+  <userMailCanBeEmpty> true </userMailCanBeEmpty>
+  <userPasswordCrypted> true </userPasswordCrypted>
+ </config>
+
