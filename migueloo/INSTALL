@@ -19,7 +19,7 @@ miguel utiliza 4 librerías de desarrollo "externo":
 * MiniXML [http://minixml.psychogenic.com/]: API para generar 
   y parsear XML. [Está integrada, no hace falta instalarla].
   
-* ADOdb [http://php.weblogs.com/ADODB]: Para accesos a BBDD 
+* ADOdb [http://adodb.sourceforge.net/]: Para accesos a BBDD 
   independientemente del SGBD. Se usa la versión 4.2.2.
   
 * phpHtmlLib [http://phphtmllib.newsblob.com/]: API para la 
@@ -92,7 +92,7 @@ Y tenemos la base de datos lista.
 Dado que estamos en proceso de desarrollo deberemos hacerlo de 
 forma manual.
 
-a) Configuración de miguel: fichero common/miguel_base.inc.php.
+a) Configuración de miguel: fichero modules/common/miguel_base.inc.php.
 Para tener operativo miguel sólo hay que tocar las líneas:
 
 define("MIGUEL_LOCALPATH", "miguel"); 
@@ -104,7 +104,7 @@ define('MIGUEL_APPDIR', '/var/www/html'.'/'.MIGUEL_LOCALPATH.'/');
 
 Cambiar <'/var/www/html/'> por <'/path_al_directorio_root_de_apache'>
 
-b) Configuración del framework: fichero base/framework.inc.php.
+b) Configuración del framework: fichero modules/andromeda/framework.inc.php.
 Para configurar el framework basta con tocar las líneas:
 
 define('MIGUELBASE_PHPHTMLLIB', MIGUEL_ROOT_DIR.'/phphtmllib');
@@ -115,7 +115,7 @@ define('MIGUELBASE_PCLZIP', MIGUEL_ROOT_DIR.'/pclzip');
 En todas, cambiar el nombre por el que habéis usado.
 
 
-c) Configuración de la base de datos: fichero common/include/config.xml.
+c) Configuración de la base de datos: fichero modules/common/include/config.xml.
 Sólo tendremos en cuenta los elementos:
 
 <ddbbSgbd> mysql </ddbbSgbd>          SGBD usado: MySQL
