@@ -289,7 +289,7 @@ class miguel_VFileManager extends miguel_VMenu
                 $elem10->set_tag_attribute('align', 'center');
 
                 if($_folder){
-                        $status = 'folder_id='.$_fid.'&operation_id=move&tp=f&id=';
+                        $status = 'operation_id=move&tp=f&id=';
                 } else {
                         $status = 'folder_id='.$_fid.'&operation_id=move&tp=d&id=';
                 }

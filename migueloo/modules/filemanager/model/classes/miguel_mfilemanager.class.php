@@ -119,20 +119,21 @@ class miguel_MFileManager extends base_Model
         return ($ret_val);
     }
 
-    function getFolderTree( $current_course, $current_folder_id = 0 )
+    function getFolderTree( $current_course, &$result, $profundidad = 0, $current_folder_id = 0 )
     {
         $folderList = $this->getFolderList($current_course, $current_folder_id);
 
         // recursive operation if subdirectories exist
-        $folderCount = sizeof($folderList);
-        if ( $folderCount > 0 ) {
-            for ($i = 0 ; $i < $folderCount ; $i++ ) {
-//                $subFolderList = $this->getFolderTree( $current_course, $folderList[$i]['folder_id'] ) ;             // function recursivity
-//                $folderList  =  array_merge( $folderList , $subFolderList ) ; // data merge
-                  Debug::oneVar( $folderList[$i]['folder_id'] );
+        if ( $folderList[0]['folder_id'] != null ) {
+            $folderCount = sizeof($folderList);
+            $profundidad++;
+            if ( $folderCount > 0 ) {
+                for ($i = 0 ; $i < $folderCount ; $i++ ) {
+                      $result[]  =  array($folderList[$i], $profundidad);
+                      $this->getFolderTree( $current_course, $result, $profundidad, $folderList[$i]['folder_id'] ) ;             // function recursivity
+                }
             }
         }
-        return $folderList;
     }
 
     //Maqueta
@@ -289,45 +290,82 @@ class miguel_MFileManager extends base_Model
         return ($ret_val);
     }
 
-	function deleteFile($_id)
-	{
-		$show_sql = $this->Select('fm_document', 'document_name', "document_id = $_id");
-				
-		if ($this->hasError()) {
-			$ret_val = null;
-		} else {
-			$sql_ret = $this->Delete('fm_document', "document_id = $_id");
-	
-			if ($this->hasError()) {
-				$ret_val = null;
-			} else {
-				$file = Util::main_Path('var/data/'.$show_sql[0]['fm_document.document_name']);
+    function moveFolder( $_id, $_newParentId ) { 
+        $ret_val = $this->Update('fm_folder', 'folder_parent_id', $_newParentId, 'folder_id = '.$_id);
+      
+        if ($this->hasError() ) {
+            $ret_val = null;
+        } 
+      
+        return ($ret_val);
+    }
 
-				if(file_exists($file)){
-					unlink($file);
-				}
-			}
-		}
+    function moveFile( $_courseId, $_id, $_oldParentId, $_newParentId ) {
+        $ret_val = $this->Update('fm_course_document_folder', 'folder_id', $_newParentId, 'folder_id = '.$_oldParentId.' AND document_id = '.$_id.' AND course_id = '.$_courseId);
+      
+        if ($this->hasError() ) {
+            $ret_val = null;
+        } 
+      
+        return ($ret_val);
+    } 
+
+    function getFileShareCount( $_id ) {
+       $shareCount = $this->SelectCount('fm_course_document_folder', "document_id = $_id");
+
+       if ($this->hasError()) {
+            $shareCount = 0;
+       }
+       return $shareCount;
+
+    }
+ 
+    function deleteFile($_id, $_folder_id, $_course_id) {
+        $shareCount = $this->getFileShareCount( $_id );
+ 
+        $sql_ret = $this->Delete('fm_course_document_folder',"course_id = $_course_id AND folder_id = $_folder_id AND document_id = $_id");
+ 
+        if ( $this->hasError() ) {
+            $ret_val = null;
+        } else {
+            if ( $shareCount == 1 ) {
+                $show_sql = $this->Select('fm_document', 'document_name', 'document_id = ' . $_id);
+                $sql_ret = $this->Delete('fm_document', "document_id = $_id");
+ 
+                if ($this->hasError()) {
+                    $ret_val = null;
+                } else {
+                    $file = Util::main_Path('var/data/'.$show_sql[0]['fm_document.document_name']);
+                    if( file_exists($file) ){
+                        unlink($file);
+                    }
+                } 
+             }
+        } 
 		
-		return ($ret_val);	
-	}
+        return ($ret_val);	
+    }
 	
-	function deleteFolder($_id)
-	{
-		$sql_ret = $this->Delete('fm_folder', "folder_id = $_id");
-	
-		if ($this->hasError()) {
-			$ret_val = null;
-		} else {
-			$sql2_ret = $this->Delete('fm_course_document_folder', "folder_id = $_id");
-			
-			if ($this->hasError()) {
-				$ret_val = null;
-			}
-		}
-		
-		return ($ret_val);	
-	}
+    function deleteFolder($_current_course, $_id) 
+    {
+        $folderList = $this->getFolderList($_current_course, $_id);
+
+        // recursive operation if subdirectories exist
+        if ( $folderList[0]['folder_id'] != null ) {
+            $folderCount = sizeof($folderList);
+            if ( $folderCount > 0 ) {
+                for ($i = 0 ; $i < $folderCount ; $i++ ) {
+                      //Delete Contents
+                      $sql_ret = $this->Delete('fm_course_document_folder', 'course_id = ' . $_current_course . ' AND folder_id = ' . $folderList[$i]['folder_id']);
+
+                      //Delete Folder 
+                      $sql_ret = $this->Delete('fm_folder', 'folder_id = ' . $folderList[$i]['folder_id']);
+
+                      $this->deleteFolder( $_current_course, $folderList[$i]['folder_id'] ) ;             // function recursivity
+                }
+            }
+        }		
+    }
 
 
     function _getNameFromUser($user_id)

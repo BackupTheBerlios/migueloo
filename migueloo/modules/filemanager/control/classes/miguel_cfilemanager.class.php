@@ -120,6 +120,19 @@ class miguel_CFileManager extends miguel_Controller
                                                     $this->obj_data->renameFile($this->getViewVariable('id'), $this->getViewVariable('newname'));
                                             }
                                             break;
+                                        case 'move':
+                                            if($this->getViewVariable('tp') == 'f'){
+                                                $folder_id = $this->getViewVariable('id');
+                                                $nuevo_destino = $this->getViewVariable('nuevo_destino');
+                                                if ( $folder_id != $nuevo_destino ) {
+                                                    $this->obj_data->moveFolder($folder_id, $nuevo_destino);
+                                                }
+                                                $folder_id = null; unset( $folder_id );
+                                                $nuevo_destino = null; unset( $nuevo_destino );
+                                            } else {
+                                                    $this->obj_data->moveFile($course_id, $this->getViewVariable('id'), $this->getViewVariable('folder_id'), $this->getViewVariable('nuevo_destino'));
+                                            }
+                                            break;
                                     }
                                     $status = null;
                                     unset( $status );
@@ -133,9 +146,9 @@ class miguel_CFileManager extends miguel_Controller
                             switch ( $status ) {
 				case 'del':
 					if($this->getViewVariable('tp') == 'f'){
-						$this->obj_data->deleteFolder($this->getViewVariable('id'));
+						$this->obj_data->deleteFolder($course_id, $this->getViewVariable('id'));
 					} else {
-						$this->obj_data->deleteFile($this->getViewVariable('id'));
+						$this->obj_data->deleteFile($this->getViewVariable('id'), $this->getViewVariable('folder_id'), $course_id);
 					}
                                         break;
                                 case 'visible':
@@ -173,7 +186,6 @@ class miguel_CFileManager extends miguel_Controller
 				//$current_folder_id = $this->obj_data->getFolderId($course_id);//0;
                                 $current_folder_id = 0;
 			}
-//Debug::oneVar( $this->obj_data->getFolderTree( $course_id,  0 ) );
                         /* ----------- DISPLAY FOLDER CONTENT --------------- */
 			$current_folder_info = $this->obj_data->getFolderName( $current_folder_id );
 				
@@ -184,7 +196,14 @@ class miguel_CFileManager extends miguel_Controller
 			$this->setViewVariable('arr_folders', $this->obj_data->getFolderList( $course_id, $current_folder_id) );
 
 			$this->setViewVariable('folder_id', $current_folder_id);
-			$this->setViewVariable('operation_id', $this->getViewVariable('operation_id') );
+
+                        $operation_id = $this->getViewVariable('operation_id');
+			$this->setViewVariable('operation_id', $operation_id );
+
+                        if ( $operation_id == 'move' ) {
+                            $this->obj_data->getFolderTree( $course_id, $result, 0, 0 );
+                            $this->setViewVariable( 'folderTree', $result ); 
+                        }
 		
                         $this->setViewVariable('user_id', $user_id);
                         $this->setViewVariable('profile_id', $this->getSessionElement( 'userinfo', 'profile_id' ) );
