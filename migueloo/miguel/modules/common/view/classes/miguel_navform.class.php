@@ -36,7 +36,7 @@
  * @version 1.0.0
  */
 
-class miguel_navForm extends FormContent
+class miguel_navForm extends base_FormContent
 {
     /**
      * Este metodo se llama cada vez que se instancia la clase.
@@ -59,7 +59,7 @@ class miguel_navForm extends FormContent
 
 
     /**
-     * Este metodo construye el formulario en sí.
+     * Este metodo construye el formulario en sÃŒ.
      */
     function form()
     {
@@ -69,30 +69,6 @@ class miguel_navForm extends FormContent
         $table->add_row($this->add_action("Regresar") ,_HTML_SPACE);
 
         return $table;
-    }
-
-    /**
-     * This method gets called after the FormElement data has
-     * passed the validation.  This enables you to validate the
-     * data against some backend mechanism, say a DB.
-     *
-     */
-    function form_backend_validation()
-    {
-        //Los controles se hacen en el controlador
-        return TRUE;
-    }
-
-    /**
-     * This method is called ONLY after ALL validation has
-     * passed.  This is the method that allows you to
-     * do something with the data, say insert/update records
-     * in the DB.
-     */
-    function form_action()
-    {
-        //Evitamos que se escriba nada
-        return false;
     }
 }
 

@@ -36,7 +36,7 @@
  * @version 1.0.0
  */
  
-class miguel_loginForm extends FormContent 
+class miguel_loginForm extends base_FormContent 
 {
     /**
      * Este metodo se llama cada vez que se instancia la clase.
@@ -49,12 +49,20 @@ class miguel_loginForm extends FormContent
         
         $elemT = new FEText( "Nombre de usuario", FALSE, 10);
         $elemT->set_style_attribute('align', 'right');
+        $elemT->set_attribute("id","nombre_de_usuario");
+        $elemT->set_attribute("accesskey","u");        
         $this->add_element($elemT);
 
         $elemP = new FEPassword("Clave de acceso", FALSE, 10, 25);
         $elemP->set_style_attribute('align', 'right');
+        $elemP->set_attribute("id","clave_de_acceso");
+        $elemP->set_attribute("accesskey","p");        
         $this->add_element($elemP);
 
+        $submit = $this->_formatElem("base_SubmitButton", "Entrar", "submit", agt("miguel_Enter") . " >");
+        $submit->set_attribute("id","submit");
+        $submit->set_attribute("accesskey","e");       
+        $this->add_element($submit);        
         //lets add a hidden form field
         $this->add_hidden_element("id");
     }
@@ -66,52 +74,40 @@ class miguel_loginForm extends FormContent
     function form_init_data() 
     {
         $this->set_hidden_element_value("id", "logon");
+        $this->set_element_value('Nombre de usuario', 'guest');
+        $this->set_element_value('Clave de acceso', 'guest');
+        
     }
 
 
     /**
-     * Este metodo construye el formulario en sí.
+     * Este metodo construye el formulario en sÃŒ.
      */
     function form() 
     {
         $table = &html_table($this->_width,0,1,3);
         //$table->set_style("border: 1px solid");
 
-        $elem = html_td("colorLogin-bg", "center", container(html_b( agt('miguel_UserName') ), html_br(), $this->element_form("Nombre de usuario")));
+        $this->set_form_tabindex("Nombre de usuario", '6');        
+        $label = html_label( "nombre_de_usuario" );
+        $label->add(container(html_b( agt('miguel_UserName') ), html_br(), $this->element_form("Nombre de usuario")));        
+        $elem = html_td("colorLogin-bg", "center", $label);
         $elem->set_id("identification");        
         $table->add_row($elem);
-        
-        $elem = html_td("colorLogin-bg", "center", container(html_b( agt('miguel_UserPassword') ), html_br(), $this->element_form("Clave de acceso")));
+
+        $this->set_form_tabindex("Clave de acceso", '6');   
+        $label = html_label( "clave_de_acceso" );
+        $label->add(container(html_b( agt('miguel_UserPassword') ), html_br(), $this->element_form("Clave de acceso")));                                
+        $elem = html_td("colorLogin-bg", "center", $label);
         $elem->set_id("identification");       
         $table->add_row($elem);
- 
-        $table->add_row(html_td("", "center", $this->add_action("Entrar")));
 
+        $this->set_form_tabindex("Entrar", '11'); 
+        $label = html_label( "submit" );
+        $label->add($this->element_form("Entrar"));         
+        $table->add_row(html_td("", "center",  $label));
+                                
         return $table;
-    }
-
-    /**
-     * This method gets called after the FormElement data has
-     * passed the validation.  This enables you to validate the
-     * data against some backend mechanism, say a DB.
-     *
-     */
-    function form_backend_validation() 
-    {
-        //Los controles se hacen en el controlador
-        return TRUE;
-    }
-
-    /**
-     * This method is called ONLY after ALL validation has
-     * passed.  This is the method that allows you to 
-     * do something with the data, say insert/update records
-     * in the DB.
-     */
-    function form_action() 
-    {
-        //Evitamos que se escriba nada
-        return false;
     }
 }
 

@@ -30,9 +30,9 @@
 /**
  * Define la clase para la pantalla principal de miguel.
  *
- * Se define una plantilla común para todas las pantallas de miguel:
+ * Se define una plantilla comË™n para todas las pantallas de miguel:
  *  + Bloque de cabecera en la parte superior.
- *  + Bloque central, donde se presentará la información
+ *  + Bloque central, donde se presentarÂ· la informaciÃ›n
  *  + Bloque de pie en la parte inferior
  *
  * --------------------------------
@@ -60,8 +60,6 @@
  * Include classes library
  */
 include_once (Util::app_Path("common/view/classes/miguel_vpage.class.php"));
-include_once (Util::app_Path("common/view/classes/miguel_loginform.class.php"));
-
 class miguel_VIntro extends miguel_VPage
 {
 
@@ -113,11 +111,10 @@ class miguel_VIntro extends miguel_VPage
      * @return HTMLTag object
      */
     function right_block() 
-    {
-    	include_once (Util::app_Path("common/view/classes/miguel_loginform.class.php"));
-   	
-		$div = html_div();
-        $div->add(new FormProcessor(new miguel_loginForm(), 'login', Util::format_URLPath('main/index.php')));
+    {   	
+		    $div = html_div();
+        $div->add($this->addForm('common', 'miguel_loginForm'));
+        
 
         return $div;
     }    

@@ -37,7 +37,7 @@ $config_base = '<?php
 define(\'MIGUELBASE_VERSION\', \'1.3.0\'); /* Version information */
 
 define(\'MIGUELBASE_MAINDIR\', MIGUEL_MODULES_DIR);
-define(\'MIGUELBASE_DIR\', MIGUEL_MODULES_DIR.\''.$this->frameworkName.'/\');
+define(\'MIGUELBASE_DIR\', MIGUEL_MODULES_DIR.\''.$this->frameworkName.'\');
 define(\'MIGUELBASE_URL\', MIGUEL_URLDIR);
 define(\'MIGUELBASE_MODULES_URL\', MIGUEL_MODULES_URLDIR);
 define(\'MIGUELBASE_MODULES_BASE\', MIGUEL_MODULESPATH);
@@ -76,6 +76,7 @@ define(\'MIGUELBASE_SESSION_DIR\', \''.$this->sessionpath.'\');
 define(\'MIGUELBASE_SESSION_TIME\', '.$this->sessiontime.');';
 
 $config_defines = '
+define(\'MIGUELBASE_ERRORLOG_FILE\', \''.$this->errorpath.'\');
 
 define(\'MIGUELBASE_THEME_DIR\', MIGUELTHEME_DIR);
 define(\'MIGUELBASE_THEME_URLDIR\', MIGUELTHEME_URLDIR);
@@ -84,8 +85,8 @@ include_once(MIGUELBASE_DIR.\'defines.inc.php\');
 include_once(MIGUELBASE_DIR.\'util.class.php\');
 
 include_once(MIGUELBASE_DIR.\'include/classes/file.class.php\');
-include_once(MIGUELBASE_DIR.\'control/classes/session.class.php\');
 include_once(MIGUELBASE_DIR.\'control/classes/registry.class.php\');
+include_once(MIGUELBASE_DIR.\'control/classes/session.class.php\');
 include_once(MIGUELBASE_DIR.\'control/classes/base_controller.class.php\');
 include_once(MIGUELBASE_DIR.\'model/classes/base_model.class.php\');
 ?>';

@@ -42,7 +42,7 @@
  *
  */
 
-class miguel_CInstitution extends base_Controller
+class miguel_CInstitution extends miguel_Controller
 {	
 	/**
 	 * This is the constructor.
@@ -50,7 +50,7 @@ class miguel_CInstitution extends base_Controller
 	 */
 	function miguel_CInstitution()
 	{	
-		$this->base_Controller();
+		$this->miguel_Controller();
 		$this->setModuleName('institution');
 		$this->setModelClass('miguel_MInstitution');
 		$this->setViewClass('miguel_VMain');
@@ -71,15 +71,14 @@ class miguel_CInstitution extends base_Controller
             }
  
             if ( $institution_id >= 0 ) { 
-                    //Navega por la jerarqu’a
+                    //Navega por la jerarquÃ­a
                         $this->setViewClass("miguel_VMain");
                         $this->setMessage(agt('miguel_institutionList') ); 
                         $this->setPageTitle("miguel_institutionList");
                         //$this->clearNavBarr();
-                        $this->addNavElement(Util::format_URLPath('institution/index.php','id=institution'), agt("miguel_Center") );
+                        $this->addNavElement(Util::format_URLPath('institution/index.php','id=institution'), agt("miguel_Institution") );
   
                         $this->setViewVariable('arr_categories', $this->obj_data->getInstitutionResume() );
-                        $this->setViewVariable('arr_courses', $this->obj_data->getCourse() );
     
                         $this->setCacheFile("miguel_VInstitution_" . $this->getSessionElement("userinfo", "user_id"));                  
                         $this->setCacheFlag(true);

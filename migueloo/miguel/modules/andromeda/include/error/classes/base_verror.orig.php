@@ -137,7 +137,7 @@ else
                 {
                         if ($Errors_args_Array[$ErrorsArray[$i]])
                         {
-                                $printf = 'sprintf ("<p>".gettext($ErrorsArray[$i])."</p>\n"';
+                                $printf = 'sprintf ("<p>".agt($ErrorsArray[$i])."</p>\n"';
                                 for ($j = 0; $Errors_args_Array[$ErrorsArray[$j]]; $j++)
                                 {
                                         $printf .= ", \"".$Errors_args_Array[$ErrorsArray[$j]]."\"";
@@ -147,7 +147,7 @@ else
                         }
                         else
                         {
-                                echo "<p>".gettext($ErrorsArray[$i])."</p>\n";
+                                echo "<p>".agt($ErrorsArray[$i])."</p>\n";
                         }
                 }
                 ?>

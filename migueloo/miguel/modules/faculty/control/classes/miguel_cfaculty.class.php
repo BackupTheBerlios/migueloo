@@ -42,7 +42,7 @@
  *
  */
 
-class miguel_CFaculty extends base_Controller
+class miguel_CFaculty extends miguel_Controller
 {	
 	/**
 	 * This is the constructor.
@@ -50,7 +50,7 @@ class miguel_CFaculty extends base_Controller
 	 */
 	function miguel_CFaculty()
 	{	
-		$this->base_Controller();
+		$this->miguel_Controller();
 		$this->setModuleName('faculty');
 		$this->setModelClass('miguel_MFaculty');
 		$this->setViewClass('miguel_VMain');

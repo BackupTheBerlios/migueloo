@@ -26,24 +26,6 @@
       +----------------------------------------------------------------------+
 */
 
-/* Check cache defines */
-/*
-if(!@constant("MIGUELBASE_CACHEABLE")){
-	define("MIGUELBASE_CACHEABLE", 0);
-}
-
-if(MIGUELBASE_CACHEABLE == 1) {
-	if(!@constant("MIGUELBASE_CACHE_TIME")){
-		define("MIGUELBASE_CACHE_TIME", 3600); // Default: 1 hour
-	}
-	
-	if(!@constant("MIGUELBASE_CACHE_DIR")){
-		//define("MIGUELBASE_CACHE_DIR", $_SERVER['DOCUMENT_ROOT']."/".MIGUEL_LOCALPATH."/cache/"); // Path to cahe dir 		echo "ERROR: MIGUELBASE_CACHE_DIR not defined\n";
-		exit;
-	}
-}
-*/
-
 /**
   * Determines platform (OS), browser and version of the user
   * Based on a phpBuilder article:
@@ -119,16 +101,22 @@ if (!defined('MIGUELBASE_PHP_INT_VERSION')) {
     }
 }
 
-/** 
+define("MIGUEL_GETTEXT_DEBUG", 0);
+
+/**
  * Encapsula el uso de gettext. Si no existe la traducción, presenta un valor por defecto
  * @param string $char Cadena a traducir
  */
 function agt($char)
 {
-   	if(gettext($char) == $char) {
-   		return gettext("Sin traducir:: ").$char;
-   	} else {
-   		return gettext($char);
-   	}
+    $ret_val = gettext($char);
+	
+	if(MIGUEL_GETTEXT_DEBUG){
+		if($ret_val == $char) {
+			$ret_val = 'Sin traducir:: '.$ret_val;
+		}
+	}
+
+    return $ret_val;
 }
 ?>

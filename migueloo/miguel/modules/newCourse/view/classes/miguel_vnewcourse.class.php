@@ -29,9 +29,9 @@
 /**
  * Define la clase para la pantalla principal de miguel.
  *
- * Se define una plantilla común para todas las pantallas de miguel:
+ * Se define una plantilla comË™n para todas las pantallas de miguel:
  *  + Bloque de cabecera en la parte superior.
- *  + Bloque central, donde se presentará la información
+ *  + Bloque central, donde se presentarÂ· la informaciÃ›n
  *  + Bloque de pie en la parte inferior
  *
  * --------------------------------
@@ -85,15 +85,8 @@ class miguel_VNewCourse extends miguel_VMenu
      */
     function right_block() 
     {
-    	include_once (Util::app_Path("newCourse/view/classes/miguel_newcourseform.class.php"));
-		$div = html_div();
-		
-        $listInstitution = $this->getViewVariable('arr_listInstitution');
-        $listFaculty = $this->getViewVariable('arr_listFaculty');
-        $listDepartment = $this->getViewVariable('arr_listDepartment');
-        $listArea = $this->getViewVariable('arr_listArea');
-        
-        $div->add(new FormProcessor(new miguel_newCourseForm($listInstitution, $listFaculty, $listDepartment, $listArea), 'newCourse', Util::format_URLPath('newCourse/index.php')));
+        $div = html_div();
+        $div->add($this->addForm('newCourse', 'miguel_newCourseForm'));
 
         return $div;            	
     }

@@ -111,16 +111,16 @@ class base_ddbbData extends base_ddbbError
         }
 
         if($this->ado_con == 0) {
-			$this->ado_con = &ADONewConnection(Session::getContextValue("ddbbSgbd"));
+			$this->ado_con = &ADONewConnection(Session::getContextValue('ddbbSgbd'));
      	
-			$this->ado_con->PConnect(Session::getContextValue("ddbbServer"),
-					    Session::getContextValue("ddbbUser"),
-					    Session::getContextValue("ddbbPassword"),
-					    Session::getContextValue("ddbbMainDb")
+			$this->ado_con->PConnect(Session::getContextValue('ddbbServer'),
+					    Session::getContextValue('ddbbUser'),
+					    Session::getContextValue('ddbbPassword'),
+					    Session::getContextValue('ddbbMainDb')
 						);
 
 			if($this->ado_con->ErrorMsg() != '' ) {
-			    $this->_setError(Session::getContextValue("ddbbSgbd")." :: ".$this->ado_con->ErrorMsg());
+			    $this->_setError(Session::getContextValue('ddbbSgbd')." :: ".$this->ado_con->ErrorMsg());
 			}
 		}
 		
@@ -142,11 +142,13 @@ class base_ddbbData extends base_ddbbError
 	 * @param string $table Nombre de la tabla.
 	 * @param string $type Tipo de select (1 para select distinct, 2 para select en varias tablas, y 0 para el resto)
 	 * @param string $fields Campos a modificar (cadena formada por los campos separados por comas)
+	 * @param string $sort_by Campos por los que ordenar los registros resultantes (cadena formada por los campos separados por comas)
  	 * @param string $cond Condición a cumplir
+ 	 * @param string $order_type Tipo de ordenación: true -> Descendente, false -> Ascencente
  	 * @return array Registros seleccionados.
 	 * @access private
 	 */
-  	function _select($table, $type, $fields, $cond)
+  	function _select($table, $type, $fields, $sort_by, $cond, $order_type)
   	{
 		$this->_clearError();
 
@@ -158,17 +160,25 @@ class base_ddbbData extends base_ddbbError
 		switch ($type) {
         	case 1:
         		$this->table = $table;
-        	    $sql_query = "select distinct ".$this->_formatFieldsTarget ($fields)." from $table".$this->_formatWhereConds ($cond);
+        	    $sql_query = 'select distinct '.$this->_formatTargetFields($fields).' from $table'.$this->_formatWhereConds ($cond);
         	    break;
         	case 2:
         		$this->_getTableNames($table);
-        	    $sql_query = "select ".$this->_formatFieldsTarget ($fields)." from ".$this->_formatTables().$this->_formatWhereConds ($cond);
+        	    $sql_query = 'select '.$this->_formatTargetFields($fields).' from '.$this->_formatTables().$this->_formatWhereConds ($cond);
         	    break;
         	default:
         		$this->table = $table;
-        		$sql_query = "select ".$this->_formatFieldsTarget ($fields)." from $table".$this->_formatWhereConds ($cond);
+        		$sql_query = 'select '.$this->_formatTargetFields($fields).' from '.$table.$this->_formatWhereConds ($cond);
         }
-
+        
+        if(!empty($sort_by)){
+            $sql_query .= ' order by '.$this->_formatOrderFields($sort_by);
+            if($order_type){
+                $sql_query .= ' desc';
+            } else {
+                $sql_query .= ' asc';
+            }
+        }
 		
 		$this->query = $sql_query;		
 
@@ -224,7 +234,7 @@ class base_ddbbData extends base_ddbbError
   		$sql_query = "insert into ".$table;
    		
   		if ($fields != '') {
-  			$sql_query .= " (".$this->_formatFieldsTarget ($fields).")";
+  			$sql_query .= " (".$this->_formatTargetFields ($fields).")";
   		}
   		
   		if ($values != '') {
@@ -232,7 +242,13 @@ class base_ddbbData extends base_ddbbError
   		}
   		$this->query = $sql_query;
 		
-  		return $this->_exec($sql_query);
+  		$ret = $this->_exec($sql_query);  	
+  	
+        if (!$this->hasError()) {
+  		    $ret = $this->_getLastInserted();
+        }
+        
+  		return $ret;
   	}
 	
 	/**
@@ -364,7 +380,7 @@ class base_ddbbData extends base_ddbbError
 	 * Formatea los nombres de los campos ('tabla.campo').
 	 * @access private
      */	
-	function _formatFieldsTarget ($fields) 
+	function _formatTargetFields ($fields)
 	{
 		if ($fields == '*') {
 			return $fields;
@@ -441,6 +457,38 @@ class base_ddbbData extends base_ddbbError
 	}
 	
 	/**
+	 * Formatea los campos para la condición de ordenación.
+	 * @access private
+     */
+	function _formatOrderFields($fields)
+	{
+		if ($fields !='') {
+			//$fields= ereg_replace("[[:space:]]+",' ',$fields);
+			$elem = explode(" ", $fields);
+			//Debug::oneVar($cond, __FILE__, __LINE__);				
+			for($i=0;$i<count($elem);$i++) {
+			    $elem[$i] = trim($elem[$i]);
+				if(!is_array($this->table)){
+                    $elem[$i] 	= $this->table.'.'.$elem[$i];
+				} else {
+				    if(strchr($elem[$i],".")){
+					   list($item_table, $item_field) = explode(".", $elem[$i], 2);
+					} else {
+					   $item_table = '';
+                       $item_field = $elem[$i];
+					}
+					if(!in_array($item_table, $this->table)) {
+						$elem[$i] = $this->table[0].'.'.$item_field;
+					}	
+				}
+			}
+			$sel_cond = implode(' ', $elem);
+		}
+		
+		return $sel_cond;
+	}
+	
+	/**
 	 * Formatea los valores de los campos, colocando el valor entre comillas: 'valor'.
 	 * @access private
      */	
@@ -508,7 +556,7 @@ class base_ddbbData extends base_ddbbError
 	function _exec($sql_query)
 	{
 		$ret = '';
-		//dbg_var($this, __FILE__, __LINE__);
+
 		if (!$this->hasError()) {
 			$this->ado_con->SetFetchMode(ADODB_FETCH_NUM);
 			
@@ -519,10 +567,9 @@ class base_ddbbData extends base_ddbbError
 			} else {
 				$rs = $this->ado_con->Execute($sql_query);
 			}
-
 			
 			if ($this->ado_con->ErrorMsg() != '') {
-				$this->_setError($this->ado_con->ErrorMsg());
+				$this->_setError($this->ado_con->ErrorMsg().'::'.$this->query);
 			} else {
 				while (!$rs->EOF) {
 					$ret[] = $rs->fields;
@@ -531,6 +578,15 @@ class base_ddbbData extends base_ddbbError
 			}
 		}
 		return $ret;
+  	}
+  	
+  	/**
+	 * Ejecuta contra la base de datos la sentencia SQL generada.
+	 * @access private
+     */		
+	function _getLastInserted()
+	{
+		return $this->ado_con->Insert_ID();
   	}
 }
 ?>

@@ -27,7 +27,7 @@
       +----------------------------------------------------------------------+
 */
 /**
- * Esta clase obtiene información relativa a un curso.
+ * Esta clase obtiene informaci√≥n relativa a un curso.
  *
  * @author Antonio F. Cano Damas <antoniofcano@telefonica.net>
  * @author miguel development team <e-learning-desarrollo@listas.hispalinux.es>
@@ -39,10 +39,10 @@
 class miguel_CourseInfo
 {
 	/**
-	 * Informa si el curso es de acceso público.
+	 * Informa si el curso es de acceso p√∫blico.
 	 * @param base_model $obj_model Instancia de un modelo
 	 * @param string $course_id Identificador del curso.
-	 * @return boolean Devuelve TRUE si el usuario es público, y FALSE si no lo es.
+	 * @return boolean Devuelve TRUE si el usuario es p√∫blico, y FALSE si no lo es.
 	 */
     function getAccess(&$obj_model, $course_id)
     {
@@ -50,7 +50,7 @@ class miguel_CourseInfo
         if ($obj_model->hasError()) {
            $ret_val = null;
     	} else {
-    	   if($ret_sql[0]['course.course_access'] == 1) {
+    	   if($ret_sql[0]['course.course_access']) {
     	       $ret_val = true;
     	   } else {
     	       $ret_val = false;
@@ -61,10 +61,10 @@ class miguel_CourseInfo
     }
     
 	/**
-	 * Informa si el curso está disponible o activado.
+	 * Informa si el curso est√° disponible o activado.
 	 * @param base_model $obj_model Instancia de un modelo
 	 * @param string $course_id Identificador del curso.
-	 * @return boolean Devuelve TRUE si el curso está activo, y FALSE si no.
+	 * @return boolean Devuelve TRUE si el curso est√° activo, y FALSE si no.
 	 */    
     function getActive(&$obj_model, $course_id)
     {
@@ -72,7 +72,7 @@ class miguel_CourseInfo
         if ($obj_model->hasError()) {
            $ret_val = null;
     	} else {
-    	   if($ret_sql[0]['course.course_active'] == 1) {
+    	   if($ret_sql[0]['course.course_active']) {
     	       $ret_val = true;
     	   } else {
     	       $ret_val = false;
@@ -100,15 +100,15 @@ class miguel_CourseInfo
     	}    	
         
         $ret_val = false;
-        if ( $active == 1 ) { //Si el curso está activado
-            if ( $access == 1 ) { //Es necesario estar matriculado
-                $ret_sql_user = $obj_model->Select('user_course', 'user_id', 'course_id = ' . $course_id . ' AND user_id = ' . $user_id);
-                if ($obj_model->hasError()) {
-    		        $ret_val = null;
+        if ( $active ) { //Si el curso est√° activado
+          if ( $access ) { //Es necesario estar matriculado
+              $ret_sql_user = $obj_model->Select('user_course', 'user_id', 'course_id = ' . $course_id . ' AND user_id = ' . $user_id);
+              if ($obj_model->hasError()) {
+    		        $ret_val = false;
     	        } else {
-    	           if ($ret_sql_user[0]['user_course.user_id'] ) { //El usuario está matriculado
-                       $ret_val = true;
-                   }
+    	           if ($ret_sql_user[0]['user_course.user_id'] ) { //El usuario est√° matriculado
+                     $ret_val = true;
+                 }
     	        }
     	    } else {
     	        $ret_val = true;
@@ -119,14 +119,67 @@ class miguel_CourseInfo
     }
 
     /**
-	 * Obtiene toda la informaciÛn de un usuario
+	 * Obtiene la localizaci√≥n del curso dentro de la instituci√≥n
+	 * @param base_model $obj_model Instancia de un modelo	 
+	 * @param string $course_id Identificador del curso.
+	 * @return array Toda la informaci√õn: institucion, facultad, departamento y area
+	 */
+    function _getPath( &$obj_model, $course_id ) {
+        $ret_sql = $obj_model->Select('course',
+                                 'institution_id, faculty_id, department_id, area_id',
+                                 'course_id = ' . $course_id);
+    	  if ($obj_model->hasError()) {
+    	    $ret_val = null;
+    	  } else {
+    	      $institution_id = $ret_sql[0]['course.institution_id'];
+       	    $faculty_id = $ret_sql[0]['course.faculty_id'];
+       	    $department_id = $ret_sql[0]['course.department_id'];
+       	    $area_id = $ret_sql[0]['course.area_id'];
+    	  }
+    	  $ret_sql = $obj_model->Select('institution', 'institution_description', 'institution_id = ' . $institution_id);
+    	  if ( $obj_model->hasError() ) {
+    	    $institution_description = '';
+    	  } else {
+    	    $institution_description = $ret_sql[0]['institution.institution_description'];
+        }
+
+    	  $ret_sql = $obj_model->Select('faculty', 'faculty_description', 'faculty_id = ' . $faculty_id);
+    	  if ( $obj_model->hasError() ) {
+    	    $faculty_description = '';
+    	  } else {
+    	    $faculty_description = $ret_sql[0]['faculty.faculty_description'];
+        }
+        
+    	  $ret_sql = $obj_model->Select('department', 'department_description', 'department_id = ' . $department_id);
+    	  if ( $obj_model->hasError() ) {
+    	    $department_description = '';
+    	  } else {
+    	    $department_description = $ret_sql[0]['department.department_description'];
+        }
+        
+    	  $ret_sql = $obj_model->Select('area', 'area_description', 'area_id = ' . $area_id);
+    	  if ( $obj_model->hasError() ) {
+    	    $area_description = '';
+    	  } else {
+    	    $area_description = $ret_sql[0]['area.area_description'];
+        }
+        
+        $ret_val = array ( 'institution'          => $institution_description,
+                           'faculty'       => $faculty_description,
+                           'department'    => $department_description,
+                           'area'      => $area_description);
+    	  return ($ret_val);                                       
+    }
+    
+    /**
+	 * Obtiene toda la informaci√õn de un curso
 	 * @param base_model $obj_model Instancia de un modelo
-	 * @param string $str_user Identificador de usuario (nickname).
-	 * @return array Toda la informaciÛn: nombre, email, nick, trato, idioma,...
+	 * @param string $course_id Identificador de curso.
+	 * @return array Toda la informaci√õn: nombre, email, idioma,...
 	 */
     function getInfo(&$obj_model, $course_id)
     {
-        //Obtiene información del curso
+        //Obtiene informaci√≥n del curso
         $ret_sql = $obj_model->SelectMultiTable('course, user, person', 
                                       'course.course_name, course.course_description, course.course_language, person.person_name, person.person_surname, user.email',
                                       'course_id = ' . $course_id . ' AND course.user_id = user.user_id AND user.person_id = person.person_id');
@@ -134,12 +187,14 @@ class miguel_CourseInfo
     	if ($obj_model->hasError()) {
     	    $ret_val = null;
     	} else {
+    		    $arr_path = miguel_CourseInfo::_getPath($obj_model, $course_id);
             $ret_val = array ( 'course_id'          => $course_id,
                                'name'               => $ret_sql[0]['course.course_name'],
                                'description'        => $ret_sql[0]['course.course_description'],
                                'user_responsable'   => $ret_sql[0]['person.person_name'] . ' ' . $ret_sql[0]['person.person_surname'],
                                'email'              => $ret_sql[0]['user.email'],
-                               'language'           => $ret_sql[0]['course.course_language']);
+                               'language'           => $ret_sql[0]['course.course_language'],
+                               'path'               => $arr_path );
     	}
     	return ($ret_val);
     }

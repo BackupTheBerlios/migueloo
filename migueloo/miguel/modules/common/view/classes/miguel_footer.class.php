@@ -22,12 +22,13 @@
       |   the world-wide-web at http://www.gnu.org/copyleft/gpl.html         |
       +----------------------------------------------------------------------+
       | Authors: Jesus A. Martinez Cerezal <jamarcer@inicia.es>              |
+      |          Antonio F. Cano Damas <antoniofcano@telefonica.net>         |
       |          miguel Development Team                                     |
       |                       <e-learning-desarrollo@listas.hispalinux.es>   |      
       +----------------------------------------------------------------------+
 */
 /**
- * Todo el patrón MVC se define es este paquete llamado framework
+ * Todo el patrÃ›n MVC se define es este paquete llamado framework
  * @package framework
  * @subpackage view
  */
@@ -35,6 +36,7 @@
  * Define la clase que construye el pie para las pantallas de miguel.
  * Utiliza la libreria phphtmllib.
  * @author Jesus A. Martinez Cerezal <jamarcer@inicia.es>
+ * @author Antonio F. Cano Damas <antoniofcano@telefonica.net>
  * @author miguel development team <e-learning-desarrollo@listas.hispalinux.es>     
  * @copyright GPL - Ver LICENCE
  * @package framework
@@ -52,7 +54,7 @@ class miguel_Footer
 	}
 
 	/**
-	 * Define el formato del pie de página.
+	 * Define el formato del pie de pÂ·gina.
 	 * @return HTMLtag object.
 	 */
 	function getContent() 
@@ -61,9 +63,9 @@ class miguel_Footer
 		
 		$table->set_id("footer");
 		$table->set_class("mainInterfaceWidth");
-		
 		if(Session::getContextValue("emailAdministrator") != '') {
-			$table->add_row( html_td("", "", $this->_ShowMailURL(Session::getContextValue("emailAdministrator"), Session::getContextValue("administratorName"). ' ' .Session::getContextValue("administratorSurname"), agt("Manager").": ")));
+			$mailLink = Theme::getMailURL(Session::getContextValue("emailAdministrator"), Session::getValue('migueloo_userinfo_user_id') );
+			$table->add_row( html_td( "", "", agt("Manager") . ": ", html_a( $mailLink,  Session::getContextValue("administratorName") . ' ' .Session::getContextValue("administratorSurname")))); 
 		}
 		
 		//$table->add_row(html_td("", "center", $this->_tdBlock( agt("Develop"), "http://www.claroline.net", "Claroline")));
@@ -72,24 +74,6 @@ class miguel_Footer
 		
 		return $table;
 	}
-	
-	/**
-     * Se devuelve un enlace e-mail formateado: <Texto> <Enlace> <Salto de carro>
-     * @access private
-     */
-    function _ShowMailURL($email, $name, $text = '')
-	{
-		if ( isset($email)  && ($email != '') ) {
-			$a_ref = Util::format_URLPath("lib/messages/sendmail.php", "&sendTo=$email");
-			$a_text = $name;
-         } else {
-         	$a_ref = "mailto:$email";
-			$a_text = $name;
-        }
-        
-        return $this->_tdBlock($text, $a_ref, $a_text);
-	}
-	
 	/**
      *Se devuelve un enlace web formateado: <Texto> <Enlace> <Salto de carro>
      * @access private

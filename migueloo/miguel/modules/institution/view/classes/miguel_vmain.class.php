@@ -30,9 +30,9 @@
 /**
  * Define la clase para la pantalla principal de miguel.
  *
- * Se define una plantilla común para todas las pantallas de miguel:
+ * Se define una plantilla comË™n para todas las pantallas de miguel:
  *  + Bloque de cabecera en la parte superior.
- *  + Bloque central, donde se presentará la información
+ *  + Bloque central, donde se presentarÂ· la informaciÃ›n
  *  + Bloque de pie en la parte inferior
  *
  * --------------------------------
@@ -103,37 +103,11 @@ class miguel_VMain extends miguel_VMenu
 		$div->add(agt('miguel_Center'));
 		$div->add( html_br(2) );
 
-	        $div->add( $this->_categoryTable());
-                $div->add( $this->_courseList()); 	
+    $div->add( $this->_categoryTable());
 
 		$ret_val->add($div);
         return $ret_val;
     }
-
-    function _courseList()
-    {
-        $ret_val = new container();
-
-        $div = html_div("medium-text");                
-        $div->add(html_br(2));
-
-        $course = $this->getViewVariable('arr_courses');
-        if ( is_array($course) && $course[0]['course_id'] ) {
-            $ul = html_ul();
-            $countCourse = count($course);
-            for($i=0; $i < $countCourse; $i++) {
-                    $elem = container();
-                    $elem->add(html_a(Util::format_URLPath("course/index.php", "course=".$course[$i]["course_id"]), $course[$i]["course_name"], null, "_top"));
-                    $elem->add(html_br());
-                    $elem->add($course[$i]["course_description"]);
-                    $ul->add($elem);
-            }
-            $div->add($ul);
- 
-            $ret_val->add($div);
-        }
-        return $ret_val;
-    }	
 
     function _categoryTable()
     {

@@ -30,9 +30,9 @@
 /**
  * Define la clase para la pantalla principal de miguel.
  *
- * Se define una plantilla común para todas las pantallas de miguel:
+ * Se define una plantilla comË™n para todas las pantallas de miguel:
  *  + Bloque de cabecera en la parte superior.
- *  + Bloque central, donde se presentará la información
+ *  + Bloque central, donde se presentarÂ· la informaciÃ›n
  *  + Bloque de pie en la parte inferior
  *
  * --------------------------------
@@ -76,7 +76,7 @@ class miguel_VUserCourses extends miguel_VMenu
 	 */
     function miguel_VCourse($title, $arr_commarea) 
     {
-        $this->base_LayoutPage($title, $arr_commarea);
+        $this->miguel_VMenu($title, $arr_commarea);
      }
 
     /**
@@ -98,7 +98,7 @@ class miguel_VUserCourses extends miguel_VMenu
         $div = html_div("ul-big");
 		
         $div->add(Theme::getThemeImage("edcenters.png"));
-		$div->add(agt('miguel_Courses'));
+		    $div->add(agt('miguel_Courses'));
         $div->add(html_br(2));
 		
         $course = $this->getViewVariable("arr_courses");
@@ -106,18 +106,26 @@ class miguel_VUserCourses extends miguel_VMenu
         $countCourse = count($course);							
        	for($i=0; $i < $countCourse; $i++) {
        		$elem = container();
-       		$elem->add(html_a(Util::format_URLPath("course/index.php", "course=".$course[$i]["course_id"]), $course[$i]["course_name"], null, "_top"));
+   		    $link = html_a(Util::format_URLPath("course/index.php", "course=".$course[$i]["course_id"]), $course[$i]["course_name"], null, "_top");
+   		    $link->set_tag_attribute('tabindex', $i + 7);
+          $elem->add($link);       		
        		$elem->add(html_br());
        		$elem->add($course[$i]["course_description"]);
        		$elem->add(html_br());
-       		$elem->add($course[$i]["course_responsable"]);
+
+          $mailLink = Theme::getMailURL($course[$i]['course_email'], Session::getValue('migueloo_userinfo_user_id') );        
+          $elem->add(html_b( agt('miguel_responsable') . ' '), html_a( $mailLink,  $course[$i]["course_responsable"]));
+          
+       		$elem->add(html_br());
+          $elem->add( html_a(Util::format_URLPath("unsubscribe/index.php", "course_id=".$course[$i]["course_id"]), agt('miguel_unsubscribe'), null, '_top') );       		
+          
        		$ul->add($elem);
+          
        	}
        	$div->add($ul);
 
-	$ret_val->add($div);
-            	
-        return $ret_val;
+	      $ret_val->add($div);
+	      return $ret_val;
     } 
 }
 

@@ -71,27 +71,6 @@ class miguel_mMain extends base_Model
     	return $ret_val;
     }
     
-    function getCourse($institution_id=0, $faculty_id = 0, $department_id = 0, $area_id = 0)
-    {
-    	//Get code cours
-    	$course = $this->Select('course', "course_id, course_name, course_description, course_access,  course_active", "institution_id = $institution_id AND faculty_id = $faculty_id AND department_id = $department_id AND area_id = $area_id  AND course_active = 0 AND course_access = 0");
-
-    	if ($this->hasError()) {
-    		$ret_val = null;
-    	}
-    	$countCourse = count($course);
-    	$courselem = null;
-    	for ($i=0; $i < $countCourse; $i++) {
-                $courselem[]=array ("course_id" => $course[$i]['course.course_id'],
-                                "course_name" => $course[$i]['course.course_name'],
-                                "course_description" => $course[$i]['course.course_description'],
-                                "course_access" => $course[$i]['course.course_access'],
-                                "course_active" => $course[$i]['course.course_active']);
-    	}
-    	
-    	return ($courselem);
-    }
-
     function getInstitutionResume()
     {
         $categoryelem = array();

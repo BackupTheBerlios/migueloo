@@ -43,9 +43,9 @@ class miguel_installNavForm extends base_FormContent
      */
     function form_init_elements() 
     {
-        $this->add_element($this->_formatElem("base_SubmitButton", "Salir", "quit", _("Salir")));	
-		$this->add_element($this->_formatElem("base_SubmitButton", "Siguiente", "submit", _("Instalar miguel")." >"));
-		$this->add_element($this->_formatElem("base_SubmitButton", "Regresar", "back", "< "._("Regresar")));
+        $this->add_element($this->_formatElem("base_SubmitButton", "Salir", "quit", agt("Salir")));	
+		$this->add_element($this->_formatElem("base_SubmitButton", "Siguiente", "submit", agt("Instalar miguel")." >"));
+		$this->add_element($this->_formatElem("base_SubmitButton", "Regresar", "back", "< ".agt("Regresar")));
      }
 
     /**

@@ -28,7 +28,7 @@
       +----------------------------------------------------------------------+
 */
 /**
- * Todo el patrón MVC se define es este paquete llamado framework
+ * Todo el patrÃ›n MVC se define es este paquete llamado framework
  * @package framework
  * @subpackage view
  */
@@ -49,7 +49,7 @@ class miguel_Header
 	var $str_message = '';
 	/**
 	 * Constructor.
-	 * @param base_Session $session Sesión activa 
+	 * @param base_Session $session SesiÃ›n activa 
 	 * @param base_Context $context Contexto activo
 	 * @see base_Session
 	 * @see base_Context
@@ -70,8 +70,8 @@ class miguel_Header
         $table->set_class("mainInterfaceWidth");
         $table->set_id("header");
         
-        //OPTIMIZAR:: ¿un array para dos variables? Al commarea. 
-        //Y quitar la función de esta clase
+        //OPTIMIZAR:: Ã¸un array para dos variables? Al commarea. 
+        //Y quitar la funciÃ›n de esta clase
         //$arr_userinfo = $this->getSessionElement("arr_userinfo");
 
         if(Session::getValue("userinfo_user_alias") == null) {
@@ -91,22 +91,33 @@ class miguel_Header
 
 		//Campus virtual
 		if(Session::getContextValue("siteName") != ''){
-			$elem2 = html_td("colorMedium-bg", "", html_a(Util::app_URLPath("index.php"),agt("Campus").":&nbsp;".Session::getContextValue("siteName")));
+			$link = html_a(Util::app_URLPath("index.php"),agt("Campus").":&nbsp;".Session::getContextValue("siteName"));
+			$link->set_tag_attribute('accesskey','c');
+			$link->set_tag_attribute('tabindex','1');
+			$elem2 = html_td("colorMedium-bg", "", $link);
 		} else {
 			$elem2 = html_td("colorMedium-bg", "", agt("Campus"));
 		}
         $elem2->set_id("cell-sitename");
         $elem2->set_tag_attribute("target","_top");
         //miguel
-		$elem3 = html_td("colorLight-bg", "", html_a("http://hidrogeno.unileon.es/miguel-web","miguel"));
+        //$link = html_a("http://hidrogeno.unileon.es/miguel-web","miguel");
+        $link = html_a("https://developer.berlios.de/projects/migueloo/","miguel");
+	  		$link->set_tag_attribute('accesskey','m');
+  			$link->set_tag_attribute('tabindex','2');		    
+		    $elem3 = html_td("colorLight-bg", "", $link);
         $elem3->set_id("cell-indetec");
         $elem3->set_tag_attribute("target","_blank");
         //Departamento
-        $elem4 = html_td("colorMedium-bg", "", html_a("http://hidrogeno.unileon.es/miguel-web","miguel"));
+        $link->set_tag_attribute('tabindex','3');		    
+        $elem4 = html_td("colorMedium-bg", "", $link);
         $elem4->set_id("cell-institution");
         $elem4->set_tag_attribute("target","_blank");
         //Nombre del sitio web
-		$elem5 = html_td("colorDark-bg", "", html_a(Session::getContextValue("InstitutionUrl"),Session::getContextValue("Institution")));
+        $link = html_a(Session::getContextValue("InstitutionUrl"),Session::getContextValue("Institution"));
+ 	  		$link->set_tag_attribute('accesskey','i');
+  			$link->set_tag_attribute('tabindex','4');	       
+		    $elem5 = html_td("colorDark-bg", "", $link);
         $elem5->set_id("cell-institution");
         $elem5->set_tag_attribute("target","_blank");
 
@@ -119,7 +130,7 @@ class miguel_Header
 
         $table->add_row($row);
         
-        //Sistema de mensajes de la aplicación
+        //Sistema de mensajes de la aplicaciÃ›n
         $row = html_tr();
         $row->set_class("color2-bg");
         $row->set_id("cell-nav-links");
@@ -152,7 +163,7 @@ class miguel_Header
     }
     
     /**
-     * Construye la barra de navegación
+     * Construye la barra de navegaciÃ›n
      * @access private
      */
     function _menuBar()
@@ -190,8 +201,10 @@ class miguel_Header
     	if($text == ''){
     		$col = html_td("","center");
     		$elem = html_a("#","");
-        	$elem->add(html_img($path_img, 0, 0, 0, ""));
+        	$elem->add(html_img($path_img, 0, 0, 0, "help"));
         	$elem->set_tag_attribute("onClick", "MyWindow=window.open('".$path_action."','MyWindow','toolbar=no,location=no,directories=no,status=no,menubar=no,scrollbars=yes,resizable=no,width=500,height=600,left=300,top=40'); return false;");
+        	$elem->set_tag_attribute('accesskey', 'h');
+        	$elem->set_tag_attribute('tabindex', '5');        	
         	$col->add($elem);
         	$row->add($col);
     	} else {

@@ -41,7 +41,7 @@
  */
 
 
-class miguel_CAuth extends base_Controller
+class miguel_CAuth extends miguel_Controller
 {
 	/**
 	 * This is the constructor.
@@ -49,7 +49,7 @@ class miguel_CAuth extends base_Controller
 	 */
 	function miguel_CAuth()
 	{	
-		$this->base_Controller();
+		$this->miguel_Controller();
 		$this->setModuleName('auth');
 		$this->setModelClass('miguel_MAuth');
 		$this->setViewClass('miguel_VAuth');
@@ -114,7 +114,7 @@ class miguel_CAuth extends base_Controller
                                             $this->getViewVariable('treatment'), $this->getViewVariable('uname'),
                                             $this->getViewVariable('theme'), 'es_ES', $this->getViewVariable('passwd'),
                                             $this->getViewVariable('profile'), $this->getViewVariable('email'));
-                   $this->setViewClass("miguel_VAuthStep2");
+                   $this->setViewVariable('newclient', 'ok');
 			       $this->addNavElement(Util::format_URLPath('auth/index.php'), "Inscripción (Paso 2)");
 			       $insert_ok = true;
                  } else {
@@ -128,13 +128,13 @@ class miguel_CAuth extends base_Controller
                 $this->setViewVariable('themes', $this->registry->listThemes());
 				$this->setViewVariable('profiles', $this->obj_data->getProfileList());
 				$this->setViewVariable('treatment', $this->obj_data->getTreatmentList());
-				$this->setViewClass("miguel_VAuth");
+				//$this->setViewClass("miguel_VAuth");
 				$this->setCacheFile("miguel_VAuth_".$this->getSessionElement("userinfo","username"));
 				$this->setCacheFlag(false);
             } else {
                 $message = 'Alta de usuario OK';
-                $this->setViewClass("miguel_VAuthStep2");
-                $this->setCacheFile("miguel_VAuthStep2_".$this->getSessionElement("userinfo","username"));
+                //$this->setViewClass("miguel_VAuthStep2");
+                $this->setCacheFile("miguel_VAuth2_".$this->getSessionElement("userinfo","username"));
 				$this->setCacheFlag(true);
             }
 			$this->setMessage($message);
@@ -148,7 +148,7 @@ class miguel_CAuth extends base_Controller
 				$this->setViewVariable('treatment', $this->obj_data->getTreatmentList());
 
 			    $this->setMessage("Inscripción al Campus Virtual");
-			    $this->setCacheFile("miguel_VAuthStep1_".$this->getSessionElement("userinfo","username"));
+			    $this->setCacheFile("miguel_VAuth1_".$this->getSessionElement("userinfo","username"));
 			    $this->setCacheFlag(true);
 			} else {
 				//$this->setViewClass("miguel_VAuth");

@@ -34,23 +34,8 @@
  * @package miguel main
  * @version 1.0.0
  */
- 
 class miguel_newCourseForm extends base_FormContent 
 {
-
-    var $listInstitution;
-    var $listFaculty;
-    var $listDepartment;
-    var $listArea;    
-    
-    function miguel_newCourseForm($listInstitution, $listFaculty, $listDepartment, $listArea)
-    {
-        $this->base_FormContent();
-        $this->listInstitution = $listInstitution;
-        $this->listDepartment = $listDepartment;
-        $this->listFaculty = $listFaculty;
-        $this->listArea = $listArea;
-     }
     /**
      * Este metodo se llama cada vez que se instancia la clase.
      * Se utiliza para crear los objetos del formulario
@@ -62,41 +47,39 @@ class miguel_newCourseForm extends base_FormContent
         
         $elemT = new FEText( "courseName", FALSE, 10);
         $elemT->set_style_attribute('align', 'left');
+        $elemT->set_attribute("id","coursename");
+        $elemT->set_attribute("accesskey","n");        
         $this->add_element($elemT);
 
         $elemP = new FETextArea("courseDescription", false, 10, 50, null, 300);
         $elemP->set_style_attribute('align', 'left');
+        $elemP->set_attribute("id","coursedescription");        
+        $elemP->set_attribute("accesskey","d");        
         $this->add_element($elemP);
 
-        $listValues = $this->listInstitution;      
-        $listValues[agt('undefined')] = 0;
-        $listBox_Institution = new FEListBox('courseInstitution', false, '200px', NULL, $listValues);
-        $this->add_element( $listBox_Institution );
-
-        $listValues = $this->listFaculty;
-        $listValues[agt('undefined')] = 0;
-        $listBox_Faculty = new FEListBox('courseFaculty', false, '200px', NULL, $listValues);
-        $this->add_element( $listBox_Faculty );
+        include(Util::app_Path("andromeda/include/classes/nls.inc.php"));
+        $language = $this->_formatElem("FEListBox", "courseLanguage", "courseLanguage", FALSE, "100px", NULL, $nls['languages_form']);
+        $language->set_style_attribute('align', 'left');
+        $language->set_attribute("id","courselanguage");
+        $language->set_attribute("accesskey","l");        
+        $this->add_element($language);
         
-        $listValues = $this->listDepartment;
-        $listValues[agt('undefined')] = 0;
-        $listBox_Department = new FEListBox('courseDepartment', false, '200px', NULL, $listValues); 
-        $this->add_element( $listBox_Department );
-
-        $listValues = $this->listArea;
-        $listValues[agt('undefined')] = 0;
-        $listBox_Area = new FEListBox('courseArea', false, '200px', NULL, $listValues );
-        $this->add_element( $listBox_Area );
-
         $elem = new FECheckBox('courseActive', agt('courseActive') );
         $elem->set_style_attribute('align', 'left');
+        $elem->set_attribute("id","courseactive");        
+        $elem->set_attribute("accesskey","v");                
         $this->add_element( $elem );
 
-        $elem = new FECheckBox('courseAccess', agt('courseAccess') );
+        $elem = new FECheckBox('courseAccess', agt('courseAccess') );        
         $elem->set_style_attribute('align', 'left');
+        $elem->set_attribute("id","courseaccess");
+        $elem->set_attribute("accesskey","a");                
         $this->add_element( $elem );        
-        
-        $this->add_element($this->_formatElem("base_SubmitButton", "Aceptar", "submit", agt("miguel_Enter")." >"));
+
+        $submit = $this->_formatElem("base_SubmitButton", "Aceptar", "submit", agt("miguel_Enter"));
+        $submit->set_attribute("id","submit"); 
+        $submit->set_attribute("accesskey","e");               
+        $this->add_element($submit);
     }
 
     /**
@@ -106,76 +89,63 @@ class miguel_newCourseForm extends base_FormContent
     function form_init_data() 
     {
         //$this->set_hidden_element_value("id", "logon");
+        $this->set_element_value("courseName", agt(miguel_courseDescriptionName) );
+        $this->set_element_value("courseDescription", agt(miguel_courseDescriptionExample) );
     }
 
 
     /**
-     * Este metodo construye el formulario en sí.
+     * Este metodo construye el formulario en sÃŒ.
      */
     function form() 
     {
         $table = &html_table($this->_width,0,1,3);
         //$table->set_style("border: 1px solid");
 
-        $elem = html_td("", "left", container(html_b( agt('miguel_CourseName') ), html_br(), $this->element_form("courseName")));
-        $elem->set_id("identification");        
-        $table->add_row($elem);
+        $this->set_form_tabindex("courseName", '7');
+        $label = html_label( "coursename" );        
+        $label->add(container(html_b( agt('miguel_CourseName') ), html_br() ));
+        $label->add($this->element_form("courseName") );
         
-        $elem = html_td("", "left", container(html_b( agt('miguel_CourseDescription') ), html_br(), $this->element_form("courseDescription")));
-        $elem->set_id("identification");       
+        $elem = html_td("", "left",$label);
+        $elem->set_id("courseName");        
         $table->add_row($elem);
 
-        $elem = html_td("", "left", container(html_b( agt('miguel_Institution') ), html_br(), $this->element_form("courseInstitution")));
-        $elem->set_id("identification");       
+        $this->set_form_tabindex("courseDescription", '8');
+        $label = html_label( "coursedescription" );
+        $label->add(container(html_b( agt('miguel_CourseDescription') ), html_br(), $this->element_form("courseDescription")));
+
+        $elem = html_td("", "left", $label);
+        $elem->set_id("courseDescription");
         $table->add_row($elem);
 
-        $elem = html_td("", "left", container(html_b( agt('miguel_Faculty') ), html_br(), $this->element_form("courseFaculty")));
-        $elem->set_id("identification");       
+        $this->set_form_tabindex("courseLanguage", '8');            
+        $label = html_label( "courselanguage" );
+        $label->add(container(html_b( agt('miguel_CourseLanguage') ), html_br(), $this->element_form("courseLanguage")));
+        $elem = html_td("", "left", $label);
+        $elem->set_id("courseLanguage");
+        $table->add_row($elem);
+
+        $this->set_form_tabindex("courseActive", '9');
+        $label = html_label( "courseactive" );
+        $label->add(container(html_b( agt('miguel_CourseActive') ), html_br(), $this->element_form("courseActive")));
+        $elem = html_td("", "left", $label);
+        $elem->set_id("courseActive");
         $table->add_row($elem);
         
-        $elem = html_td("", "left", container(html_b( agt('miguel_Department') ), html_br(), $this->element_form("courseDepartment")));
-        $elem->set_id("identification");       
+        $this->set_form_tabindex("courseAccess", '10');        
+        $label = html_label( "courseaccess" );
+        $label->add(container(html_b( agt('miguel_CourseAccess') ), html_br(), $this->element_form("courseAccess")));
+        $elem = html_td("", "left", $label);
+        $elem->set_id("courseAccess");       
         $table->add_row($elem);
-        
-        $elem = html_td("", "left", container(html_b( agt('miguel_Area') ), html_br(), $this->element_form("courseArea")));
-        $elem->set_id("identification");       
-        $table->add_row($elem);
-        
-        $elem = html_td("", "left", container(html_b( agt('miguel_CourseActive') ), html_br(), $this->element_form("courseActive")));
-        $elem->set_id("identification");       
-        $table->add_row($elem);
-        
-        $elem = html_td("", "left", container(html_b( agt('miguel_CourseAccess') ), html_br(), $this->element_form("courseAccess")));
-        $elem->set_id("identification");       
-        $table->add_row($elem);
- 
-        $table->add_row(html_td("", "left",  $this->element_form("Aceptar")));
+
+        $this->set_form_tabindex("Aceptar", '11'); 
+        $label = html_label( "submit" );
+        $label->add($this->element_form("Aceptar"));
+        $table->add_row(html_td("", "left",  $label));
 
         return $table;
-    }
-
-    /**
-     * This method gets called after the FormElement data has
-     * passed the validation.  This enables you to validate the
-     * data against some backend mechanism, say a DB.
-     *
-     */
-    function form_backend_validation() 
-    {
-        //Los controles se hacen en el controlador
-        return TRUE;
-    }
-
-    /**
-     * This method is called ONLY after ALL validation has
-     * passed.  This is the method that allows you to 
-     * do something with the data, say insert/update records
-     * in the DB.
-     */
-    function form_action() 
-    {
-        //Evitamos que se escriba nada
-        return false;
     }
 }
 

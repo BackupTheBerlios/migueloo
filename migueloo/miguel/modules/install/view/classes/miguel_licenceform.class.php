@@ -51,9 +51,9 @@ class miguel_licenceForm extends base_FormContent
         $textarea->set_value($str_content);
         $this->add_element($textarea);
         	
-		$this->add_element($this->_formatElem("base_SubmitButton", "Salir", "quit", _("Salir")));	
-		$this->add_element($this->_formatElem("base_SubmitButton", "Acepto", "submit", _("Acepto")." >"));
-		$this->add_element($this->_formatElem("base_SubmitButton", "Regresar", "back", "< "._("Regresar")));
+		$this->add_element($this->_formatElem("base_SubmitButton", "Salir", "quit", agt("Salir")));	
+		$this->add_element($this->_formatElem("base_SubmitButton", "Acepto", "submit", agt("Acepto")." >"));
+		$this->add_element($this->_formatElem("base_SubmitButton", "Regresar", "back", "< ".agt("Regresar")));
     }
 
 
@@ -80,7 +80,7 @@ class miguel_licenceForm extends base_FormContent
 		$col00 = html_td("");
 		$col00->set_tag_attribute("align", "center"); 
 		$col00->set_tag_attribute("colspan", "2"); 
-		$col00->add(html_a(Util::app_urlPath('install/include/gpl_print.txt'), _('Versión Imprimible')));
+		$col00->add(html_a(Util::app_urlPath('install/include/gpl_print.txt'), agt('Versión Imprimible')));
 		$row00->add($col00);
 		$table->add($row00);
 				

@@ -43,10 +43,10 @@ class miguel_prevnextForm extends base_FormContent
      */
     function form_init_elements() 
     {
-        //$this->add_element($this->_formatElem("FEListBox", "Idioma", "lang", FALSE, "100px", NULL, array(gettext("Español")=>"spanish", gettext("Inglés")=>"english")));
+        //$this->add_element($this->_formatElem("FEListBox", "Idioma", "lang", FALSE, "100px", NULL, array(agt("Español")=>"spanish", agt("Inglés")=>"english")));
         	
-		$this->add_element($this->_formatElem("base_SubmitButton", "Siguiente", "submit", _("Siguiente")." >"));
-		$this->add_element($this->_formatElem("base_SubmitButton", "Regresar", "back", "< "._("Regresar")));
+		$this->add_element($this->_formatElem("base_SubmitButton", "Siguiente", "submit", agt("Siguiente")." >"));
+		$this->add_element($this->_formatElem("base_SubmitButton", "Regresar", "back", "< ".agt("Regresar")));
 	
         //lets add a hidden form field
         //$this->add_hidden_element("install_step");

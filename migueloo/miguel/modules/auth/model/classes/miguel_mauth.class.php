@@ -91,8 +91,7 @@ class miguel_mAuth extends base_Model
     function newUser($name, $surname, $treatment, $user, $theme, $lang, $passwd, $profile, $email)
     {
         $person = $this->_insertPerson($name, $surname, $treatment);
-        Debug::oneVar($person, __FILE__, __LINE__);
-        //$user = $this->_insertUser($user, $theme, $lang, $passwd, $person, $profile, $treatment, $email);
+        $user = $this->_insertUser($user, $theme, $lang, $passwd, $person, $profile, $treatment, $email);
     }
     
     function _insertPerson($name, $surname, $treatment)
@@ -102,7 +101,7 @@ class miguel_mAuth extends base_Model
 
         $ret_val = $this->Insert('person',
                                  'person_jabber, person_name, person_surname, treatment_id, cargo',
-                                 "$jaber, $name, $surname, $treatment, $cargo");
+                                 "$jabber, $name, $surname, $treatment, $cargo");
 
     	if ($this->hasError()) {
     		$ret_val = null;
@@ -113,9 +112,11 @@ class miguel_mAuth extends base_Model
     
     function _insertUser($user, $theme, $lang, $passwd, $person, $profile, $treatment, $email)
     {
+        $active = '1';
+        $hash = '';
         $ret_val = $this->Insert('user',
                                  'user_alias, theme, language, user_password, active, activate_hash, institution_id, forum_type_bb, main_page_id, person_id, id_profile, treatment_id, email',
-                                 "$user, $theme, $lang, $passwd, '1', '', 0, 0, 0, $person, $profile, $treatment, $email");
+                                 "$user, $theme, $lang, $passwd, $active, $hash, 0, 0, 0, $person, $profile, $treatment, $email");
 
     	if ($this->hasError()) {
     		$ret_val = null;

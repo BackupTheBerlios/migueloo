@@ -37,7 +37,7 @@
  * Se definen funciones de uso común para miguelOO.
  * @author Jesus A. Martinez Cerezal <jamarcer@inicia.es>
  * @author miguel development team <e-learning-desarrollo@listas.hispalinux.es>
- * @copyright GPL - Ver LICENCE
+ * @copyright LGPL - Ver LICENCE
  * @package framework
  * @subpackage util
  * @version 1.0.0
@@ -45,7 +45,14 @@
  */
 class Util
 {
-    function formatPath($str_path)
+    /**
+	 * Formatea una dirección (path) en función del SO de la máquina.
+	 *
+	 * @param string $str_path Path a formatear.
+	 * @return string Path formateado.
+	 *
+	 */
+	function formatPath($str_path)
     {
         $str_val = chop($str_path);
 
@@ -61,8 +68,12 @@ class Util
     }
 
     /*
-     * Formatea una dirección interna
-     * Relativo a la dirección del framework modules/andromeda/
+     * Formatea una dirección (path)
+	 * Relativo a la dirección del framework modules/andromeda/
+	 *
+	 * @param string $str_path Path a formatear.
+	 * @return string Path formateado.
+	 *
      */
     function base_Path($str_path)
     {
@@ -70,8 +81,12 @@ class Util
     }
     
     /*
-     * Formatea una dirección interna
+     * Formatea una dirección (path)
      * Relativo a la dirección donde estan los modulos: modules/
+	 *
+	 * @param string $str_path Path a formatear.
+	 * @return string Path formateado.
+	 *
      */
     function app_Path($str_path)
     {
@@ -80,32 +95,47 @@ class Util
     
     /*
      * Formatea una dirección URL, sin sesión.
+	 *
+	 * @param string $str_path Path a formatear.
+	 * @return string URL formateada.
+	 *
      */
     function app_URLPath($str_path)
     {
         return str_replace('\\', '/', MIGUELBASE_MODULES_URL.chop($str_path));
     }
-    
+
     /*
      * Formatea una dirección URL, sin sesión, relativa al superdirectorio de la aplicación.
+	 *
+	 * @param string $str_path Path a formatear.
+	 * @return string URL formateada.
+	 *
      */
     function main_URLPath($str_path)
     {
         return str_replace('\\', '/', MIGUELBASE_URL.chop($str_path));
     }
-    
+
     /*
      * Formatea una dirección URL, añadiendo sesión.
-     * Relativo a dirección module/
+     * Relativo a dirección module/.
+	 *
+	 * @param string $str_path Path a formatear.
+	 * @return string URL formateada.
+	 *
      */
     function format_URLPath($str_path, $str_param = '')
     {
         return Util::session_URLPath(MIGUELBASE_MODULES_URL.$str_path, $str_param);
     }
-    
+
     /*
-     * Formatea una dirección URL, añadiendo sesión.
-     * Relativo a dirección lib/
+     * Formatea una dirección URL, añadiendo el identificador de sesión.
+     *
+	 * @param string $str_path Path a formatear.
+	 * @return string URL formateada.
+	 *
      */
     function session_URLPath($str_path, $str_param = '')
     {
@@ -114,7 +144,7 @@ class Util
         } else {
             //No nos sirve usar SID. Se cambia la sesión de forma dinámica.
             $sid = session_name().'='.session_id();
-            
+
         	if($str_param == ''){
         		$ret_val = chop($str_path)."?$sid";
         	} else {
@@ -124,10 +154,14 @@ class Util
 
         return str_replace('\\', '/', $ret_val);
     }
-    
+
     /*
-     * Formatea una direcciÃ³n interna
-     * Relativo a direcciÃ³n lib/
+     * Formatea una dirección (path).
+     * Relativo a dirección modules/.
+	 *
+	 * @param string $str_path Path a formatear.
+	 * @return string Path formateado.
+	 *
      */
     function format_pathApp($str_path)
     {
@@ -135,7 +169,11 @@ class Util
     }
 
 	/*
-	 * Genera una clave de forma aleatoria
+	 * Genera una clave de forma aleatoria.
+	 *
+	 * @param integer $num_char Número de caracteres en la clave.
+	 * @return string Clave generada..
+	 *
 	 */
 	function newPasswd($num_char = 8)
 	{

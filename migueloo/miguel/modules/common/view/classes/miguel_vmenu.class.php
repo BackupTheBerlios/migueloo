@@ -140,7 +140,9 @@ class miguel_VMenu extends miguel_VPage
 		$profile = $this->getSessionElement('userinfo', 'profile_id');
 
 		foreach ($arr_elem as $app => $params) {
-            if($this->checkAccess('miguel_VMenu', $params[0], 'profile', $profile)){
+            //Para acceso con gacl. Bloquada hasta versiones superiores.
+			//if($this->checkAccess('miguel_VMenu', $params[0], 'profile', $profile)){
+			if($this->checkAccess($params[0], $profile)){
             	if(strncmp($params[1], 'http://', 7) != 0) {
     		  		$table->add_row($this->imag_alone(Util::format_URLPath($params[1], $params[2]), 
     		  										  Theme::getThemeImagePath('menu/'.$params[3]),
@@ -167,7 +169,7 @@ class miguel_VMenu extends miguel_VPage
     {
     	$registry = &Registry::start();
     	$services = $registry->listServices();
-   	    	
+	
     	return $services;
     } 
 }

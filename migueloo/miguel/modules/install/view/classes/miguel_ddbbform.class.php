@@ -51,7 +51,7 @@ class miguel_ddbbForm extends base_FormContent
         $elem10 = new FEListBox("miguel_ddbb_sgbd", FALSE, "110px", NULL);
 		$elem10-> set_list_data($this->getViewVariable('inst_ddbb_sgbd'));
 		//$elem10->set_style_attribute('id', 'install');
-		//$elem0->set_value(_("MySQL"));
+		//$elem0->set_value(agt("MySQL"));
 		$this->add_element($elem10);
 		
         $elem1 = new FEText("miguel_ddbb_host", FALSE, 30);
@@ -79,9 +79,9 @@ class miguel_ddbbForm extends base_FormContent
 		$elem5->set_style_attribute('id', 'install');
 		$this->add_element($elem5);
 
-		$this->add_element($this->_formatElem("base_SubmitButton", "Salir", "quit", _("Salir")));
-		$this->add_element($this->_formatElem("base_SubmitButton", "Siguiente", "submit", _("Siguiente")." >"));
-		$this->add_element($this->_formatElem("base_SubmitButton", "Regresar", "back", "< "._("Regresar")));
+		$this->add_element($this->_formatElem("base_SubmitButton", "Salir", "quit", agt("Salir")));
+		$this->add_element($this->_formatElem("base_SubmitButton", "Siguiente", "submit", agt("Siguiente")." >"));
+		$this->add_element($this->_formatElem("base_SubmitButton", "Regresar", "back", "< ".agt("Regresar")));
     }
 
 	function form_init_data()
@@ -101,12 +101,12 @@ class miguel_ddbbForm extends base_FormContent
 		$table = &html_table($this->_width,0,2,2);
         //$table->set_style("border: 1px solid");
         
-        $table->add_row(_("Sistema Gestor de la Base de Datos"), $this->element_form("miguel_ddbb_sgbd"), _("Por ejemplo MySQL"));
-        $table->add_row(_("Alojamiento de la Base de Datos"), $this->element_form("miguel_ddbb_host"), _("Por ejemplo ").$this->getViewVariable('inst_ddbb_host'));
-        $table->add_row(_("Nombre de la Base de Datos"), $this->element_form("miguel_ddbb_name"), _('Por ejemplo ').$this->getViewVariable('inst_ddbb_name'));
-        $table->add_row(_("Usuario de acceso a la Base de Datos"), $this->element_form("miguel_ddbb_user"), _('Por ejemplo ').$this->getViewVariable('inst_ddbb_user'));
-        $table->add_row(_("Contraseña de acceso a la Base de Datos"), $this->element_form("miguel_ddbb_passwd"), _('Por ejemplo '.$this->getViewVariable('inst_ddbb_passwd')));
-        $table->add_row(_("Confirmación de la contraseña de acceso a la Base de Datos"), $this->element_form("miguel_ddbb_passwd2"));
+        $table->add_row(agt("Sistema Gestor de la Base de Datos"), $this->element_form("miguel_ddbb_sgbd"), agt("Por ejemplo MySQL"));
+        $table->add_row(agt("Alojamiento de la Base de Datos"), $this->element_form("miguel_ddbb_host"), agt("Por ejemplo ").$this->getViewVariable('inst_ddbb_host'));
+        $table->add_row(agt("Nombre de la Base de Datos"), $this->element_form("miguel_ddbb_name"), agt('Por ejemplo ').$this->getViewVariable('inst_ddbb_name'));
+        $table->add_row(agt("Usuario de acceso a la Base de Datos"), $this->element_form("miguel_ddbb_user"), agt('Por ejemplo ').$this->getViewVariable('inst_ddbb_user'));
+        $table->add_row(agt("Contraseña de acceso a la Base de Datos"), $this->element_form("miguel_ddbb_passwd"), agt('Por ejemplo '.$this->getViewVariable('inst_ddbb_passwd')));
+        $table->add_row(agt("Confirmación de la contraseña de acceso a la Base de Datos"), $this->element_form("miguel_ddbb_passwd2"));
 
 		$row = html_tr("");
 		$col1 = html_td("");

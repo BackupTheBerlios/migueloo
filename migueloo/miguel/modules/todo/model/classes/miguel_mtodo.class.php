@@ -47,23 +47,29 @@ class miguel_MTodo extends base_Model
 	 *
 	 */
     function miguel_MTodo() 
-    {	
+    {
+        //Llama al constructor de la superclase del Modelo	
         $this->base_Model();
     }
     
+    //Implementa el método insertSugestion
     function insertSugestion($str_name, $str_email, $str_content)
     {
+        //Obtiene la fecha actual, función de PHP
         $now = date("Y-m-d H:i:s");
         $visible = "YES";
         
+        //Inserta en la tabla todo. Los parámetros de Insert son: tabla, campos y valores
         $ret_val = $this->Insert('todo',
                                  'contenu, temps, auteur, email, priority, type, cible, statut, assignTo, showToUsers',
                                  "$str_content, $now, $str_name, $str_email, 0, 0, 0, 0, 0, $visible");
 
+        //Comprueba si ha ocurrido algún error al realizar la operación
     	if ($this->hasError()) {
     		$ret_val = null;
     	}
 
+        //Devuelve el resultado
     	return ($ret_val);
     }
 }    

@@ -42,7 +42,7 @@
  *
  */
 
-class miguel_CListcourses extends base_Controller
+class miguel_CListcourses extends miguel_Controller
 {	
 	/**
 	 * This is the constructor.
@@ -50,7 +50,7 @@ class miguel_CListcourses extends base_Controller
 	 */
 	function miguel_CListCourses()
 	{	
-		$this->base_Controller();
+		$this->miguel_Controller();
 		$this->setModuleName('listCourses');
 		$this->setModelClass('miguel_MListCourses');
 		$this->setViewClass('miguel_VMain');
@@ -91,8 +91,17 @@ class miguel_CListcourses extends base_Controller
 
                         
             if ( $institution_id >= 0 ) { 
-                $this->setViewVariable('arr_courses', $this->obj_data->getCourse( $institution_id, $faculty_id, $department_id, $area_id ) );
-
+                $this->setViewVariable('arr_courses', $this->obj_data->getCourse( $user_id, $institution_id, $faculty_id, $department_id, $area_id ) );
+                
+                //Perfil superior al alumno, debería de ser una comprobación ACL
+                $profile_id = $this->getSessionElement( 'userinfo', 'profile_id' );
+                if ( $profile_id < 4 ) {
+                	$navinfo = array( "institution_id" => $institution_id,
+                	                  "faculty_id" => $faculty_id,
+                	                  "department_id" => $department_id,
+                	                  "area_id" => $area_id);
+                	$this->setSessionArray('navinfo', $navinfo);
+                }
 
                 $this->addNavElement(Util::format_URLPath('listCourses/index.php','institution_id=' . $institution_id . '&faculty_id=' . $faculty_id . '&department_id=' . $department_id . '&area_id=' . $area_id), agt('miguel_CourseList') );
                 $this->setCacheFile("miguel_VMain_ListaCursos_" . $this->getSessionElement("userinfo", "user_id"));

@@ -40,7 +40,7 @@
  * Include libraries
  */
 
-class miguel_CUser extends base_Controller
+class miguel_CUser extends miguel_Controller
 {
 	/**
 	 * This is the constructor.
@@ -48,7 +48,7 @@ class miguel_CUser extends base_Controller
 	 */
 	function miguel_CUser() 
 	{	
-		$this->base_Controller();
+		$this->miguel_Controller();
 		$this->setModuleName('user');
 		$this->setModelClass('miguel_MUser');
 		$this->setViewClass('miguel_VUser');

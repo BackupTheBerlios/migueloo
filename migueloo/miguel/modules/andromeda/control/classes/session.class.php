@@ -34,6 +34,7 @@
  * Define la clase para el tratamiento de sesiones.
  * Se define el tratamiento de los datos que configuran la sesión activa de miguelOO.
  * @author Jesus A. Martinez Cerezal <jamarcer@inicia.es>
+ * @author Antonio F. Cano Damas <antoniofcano@telefonica.net>
  * @author miguel development team <e-learning-desarrollo@listas.hispalinux.es>     
  * @copyright LGPL - Ver LICENCE
  * @package framework
@@ -43,11 +44,6 @@
  */ 
 class Session
 {
-	/**
-	 * @access private
-	 */
-	var $bol_okConfFile = false;
-	
 	/**
 	 * Devuelve una referencia al objeto global Session, que solo
 	 * se crea si no existe.
@@ -71,34 +67,43 @@ class Session
 	 */
     function Session() 
     {	
-        $str_name = session_name();
+        //Parametros de tratamiento de errores
+        ini_set("display_errors", "On");
+        //ini_set("display_startup_errors", "Off");
+        ini_set("log_errors", "Off");
+
+		include_once(Util::base_Path('include/classes/errorhandler.class.php'));
+		$error_handler = new errorHandler();
+
+		$str_name = session_name();
 
 		if ($str_name != "MIGUEL_BASE") {
 			session_name("MIGUEL_BASE");
 		}
-		
+
+		//Parametros de sesion
 		ini_set("session.save_handler", "files");
 		ini_set("session.use_cookies", 0);
-		/* Comentado para miguelHib
+
 		if(MIGUELBASE_SESSION_DIR != ''){
         	ini_set("session.save_path", MIGUELBASE_SESSION_DIR);
         }
-        */
+		if (MIGUELBASE_PHP_INT_VERSION >= 40200) {
+			session_cache_expire(MIGUELBASE_SESSION_TIME);
+		}
+
         ini_set("session.use_trans_sid", 0);
         ini_set("session.gc_probability", 100);
-        //ini_set("display_errors", "On");
-        //ini_set("display_startup_errors", "Off");
-        //ini_set("log_errors", "Off");
-        //ini_set("upload_tmp_dir", MIGUELBASE_CACHE_DIR);
+
+        //Parametros para transferencia de ficheros
+		//ini_set("upload_tmp_dir", MIGUELBASE_CACHE_DIR);
         //ini_set("upload_max_filesize", "2M");
 
 		if(!session_id()){
             session_start();
         }
 
-		if (MIGUELBASE_PHP_INT_VERSION >= 40200) {
-			session_cache_expire(MIGUELBASE_SESSION_TIME);
-		}
+
 
 		//Cargamos los valores de contexto
 		if ($this->_isContextSet()) {
@@ -117,7 +122,7 @@ class Session
         //Bloqueamos la sesión actual
         //session_start();
         Session::setValue('session', false);
-        
+
         //Guardamos el la sesión 
         session_write_close();
         
@@ -180,7 +185,43 @@ class Session
 			$_SESSION["MIGUEL_".strtoupper($str_var)] = $mix_value;
     	} else {
    			$HTTP_SESSION_VARS["MIGUEL_".strtoupper($str_var)] = $mix_value;
-    	} 
+    	}
+    }
+
+	/**
+	 * Permite comprobar si una variable de sesión está definida.
+	 * @param string $str_var Nombre de la variable.
+	 * @param mixto $mix_value Valor asignado.
+	 */
+    function issetValue($str_var)
+    {
+        $ret_val = false;
+		if (MIGUELBASE_PHP_INT_VERSION >= 40006) {
+			if(isset($_SESSION["MIGUEL_".strtoupper($str_var)])){
+				$ret_val = true;
+			}
+    	} else {
+			if(isset($HTTP_SESSION_VARS["MIGUEL_".strtoupper($str_var)])){
+				$ret_val = true;
+			}
+    	}
+
+		return $ret_val;
+    }
+
+	/**
+	 * Elimina una valor a una variable de sesión.
+	 * @param string $str_var Nombre de la variable.
+	 */
+    function unsetValue($str_var)
+    {
+		if (MIGUELBASE_PHP_INT_VERSION >= 40006) {
+			//$_SESSION["MIGUEL_".strtoupper($str_var)] = null;
+			unset($_SESSION["MIGUEL_".strtoupper($str_var)]);
+		} else {
+			//$HTTP_SESSION_VARS["MIGUEL_".strtoupper($str_var)] = null;
+			unset( $HTTP_SESSION_VARS["MIGUEL_".strtoupper($str_var)]);
+		}
     }
     
     /*
@@ -243,7 +284,8 @@ class Session
 		
 		if($conf_file != ''){
 		  $this->_processXMLInitData($conf_file);
-		  $this->bol_okConfFile = true;
+		} else {
+				$this->_setError("miguel_Controller:: miguel no está configurado");
 		}
 	}
 
@@ -253,12 +295,12 @@ class Session
 	 * @param string $str_fileName Nombre del fichero de configuración
 	 * @internal
 	 *
-	 */     
+	 */
   	function _processXMLInitData($str_fileName)
 	{
 		//Include XMLMini
 		require_once (Util::base_Path("include/miniXML/minixml.inc.php"));
-    	
+
 		//Abrimos el fichero
 		$xml_obj = new MiniXMLDoc();
 
@@ -268,11 +310,11 @@ class Session
 		//Cargamos la variable
 		$xml_root 		=& $xml_obj->getElementByPath('config');
 		$xml_elements 	=& $xml_root->getAllChildren();
-    	
+
 		for ($i=0; $i < $xml_root->numChildren(); $i++) {
 			$_SESSION["CONTEXT"]["MIGUEL_".strtoupper($xml_elements[$i]->name())] = $xml_elements[$i]->getValue();
 		}
-    	
+
 		//Cerramos el fichero
 		unset($xml_obj);
 	}

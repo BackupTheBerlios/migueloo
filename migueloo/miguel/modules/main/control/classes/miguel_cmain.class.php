@@ -42,7 +42,7 @@
  *
  */
 
-class miguel_CMain extends base_Controller
+class miguel_CMain extends miguel_Controller
 {	
 	/**
 	 * This is the constructor.
@@ -50,7 +50,7 @@ class miguel_CMain extends base_Controller
 	 */
 	function miguel_CMain()
 	{	
-		$this->base_Controller();
+		$this->miguel_Controller();
 		$this->setModuleName('main');
 		$this->setModelClass('miguel_MMain');
 		$this->setViewClass('miguel_VIntro');
@@ -59,14 +59,14 @@ class miguel_CMain extends base_Controller
      
 	function processPetition() 
 	{
-		//Se controla que el usuario no tenga acceso. 
+		$this->setMessage(agt('miguel_Welcome'));
+		//Se controla que el usuario no tenga acceso.
                 $bol_hasaccess = false;
-		
+
                 //Peticion de salida
                 if ( $this->issetViewVariable('id') && $this->getViewVariable('id') == 'logoff') {
                     $this->Close($this->obj_data);
                 }
-
                 //Primero comprueba si estamos identificados y si no es asi entonces vamos a ver si es una peticion de autenticacion
                 $user_id = $this->getSessionElement( 'userinfo', 'user_id' );
 
@@ -84,18 +84,21 @@ class miguel_CMain extends base_Controller
                             $password = $this->getViewVariable("clave_de_acceso");
                         }
    	                $bol_hasaccess = $this->processUser($this->obj_data, $user,  $password );
+                        if ( !$bol_hasaccess) {
+                        //Intento Fallido de autenticaciÛn. øDeberÌa enviar a una p·gina de mensaje de error, link a dar de alta y notificaciÛn vÌa mail?
+                            $this->setMessage(agt('miguel_wrongPassword'));
+                        }
                     }
                 }
- 
+                $this->clearNavBarr();
                 if($bol_hasaccess) {
                     if ( $user == 'guest' ) { 
-                    //Navega por la jerarqu�a
+                    //Navega por la jerarquía
                         $this->setViewClass("miguel_VMain");                    
                         $this->setPageTitle("miguel_institutionList");
                         $this->addNavElement(Util::format_URLPath('main/index.php','id=institution'), agt("miguel_Center") );
   
                         $this->setViewVariable('arr_categories', $this->obj_data->getInstitutionResume() );
-                        $this->setViewVariable('arr_courses', $this->obj_data->getCourse() );
     
                         $this->setCacheFile("miguel_VMain_Institution_" . $this->getSessionElement("userinfo", "user_id"));
                         $this->setMessage( agt('miguel_institutionList') );
@@ -112,9 +115,7 @@ class miguel_CMain extends base_Controller
                 } else { 
                     //Bienvenida
                     $this->setPageTitle("miguel_Welcome");
-
                     $this->setCacheFile("miguel_VMain_Welcome");
-                    $this->setMessage(agt('miguel_Welcome'));
                 }
                 $this->setCacheFlag(true);
                 $this->setHelp("EducContent");                

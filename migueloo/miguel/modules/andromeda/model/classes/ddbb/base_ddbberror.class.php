@@ -94,6 +94,7 @@ class base_ddbbError
 			$this->str_error = $str_error;
 			$this->bol_error = true;
         }
+		trigger_error($str_error, FATAL);
 	}	 
 	
 	/**

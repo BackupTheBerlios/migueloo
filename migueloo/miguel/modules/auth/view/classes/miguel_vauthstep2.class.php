@@ -58,7 +58,6 @@
  * Include classes library
  */
 include_once (Util::app_Path("common/view/classes/miguel_vmenu.class.php"));
-require_once (Util::app_Path("auth/view/classes/miguel_inscriptionForm.class.php"));
 
 class miguel_VAuthStep2 extends miguel_VMenu
 {
@@ -77,30 +76,6 @@ class miguel_VAuthStep2 extends miguel_VMenu
         $this->miguel_VMenu($title, $arr_commarea);
      }
 
-
-
-    /**
-     * We override this method to automatically
-     * break up the main block into a 
-     * left block and a right block
-     *
-     * @param TABLEtag object.
-     */
-    function main_block() 
-    {
-    	$main = html_div();
-		$main->set_id("content");
-
-		$table = html_table(Session::getContextValue("mainInterfaceWidth"),0,1,0);
-		$table->set_class("simple");
-		
-		//Authentication
-		$table->add_row($this->_block());
-        
-        $main->add( $table );
-
-		return $main;
-    }
     
     /**
      * this function returns the contents
@@ -109,7 +84,7 @@ class miguel_VAuthStep2 extends miguel_VMenu
      *
      * @return HTMLTag object
      */
-    function _block() 
+    function right_block()
     {
 		$ret_val = container();
 		
@@ -121,9 +96,9 @@ class miguel_VAuthStep2 extends miguel_VMenu
 		$ret_val->add($hr);
 		
 		if(!Session::getValue("inscript")) {
-			$ret_val->add(html_a("../index.php","Regresar a la página principal"));
+			$ret_val->add(html_a(Util::main_URLPath('index.php'), agt('Regresar a la página principal')));
 			$ret_val->add(html_br(2));
-			$ret_val->add(html_a("index.php","¡Volver a empezar!"));
+			$ret_val->add(html_a(Util::app_URLPath('auth/index.php'), agt('Nuevo Usuario')));
 		} else {
 			//$ret_val->add(new FormProcessor(new miguel_inscriptionForm()));
 		}

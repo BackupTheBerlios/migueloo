@@ -105,7 +105,7 @@ class base_Error
 	  */
 	function validError ($error)
 	{
-		if (gettext($error) != $error && !in_array($error, $this->ArrayErrors)) {
+		if (agt($error) != $error && !in_array($error, $this->ArrayErrors)) {
 			return TRUE;
 		} else {
 			return FALSE;
@@ -156,7 +156,7 @@ class base_Error
                         {
 			        $this->ArrayErrors[]     = $error;
 			        $this->bError            = TRUE;
-                        } elseif (count($args_array) == substr_count(gettext($error), "%")) {
+                        } elseif (count($args_array) == substr_count(agt($error), "%")) {
                                 $this->ArrayErrorsArgs[$error] = $args_array;
 			        $this->ArrayErrors[]     = $error;
 			        $this->bError            = TRUE;

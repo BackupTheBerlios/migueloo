@@ -64,6 +64,48 @@ $nls['languages']['th_TH'] = 'Thai (&#x0e44;&#x0e17;&#x0e22;)';
 $nls['languages']['tr_TR'] = 'T&uuml;rk&ccedil;e';
 $nls['languages']['uk_UA'] = 'Ukrainian (&#x0423;&#x043a;&#x0440;&#x0430;&#x0457;&#x043d;&#x0441;&#x044c;&#x043a;&#x0430;)';
 
+$nls['languages_form']['Arabic (Oman) (&#x0627;&#x0644;&#x0639;&#x0631;&#x0628;&#x064a;&#x0629;)'] = 'ar_OM';
+$nls['languages_form']['Arabic (Syria) (&#x0627;&#x0644;&#x0639;&#x0631;&#x0628;&#x064a;&#x0629;)'] = 'ar_SY';
+$nls['languages_form']['Bahasa Indonesia'] = 'id_ID';
+$nls['languages_form']['Bulgarian (&#x0411;&#x044a;&#x043b;&#x0433;&#x0430;&#x0440;&#x0441;&#x043a;&#x0438;)'] = 'bg_BG';
+$nls['languages_form']['Catal&agrave;'] = 'ca_ES';
+$nls['languages_form']['Chinese (Simplified) (&#x7b80;&#x4f53;&#x4e2d;&#x6587;)'] = 'zh_CN';
+$nls['languages_form']['Chinese (Traditional) (&#x6b63;&#x9ad4;&#x4e2d;&#x6587;)'] = 'zh_TW';
+$nls['languages_form']['Czech (&#x010c;esky)'] = 'cs_CZ';
+$nls['languages_form']['Dansk'] = 'da_DK';
+$nls['languages_form']['Deutsch'] = 'de_DE';
+$nls['languages_form']['English (American)'] = 'en_US';
+$nls['languages_form']['English (British)'] = 'en_GB';
+$nls['languages_form']['English (Canadian)'] = 'en_CA';
+$nls['languages_form']['Espa&ntilde;ol'] = 'es_ES';
+$nls['languages_form']['Eesti'] = 'et_EE';
+$nls['languages_form']['Fran&ccedil;ais'] = 'fr_FR';
+$nls['languages_form']['Galego'] = 'gl_ES';
+$nls['languages_form']['Greek (&#x0395;&#x03bb;&#x03bb;&#x03b7;&#x03bd;&#x03b9;&#x03ba;&#x03ac;)'] = 'el_GR';
+$nls['languages_form']['&Iacute;slenska'] = 'is_IS';
+$nls['languages_form']['Italiano'] = 'it_IT';
+$nls['languages_form']['Japanese (&#x65e5;&#x672c;&#x8a9e;)'] = 'ja_JP';
+$nls['languages_form']['Korean (&#xd55c;&#xad6d;&#xc5b4;)'] = 'ko_KR';
+$nls['languages_form']['Latvie&#x0161;u'] = 'lv_LV';
+$nls['languages_form']['Lietuvi&#x0173;'] = 'lt_LT';
+$nls['languages_form']['Macedonian (&#x041c;&#x0430;&#x043a;&#x0435;&#x0434;&#x043e;&#x043d;&#x0441;&#x043a;&#x0438;)'] = 'mk_MK';
+$nls['languages_form']['Magyar'] = 'hu_HU';
+$nls['languages_form']['Nederlands'] = 'nl_NL';
+$nls['languages_form']['Norsk bokm&aring;l'] = 'nb_NO';
+$nls['languages_form']['Norsk nynorsk'] = 'nn_NO';
+$nls['languages_form']['Polski'] = 'pl_PL';
+$nls['languages_form']['Portugu&ecirc;s'] = 'pt_PT';
+$nls['languages_form']['Portugu&ecirc;s Brasileiro'] = 'pt_BR';
+$nls['languages_form']['Rom&acirc;n&auml; (Romanian)'] = 'ro_RO';
+$nls['languages_form']['Russian (&#x0420;&#x0443;&#x0441;&#x0441;&#x043a;&#x0438;&#x0439;)'] = 'ru_RU';
+$nls['languages_form']['Slovak (Sloven&#x010d;ina)'] = 'sk_SK';
+$nls['languages_form']['Slovenian (Sloven&#x0161;&#x010d;ina)'] = 'sl_SI';
+$nls['languages_form']['Suomi'] = 'fi_FI';
+$nls['languages_form']['Svenska'] = 'sv_SE';
+$nls['languages_form']['Thai (&#x0e44;&#x0e17;&#x0e22;)'] = 'th_TH';
+$nls['languages_form']['T&uuml;rk&ccedil;e'] = 'tr_TR';
+$nls['languages_form']['Ukrainian (&#x0423;&#x043a;&#x0440;&#x0430;&#x0457;&#x043d;&#x0441;&#x044c;&#x043a;&#x0430;)'] = 'uk_UA';
+
 
 /**
  ** Aliases for languages with different browser and gettext codes

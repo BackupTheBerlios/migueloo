@@ -138,9 +138,9 @@ class miguel_VInstall extends miguel_VPage
 		//Add install image
 		$div->add($this->_addImage());
 
-		$div->add(html_h2(_("Instalación de miguel - Salida")));
+		$div->add(html_h2(agt("Instalación de miguel - Salida")));
 		
-		$div->add(_("Ha decidido cancelar la instalación"));
+		$div->add(agt("Ha decidido cancelar la instalación"));
 		$div->add(html_br(2));
 		$div->add(html_a(Util::main_URLPath('index.php'), 'Volver'));
 		$div->add(html_br(2));
@@ -159,9 +159,9 @@ class miguel_VInstall extends miguel_VPage
 		//Add install image
 		$div->add($this->_addImage());
 
-		$div->add(html_h2(_("Instalación de miguel - Paso 1")));
+		$div->add(html_h2(agt("Instalación de miguel - Paso 1")));
 		
-		$div->add(_("Seleccione el idioma para este Asistente de instalación"));
+		$div->add(agt("Seleccione el idioma para este Asistente de instalación"));
 		$div->add(html_br(2));
 		$div->add($this->addForm('install', 'miguel_selectLangForm'));
 			
@@ -179,27 +179,27 @@ class miguel_VInstall extends miguel_VPage
 		//Add install image
 		$div->add($this->_addImage());
 
-		$div->add(html_h2(_("Instalación de miguel - Paso 2")));
+		$div->add(html_h2(agt("Instalación de miguel - Paso 2")));
 		//$div->add(html_br());
 		
-		$div->add(_("Este asistente le ayudara a configurar miguel paso a paso."));
+		$div->add(agt("Este asistente le ayudara a configurar miguel paso a paso."));
 		$div->add(html_br(2));
 		
-		$div->add(_("Para que miguel funcione adecuadamente, se necesita:"));
+		$div->add(agt("Para que miguel funcione adecuadamente, se necesita:"));
 		$div->add(html_br(2));
 		
-		$div->add("1.- "._("Servidor Web con PHP 4.x (dispone de: "));
+		$div->add("1.- ".agt("Servidor Web con PHP 4.x (dispone de: "));
 		$div->add(html_em($_SERVER['SERVER_SOFTWARE']));
 		$div->add(")");
 		$div->add(html_br(2));
 		
-		$div->add("2.- "._("Las siguientes módulos del servidor apache instalados: "));
+		$div->add("2.- ".agt("Las siguientes módulos del servidor apache instalados: "));
 		$div->add($this->_processRequireArray($this->getViewVariable("install_require")));
 		$div->add(html_br(2));
 		
-		//$div->add(_("miguel utiliza phpMyAdmin (administrador web para MySQL), pero puede usar cualquier otro."));
+		//$div->add(agt("miguel utiliza phpMyAdmin (administrador web para MySQL), pero puede usar cualquier otro."));
 		//$div->add(html_br());
-		//$div->add(_("Para instalar miguel en un ordenador bajo Windows, solamente necesita instalar previamente "));
+		//$div->add(agt("Para instalar miguel en un ordenador bajo Windows, solamente necesita instalar previamente "));
 		//$div->add(html_a("http://www.easyphp.org", "easyphp"));
 		//$div->add(".");
 		//$div->add(html_br(2));
@@ -219,13 +219,13 @@ class miguel_VInstall extends miguel_VPage
 		//Add install image
 		$div->add($this->_addImage());
 
-		$div->add(html_h2(_("Instalación de miguel - Paso 3")));
+		$div->add(html_h2(agt("Instalación de miguel - Paso 3")));
 		
-		$div->add(_("miguel es software libre, distribuido bajo la GNU General Public License (GPL)."));
+		$div->add(agt("miguel es software libre, distribuido bajo la GNU General Public License (GPL)."));
         $div->add(html_br());
-		$div->add(_("Por favor lea la licencia y haga clic sobre 'Acepto'."));
+		$div->add(agt("Por favor lea la licencia y haga clic sobre 'Acepto'."));
 		$div->add(html_br(2));
-		$div->add(_("Lea cuidadosamente lo siguiente: "));
+		$div->add(agt("Lea cuidadosamente lo siguiente: "));
 
 		$div->add($this->addForm('install', 'miguel_licenceForm'));
 
@@ -243,12 +243,12 @@ class miguel_VInstall extends miguel_VPage
 		//Add install image
 		$div->add($this->_addImage());
 
-		$div->add(html_h2(_("Instalación de miguel - Paso 4")));
+		$div->add(html_h2(agt("Instalación de miguel - Paso 4")));
 
 
-		$div->add(html_h3(_("Configuración del acceso a la Base de Datos")));
+		$div->add(html_h3(agt("Configuración del acceso a la Base de Datos")));
 		$div->add(html_br(2));
-		$div->add(_("Este paso le ayudará a configurar el acceso a la Base de Datos de miguel."));
+		$div->add(agt("Este paso le ayudará a configurar el acceso a la Base de Datos de miguel."));
 
 		$div->add($this->addForm('install', 'miguel_ddbbForm'));
 
@@ -266,12 +266,12 @@ class miguel_VInstall extends miguel_VPage
 		//Add install image
 		$div->add($this->_addImage());
 
-		$div->add(html_h2(_("Instalación de miguel - Paso 5")));
+		$div->add(html_h2(agt("Instalación de miguel - Paso 5")));
 
 
-		$div->add(html_h3(_("Personalización del Campus Virtual")));
+		$div->add(html_h3(agt("Personalización del Campus Virtual")));
 		$div->add(html_br(2));
-		$div->add(_("Este paso le ayudará a personalizar su instalación de miguel."));
+		$div->add(agt("Este paso le ayudará a personalizar su instalación de miguel."));
 
 		$div->add($this->addForm('install', 'miguel_prefsForm'));
 
@@ -289,12 +289,12 @@ class miguel_VInstall extends miguel_VPage
 		//Add install image
 		$div->add($this->_addImage());
 
-		$div->add(html_h2(_("Instalación de miguel - Paso 6")));
+		$div->add(html_h2(agt("Instalación de miguel - Paso 6")));
 
 
-		$div->add(html_h3(_("Personalización del Campus Virtual")));
+		$div->add(html_h3(agt("Personalización del Campus Virtual")));
 		$div->add(html_br(2));
-		$div->add(_("Estos son los parámetros de personalización de su Campus en miguel."));
+		$div->add(agt("Estos son los parámetros de personalización de su Campus en miguel."));
 		$div->add(html_br(2));
 
 		$div2 = html_div('warncolor');
@@ -347,12 +347,12 @@ class miguel_VInstall extends miguel_VPage
 		//Add install image
 		$div->add($this->_addImage());
 
-		$div->add(html_h2(_("Instalación de miguel - Paso 7")));
+		$div->add(html_h2(agt("Instalación de miguel - Paso 7")));
 
 
-		$div->add(html_h3(_("Personalización del Campus Virtual")));
+		$div->add(html_h3(agt("Personalización del Campus Virtual")));
 		$div->add(html_br(2));
-		$div->add(_("Ahora ya puede empezar a disfrutar de miguel, su plataforma e-Learning GPL."));
+		$div->add(agt("Ahora ya puede empezar a disfrutar de miguel, su plataforma e-Learning GPL."));
         $div->add(html_br(2));
 		$div->add(html_a(Util::main_URLPath('index.php'), 'Acceder a miguel'));
 		$div->add(html_br(2));
@@ -389,13 +389,13 @@ class miguel_VInstall extends miguel_VPage
 			$retval = html_ul();
 			foreach ( $a as $key => $value ) {
 				if($value == 1) {
-					$elem = $key." - "._("Instalado");
+					$elem = $key." - ".agt("Instalado");
 				} else {
 					$elem = container();
 					
 					$elem->add(html_strong($key));
 					$elem->add(" - ");
-					$elem->add(_("No instalado. Para obtenerlo, ir a "));
+					$elem->add(agt("No instalado. Para obtenerlo, ir a "));
 					$elem->add(html_a("http://www.php.net/$key",$key));
 				}
 				$retval->add(html_li($elem));

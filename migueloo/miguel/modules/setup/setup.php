@@ -1,5 +1,3 @@
-#!/usr/bin/php
-
 <?php
 /*
       +----------------------------------------------------------------------+
@@ -33,6 +31,7 @@
  * @package install
  * @subpackage setup
  */
+error_reporting(0);
 
 if (!extension_loaded('gettext')) {
     echo "\nYou need the gettext PHP extension to run setup.\n\n";
@@ -77,7 +76,9 @@ function printStep($step, $message)
 	echo "\n--------------------------------------------------------------------------------";
 	echo "\n";
 }
-echo getcwd();
+/*echo getcwd();
+echo "Número: $argc\n";
+echo "Params: $argv\n";*/
 if ($argc != 2 || in_array($argv[1], array('--help', '-help', '-h', '-?'))) {
 	printHelp();
 } 
@@ -133,7 +134,7 @@ if(!$ret){
 	$setup->fatalError('setupLibs');
 }
 $setup->intro();
-
+/*
 // Sistema de ficheros original
 printStep(agt('step3b'), agt('step3bDes'));
 
@@ -168,7 +169,20 @@ if (!$setup->check('registry')) {
 } else {
 	$setup->makeRegistry();
     $setup->log(agt('step7Ok'), 'message');
-    $setup->log(agt('finalMsg'), 'success');
 }
+*/
+// Configuracion de la base de datos
+printStep(agt('step8'), agt('step8Des'));
+
+$ret = $setup->setupDDBB();
+if(!$ret){
+	$setup->fatalError('step8Err');
+} else {
+	$setup->log(agt('step8Ok'), 'success');
+}
+$setup->intro();
+
+$setup->log(agt('finalMsg'), 'success');
+
 exit(0);
 ?>

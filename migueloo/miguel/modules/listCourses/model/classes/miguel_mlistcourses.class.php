@@ -49,11 +49,10 @@ class miguel_mListCourses extends base_Model
 		$this->base_Model();
     }
 
-    function getCourse($institution_id=0, $faculty_id = 0, $department_id = 0, $area_id = 0)
+    function getCourse($user_id, $institution_id=0, $faculty_id = 0, $department_id = 0, $area_id = 0)
     {
     	//Get code cours
-    	$course = $this->Select('course', "course_id, course_name, course_description, course_access,  course_active", "institution_id = $institution_id AND faculty_id = $faculty_id AND department_id = $department_id AND area_id = $area_id AND course_active = 0 AND course_access = 0");
-
+    	$course = $this->Select('course', "course_id, course_name, course_description, course_access,  course_active", "institution_id = $institution_id AND faculty_id = $faculty_id AND department_id = $department_id AND area_id = $area_id AND course_active = 1");
     	if ($this->hasError()) {
     		$ret_val = null;
     	}
@@ -63,11 +62,20 @@ class miguel_mListCourses extends base_Model
                                 "course_name" => $course[$i]['course.course_name'],
                                 "course_description" => $course[$i]['course.course_description'],
                                 "course_access" => $course[$i]['course.course_access'],
-                                "course_active" => $course[$i]['course.course_active']);
+                                "course_active" => $course[$i]['course.course_active'],
+                                "course_isRegister" => $this->isUserSubscribe($course[$i]['course.course_id'], $user_id) );
     	}
     	
     	return ($courselem);
     }
-
+    function isUserSubscribe($course_id, $user_id) 
+    {
+      $ret_val = $this-> SelectCount('user_course', "course_id = $course_id AND user_id = $user_id");
+      if ($this->hasError()) {
+          $ret_val = 0;
+      }
+        
+    	return $ret_val;
+    }
 }
 ?>

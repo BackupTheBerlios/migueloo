@@ -41,12 +41,23 @@
   */
 class miguel_CError extends base_Controller
 {
+    /**
+	 *
+	 */
+	var $error = 0;
+    /**
+	 *
+	 */
+	var $error_message = '';
+
 	/**
 	 * This is the constructor.
 	 *
 	 */
-	function miguel_CError()
+	function miguel_CError($err, $err_msg)
 	{	
+        $this->error = $err;
+		$this->error_message = $err_msg;
 		$this->base_Controller();
 		$this->setModuleName('error');
 		$this->setModelClass('');
@@ -58,7 +69,9 @@ class miguel_CError extends base_Controller
 	{
 	    if($this->issetViewVariable('desc')){
 	       $this->setViewVariable('str_error', $this->getViewVariable('desc'));
-	    }
+	    } else {
+			$this->setViewVariable('str_error', $this->error.': '.$this->error_message);
+		}
 	    
 	    if($this->issetViewVariable('url')){
 	       $this->setViewVariable('str_url', $this->getViewVariable('url'));

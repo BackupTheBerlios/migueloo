@@ -60,7 +60,7 @@ class miguel_baseForm extends base_FormContent
 		$this->add_element($elem4);
 
         $elem5 = new FEListBox("miguelbase_cacheable", FALSE, "110px", NULL,
-        								  array(_("Inactivo") => 0,_("Activo") => 1));
+        								  array(agt("Inactivo") => 0,agt("Activo") => 1));
         $elem5->set_value($this->getViewVariable('cache_bol'));
 		$this->add_element($elem5);
 
@@ -73,31 +73,31 @@ class miguel_baseForm extends base_FormContent
 			$this->add_element($elem7);
 		}
         $this->add_element( new FEListBox("miguelbase_log_active", FALSE, "110px", NULL,
-        								  array(_("Inactivo") => 0, _("Activo") => 1)) );
+        								  array(agt("Inactivo") => 0, agt("Activo") => 1)) );
         $this->add_element( new FEListBox("miguelbase_log_type", FALSE, "110px", NULL,
-        								  array(_("Usando PHP") => 'error_log',
-        								  _("Fichero") => 'file',
-        								  _("Tabla") => 'adodb')));
+        								  array(agt("Usando PHP") => 'error_log',
+        								  agt("Fichero") => 'file',
+        								  agt("Tabla") => 'adodb')));
         $this->add_element(new FEText("miguelbase_log_file", FALSE, 60));
         $this->add_element(new FEText("miguelbase_log_table", FALSE, 5));
         $this->add_element( new FEListBox("miguelbase_log_level", FALSE, "110px", NULL,
-        								  array(_("Ninguno") => 'NONE',
-        								  _("Emergencia") => 'EMERG',
-        								  _("Alerta") => 'ALERT',
-        								  _("Crítico") => 'CRITIC',
-        								  _("Error") => 'ERROR',
-        								  _("Aviso") => 'WARNING',
-        								  _("Relevante") => 'NOTICE',
-        								  _("Informativo") => 'INFO',
-        								  _("Debug") => 'DEBUG',
-        								  _("Todos") => 'ALL')));
+        								  array(agt("Ninguno") => 'NONE',
+        								  agt("Emergencia") => 'EMERG',
+        								  agt("Alerta") => 'ALERT',
+        								  agt("Crítico") => 'CRITIC',
+        								  agt("Error") => 'ERROR',
+        								  agt("Aviso") => 'WARNING',
+        								  agt("Relevante") => 'NOTICE',
+        								  agt("Informativo") => 'INFO',
+        								  agt("Debug") => 'DEBUG',
+        								  agt("Todos") => 'ALL')));
 
         $this->add_element(new FEText("miguelbase_session_dir", FALSE, 60));
 
 
-		$this->add_element($this->_formatElem("base_SubmitButton", "Salir", "quit", _("Salir")));
-		$this->add_element($this->_formatElem("base_SubmitButton", "Siguiente", "submit", _("Siguiente")." >"));
-		$this->add_element($this->_formatElem("base_SubmitButton", "Regresar", "back", "< "._("Regresar")));
+		$this->add_element($this->_formatElem("base_SubmitButton", "Salir", "quit", agt("Salir")));
+		$this->add_element($this->_formatElem("base_SubmitButton", "Siguiente", "submit", agt("Siguiente")." >"));
+		$this->add_element($this->_formatElem("base_SubmitButton", "Regresar", "back", "< ".agt("Regresar")));
     }
 
 	function form_init_data()
@@ -117,23 +117,23 @@ class miguel_baseForm extends base_FormContent
 		$table = &html_table($this->_width,0,2,2);
         //$table->set_style("border: 1px solid");
 
-        $table->add_row(_("Directorio local"), $this->element_form("miguel_appdir"));
-        $table->add_row(_("URL"), $this->element_form("miguel_urldir"));
-        $table->add_row(_("Directorio de phpHtmlLib"), $this->element_form("miguelbase_phphtmllib"));
-        $table->add_row(_("Directorio de ADOdb"), $this->element_form("miguelbase_adodb"));
+        $table->add_row(agt("Directorio local"), $this->element_form("miguel_appdir"));
+        $table->add_row(agt("URL"), $this->element_form("miguel_urldir"));
+        $table->add_row(agt("Directorio de phpHtmlLib"), $this->element_form("miguelbase_phphtmllib"));
+        $table->add_row(agt("Directorio de ADOdb"), $this->element_form("miguelbase_adodb"));
         
-        $table->add_row(_("Cache interno"), $this->element_form("miguelbase_cacheable"));
+        $table->add_row(agt("Cache interno"), $this->element_form("miguelbase_cacheable"));
 		if($this->getViewVariable('cache_bol')){
-			$table->add_row('* '._("Directorio Cache"), $this->element_form("miguelbase_cache_dir"));
-			$table->add_row('* '._("Tiempo de Cache"), $this->element_form("miguelbase_cache_time"));
+			$table->add_row('* '.agt("Directorio Cache"), $this->element_form("miguelbase_cache_dir"));
+			$table->add_row('* '.agt("Tiempo de Cache"), $this->element_form("miguelbase_cache_time"));
 		}
 
-        $table->add_row(_("Sistema de LOG"), $this->element_form("miguelbase_log_active"));
-        $table->add_row('* '._("Tipo de LOG"), $this->element_form("miguelbase_log_type"));
-        $table->add_row('* '._("Fichero de LOG"), $this->element_form("miguelbase_log_file"));
-        $table->add_row('* '._("Tabla de LOG"), $this->element_form("miguelbase_log_table"));
-        $table->add_row('* '._("Nivel de LOG"), $this->element_form("miguelbase_log_level"));
-        $table->add_row(_("Directorio de Sessiones"), $this->element_form("miguelbase_session_dir"));
+        $table->add_row(agt("Sistema de LOG"), $this->element_form("miguelbase_log_active"));
+        $table->add_row('* '.agt("Tipo de LOG"), $this->element_form("miguelbase_log_type"));
+        $table->add_row('* '.agt("Fichero de LOG"), $this->element_form("miguelbase_log_file"));
+        $table->add_row('* '.agt("Tabla de LOG"), $this->element_form("miguelbase_log_table"));
+        $table->add_row('* '.agt("Nivel de LOG"), $this->element_form("miguelbase_log_level"));
+        $table->add_row(agt("Directorio de Sessiones"), $this->element_form("miguelbase_session_dir"));
         
 		$row = html_tr("");
 		$col1 = html_td("");

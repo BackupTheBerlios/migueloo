@@ -1,9 +1,8 @@
 listcourses,institution/index.php,id=guest,listcourses.png,Lista de Cursos,99
 todo,course/index.php,,idea.png,Sugerencias,90
 forum,course/index.php,,forumadmin.png,Foros,90
-admin,course/index.php,,admin.png,Administración,0
-newcourse,newCourse/index.php,,addcourse.png,Nuevo Curso,10
-inscrip,course/index.php,,inscription.png,Inscripción,99
+admin,course/index.php,,admin.png,AdministraciÃ›n,0
+inscrip,course/index.php,,inscription.png,InscripciÃ›n,99
 prefs,course/index.php,,profileedit.png,Preferencias,90
 askpassword,course/index.php,,lostpassword.png,Recuperar Clave,90
 logout,common/miguel_logout.php,,logout.png,Salir,99

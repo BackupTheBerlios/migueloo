@@ -28,87 +28,68 @@
 /**
  * Todo el patrón MVC se define es este paquete llamado framework
  * @package framework
- * @subpackage view
+ * @subpackage control
  */
-/**
- *
- */
- 
+
  /**
- * Define la clase encargada de registrar todas las aplicaciones disponibles
- * en la aplicación miguel.
- * Se definen los elementos básicos de el control de herramientas para miguel.
+ * Define la clase encargada de registrar todas los módulos disponibles
+ * en la aplicación.
+ * Se definen los elementos básicos del control de herramientas.
  * Permite tener una configuración base común, y la intercomunicación entre
  * módulos/herramientas.
  *
  * La idea, como otras, ha sido tomada del framework Horde
  *       http://www.horde.org/horde/
- * Esta clase es una adaptación de Registry.class del proyecto Horde.
- *   
+ * Esta clase es una reimplementación/adaptación de Registry.class del proyecto Horde.
+ *
  * @author Jesus A. Martinez Cerezal <jamarcer@inicia.es>
- * @author miguel development team <e-learning-desarrollo@listas.hispalinux.es>     
+ * @author miguel development team <e-learning-desarrollo@listas.hispalinux.es>
  * @copyright LGPL - Ver LICENCE
  * @package framework
  * @subpackage control
  * @version 1.0.0
  *
- */ 
+ */
 
-class Registry 
+class Registry
 {
-
-    /**
-     * Hash storing all of the known services and callbacks.
+	/**
+     * Tabla (hash) en la que se guardan los servicios definidos.
      *
-     * @var array $_apiCache
+     * @internal
      */
-    var $_apiCache = array();
+    var $services = array();
 
     /**
-     * Hash storing all of the registered interfaces that applications
-     * provide.
+     * Tabla (hash) en la que se guardan los interfaces definidos.
      *
-     * @var array $_interfaces
+     * @internal
      */
-    var $_interfaces = array();
+    var $interfaces = array();
 
     /**
-     * Hash storing information on each registry-aware application.
+     * Tabla (hash) en la que se guardan los modulos definidos.
      *
-     * @var array $applications
+     * @internal
      */
     var $modules = array();
 
     /**
-     * Stack of in-use applications.
+     * Pila de los módulos en uso.
      *
-     * @var array $_appStack
+     * @internal
      */
     var $_appStack = array();
 
     /**
-     * Quick pointer to the current application.
+     * Puntero al módulo en activo.
      *
-     * @var $_currentApp
+     * @internal
      */
     var $_currentApp = null;
 
     /**
-     * Cache of $prefs objects
-     *
-     * @var array $_prefsCache
-     */
-    var $_prefsCache = array();
-
-    /**
-     * Cache of application configurations.
-     *
-     * @var array $_confCache
-     */
-    var $_confCache = array();
-    
-    /**
-     * Checks if application is active
+     * Indicador de si el módulo está activo
      *
      * @var array $_confCache
      */
@@ -137,7 +118,7 @@ class Registry
 
     /**
      * Constructor.
-     * Nunca debe ser llamado. se usa el método anterior
+     * Nunca debe ser llamado. Debe usarse el método anterior: &start()
      *
      * @param optional integer $session_flags  Paráetros de sesión
      *
@@ -145,46 +126,40 @@ class Registry
      */
     function Registry($session_flags = 0)
     {
-        /* Read the registry configuration file. */
-        include_once(Util::app_Path('common/include/registry.inc.php'));
+        //Inicia el contexto de la clase
+		$this->_initContext();
 
-        /* Initialize the localization routines and variables. */
+        //Prepara el sistema de localización/internacionalización
         include_once(Util::base_Path('include/classes/nls.class.php'));
         NLS::setLang();
         NLS::setTextdomain('miguel', Util::formatPath(MIGUELGETTEXT_DIR), NLS::getCharset());
         Session::setValue('gettext', 'miguel');
 
-        /* Stop system if miguel is inactive. */
         if ($this->modules['main']['status'] == 'inactive') {
             $this->_app_active = false;
         }
 
-
-        /* Scan for all APIs provided by each app, and set other
-           common defaults like templates and graphics. */
         foreach (array_keys($this->services) as $appName) {
             $app = &$this->services[$appName];
 
             if ($this->modules[$app['module']]['status'] == 'inactive') {
                 continue;
             }
-            
+
             $this->_interfaces[$appName] = $app;
         }
-        //include_once(Util::base_Path('include/classes/debug.class.php'));
-        //Debug::oneVar($this, __FILE__, __LINE__);
     }
 
     /**
      * Informa de los módulos instalados.
      *
-     * @access public
+     * @param optional array $filter  Array con estados a informar.
      *
-     * @param optional array $status  Array con estados a informar.
-     *                                
-     * @param optional bool $assoc    Associative array with app names as keys.
+     * @param optional bool $assoc    Determina la forma del array retornado: Si true es un array asociativo, si no, array normal.
      *
      * @return array  Lista de módulos, o un array nulo
+	 *
+	 * @access public
      *                
      */
     function listModules($filter = null, $assoc = false)
@@ -197,10 +172,8 @@ class Registry
         foreach ($this->modules as $app => $params) {
             if (in_array($params['status'], $filter)) {
                 if ($assoc) {
-                    /* If assoc array requested set app as key. */
                     $apps[$app] = $app;
                 } else {
-                    /* Otherwise push into simple array. */
                     $apps[] = $app;
                 }
             }
@@ -208,25 +181,23 @@ class Registry
 
         return $apps;
     }
-    
+
     /**
-     * Informa de los módulos instalados.
+     * Informa de los servicios instalados.
      *
      * @access public
      *
-     * @param optional array $status  Array con estados a informar.
-     *                                
-     * @param optional bool $assoc    Associative array with app names as keys.
+     * @param optional array $filter  Array con estados a informar.
      *
-     * @return array  Lista de módulos, o un array nulo
-     *                
+     * @return array  Lista de servicios, o un array nulo
+     *
      */
     function listServices($filter = null)
     {
         $apps_top = array();
         $apps_mid = array();
         $apps_bottom = array();
-        
+
         if (is_null($filter)) {
             $filter = array('toolbar');
         }
@@ -235,41 +206,38 @@ class Registry
             if (in_array($params['menu'], $filter)) {
             	switch ($params['place']) {
             		case 'top':
-                		$apps_top[] = array($params['name'], $params['page'], $params['param'], 
+                		$apps_top[] = array($params['name'], $params['page'], $params['param'],
             					$params['icon'], $params['help']);
                 		break;
                 	case 'middle':
-                		$apps_mid[] = array($params['name'], $params['page'], $params['param'], 
+                		$apps_mid[] = array($params['name'], $params['page'], $params['param'],
             					$params['icon'], $params['help']);
                 		break;
                 	case 'bottom':
-                		$apps_bot[] = array($params['name'], $params['page'], $params['param'], 
+                		$apps_bot[] = array($params['name'], $params['page'], $params['param'],
             					$params['icon'], $params['help']);
-                		break;	
+                		break;
                		default:     //To middle
                 		$apps_mid[] = array($params['name'], $params['page'], $params['param'],
             					$params['icon'], $params['help']);
         		}
             }
-            
+
             $apps = array_merge($apps_top, $apps_mid, $apps_bot);
         }
 
         return $apps;
     }
-    
+
     /**
-     * Set the current application, adding it to the top of the Horde
-     * application stack. If this is the first application to be
-     * pushed, retrieve session information as well.
+     * Prepara el módulo, lo añade a la pila como módulo activo (cabeza de pila)
+     * Prepara la internacionalización/localización del módulo.
      *
+     * @param string  $app Nombre del módulo
      *
-     * @access public
-     *
-     * @param string  $app         The name of the application to push
-     *
-     * @return boolean  Whether or not the _appStack was modified.
-     *                  Return PEAR_Error on error.
+     * @return boolean  Devuelve true si el módulo está activo, si no, false.
+	 *
+	 * @access public
      */
     function pushApp($app)
     {
@@ -277,18 +245,15 @@ class Registry
             return true;
         }
 
-        /* Bail out if application is not present or inactive. */
         if (!isset($this->modules[$app]) || $this->modules[$app]['status'] == 'inactive' ) {
             return false;
         }
 
-		/* Initialize I18N/L10N */
+		/* Inicializa I18N/L10N */
 		include_once(Util::base_Path('include/classes/nls.class.php'));
 	    NLS::setLang();
         NLS::setTextdomain($this->modules[$app]['gettext'], Util::formatPath(MIGUELGETTEXT_DIR), NLS::getCharset());
 
-        /* Once we're sure this is all successful, push the new app
-         * onto the app stack. */
         array_push($this->_appStack, $app);
         $this->_currentApp = $app;
 
@@ -296,13 +261,11 @@ class Registry
     }
 
     /**
-     * Remove the current app from the application stack, setting the
-     * current app to whichever app was current before this one took
-     * over.
-     *
-     * @access public
+     * Elimina de la pila el módulo, restaurando el siguiente módulo en la pila.
      *
      * @return string  The name of the application that was popped.
+	 *
+     * @access public
      */
     function popApp()
     {
@@ -318,17 +281,88 @@ class Registry
         	   NLS::setTextdomain($this->modules[$this->_currentApp]['gettext'], Util::formatPath(MIGUELGETTEXT_DIR), NLS::getCharset());
             }
         }
-
-        
     }
     
     /**
-     * Return the current application - the app at the top of the
-     * application stack.
+     * Comprueba si un módulo de los controlados, tiene un método.
      *
+     * @param string  $str_module Nombre del módulo
+	 * @param string  $str_method Nombre del método
+	 *
+     * @return boolean
+	 *
      * @access public
+     */
+    function hasModuleMethod($str_module, $str_method)
+    {
+        return $this->hasInterface($str_module.'::'.$str_method);
+    }
+    
+    /**
+     * Comprueba si un interfaz está definido en la aplicación.
+     *
+	 * @param string  $str_interface Nombre del interfaz.
+     *
+     * @return boolean.
+	 *
+	 * @access public.
+     */
+    function hasInterface($str_interface)
+    {
+        return !empty($this->interfaces[$str_interface]);
+    }
+
+    /**
+     * LLama a un interface de un módulo activo en la aplicación.
+	 *
+	 * @param string  $str_interface Nombre del interfaz.
+	 * @param array optional  $arr_args Argumentos para la llamada.
      *
      * @return string The current application.
+	 *
+     * @access public.
+     */
+    function callInterface($str_interface, $arr_args = array())
+    {
+        $ret_val = false;
+
+        if($this->hasInterface($str_interface, true)){
+			list($module, $method) = explode('::', $str_interface);
+
+			//Validamos que el metodo realmente existe
+			$class_name = 'miguel_'.$this->interfaces[$str_interface]['interface'].'.class.php';
+			$method_name = $this->interfaces[$str_interface]['method'];
+			$file_name = $this->interfaces[$str_interface]['module'].'/model/classes/'.$class_name;
+			//Fichero de definicion incluido
+			if(file_exists(Util::app_Path($file_name))) {
+				include_once($file_name);
+				$obj_data = new $class_name();
+
+				//Metodo existe en clase
+				if(method_exist($obj_data, $method)){
+                    $ret_val = call_user_func_array(array(&$obj_data, $method_name), $arr_args);
+				} else {
+                    $this->_setError('Method not found in class.', ERROR);
+				}
+
+			} else {
+				$this->_setError('Class file not found.', ERROR);
+			}
+
+
+        } else {
+            $this->_setError('Interface not defined: '.$str_interface, ERROR);
+        }
+
+        return $ret_val;
+    }
+
+	/**
+     * Devuelve el dominio gettext actual
+     *
+     * @return string Dominio gettext
+	 *
+     * @access public
      */
     function gettextDomain()
     {
@@ -336,29 +370,38 @@ class Registry
     }
 
     /**
-     * Return the current application - the app at the top of the
-     * application stack.
+     * Devuelve el perfil de acceso del módulo activo
+	 *
+	 * @param string $str_service Nombre del servicio
      *
+     * @return string Perfil.
+	 *
      * @access public
+     */
+    function getProfileService($str_service)
+    {
+        return $this->services[$str_service]['profile'];
+    }
+
+    /**
+     * Devuelve el nombre dl módulo activo
      *
-     * @return string The current application.
+     * @return string Módulo activo
+	 *
+     * @access public
      */
     function getApp()
     {
         return $this->_currentApp;
     }
-    
+
     /**
-     * Informa de los módulos instalados.
+     * Informa de los temas instalados.
      *
+     * @return array  Lista de temas.
+	 *
      * @access public
      *
-     * @param optional array $status  Array con estados a informar.
-     *                                
-     * @param optional bool $assoc    Associative array with app names as keys.
-     *
-     * @return array  Lista de módulos, o un array nulo
-     *                
      */
     function listThemes()
     {
@@ -366,5 +409,104 @@ class Registry
 
         return Theme::getActiveThemes();
     }
+
+	/*
+	 * Carga el fichero de configuración
+	 * @internal
+	 *
+	 */
+	function _initContext()
+	{
+		if(file_exists(Util::app_Path('common/include/registry.xml'))) {
+			$this->_processXMLInitData(Util::app_Path('common/include/registry.xml'));
+		} else {
+		  $this->_setError('Registry file not found.', FATAL);
+		}
+	}
+
+	/*
+	 * Procesa el fichero de configuración
+	 * El fichero de configuración está en formato XML.
+	 * @param string $str_fileName Nombre del fichero de configuración
+	 *
+	 * @internal
+	 *
+	 */
+  	function _processXMLInitData($str_fileName)
+	{
+		//Include XMLMini
+		require_once (Util::base_Path("include/miniXML/minixml.inc.php"));
+
+		//Abrimos el fichero
+		$xml_obj = new MiniXMLDoc();
+
+		//Procesamos el contenido
+		$xml_obj->fromFile($str_fileName);
+
+		//Cargamos la variable
+		$xml_root 		=& $xml_obj->getElementByPath('registry');
+		$num_elem 		=  $xml_root->numChildren();
+		$root_elements 	=& $xml_root->getAllChildren();
+
+		for($i=0; $i < $num_elem; $i++){
+		    //Datos del modulo		
+			$data			=& $root_elements[$i]->getElementByPath('data');
+            $module			=& $data->getElementByPath('name');
+			$data_elements 	=& $data->getAllChildren();
+
+			for ($j=0; $j < $data->numChildren(); $j++) {
+				$this->modules[$module->getValue()][$data_elements[$j]->name()] = $data_elements[$j]->getValue();
+
+			}
+			
+			//Datos de los servicios
+			$services           =& $root_elements[$i]->getElementByPath('services');
+			$services_elements 	=& $services->getAllChildren();	
+
+			for ($j=0; $j < $services->numChildren(); $j++) {
+			     $service_element 	=& $services_elements[$j]->getAllChildren();
+			     $service_name =& $services_elements[$j]->getElementByPath('name');
+			
+			     for ($k=0; $k < $services_elements[$j]->numChildren(); $k++) {
+				    $this->services[$service_name->getValue()][$service_element[$k]->name()] = $service_element[$k]->getValue();
+				 }
+				 $this->services[$service_name->getValue()]['module'] = $module->getValue();
+			}
+			
+			//Datos de los interfaces
+			$functions           =& $root_elements[$i]->getElementByPath('functions');
+			$functions_elements 	=& $functions->getAllChildren();	
+			
+			for ($j=0; $j < $functions->numChildren(); $j++) {
+			     $function_element 	=& $functions_elements[$j]->getAllChildren();
+			     $method      	=& $functions_elements[$j]->getElementByPath('method');
+			     $inter_name = $module->getValue().'::'.$method->getValue();
+			     
+                 for ($k=0; $k < $functions_elements[$j]->numChildren(); $k++) {
+				    $this->interfaces[$inter_name][$function_element[$k]->name()] = $function_element[$k]->getValue();
+				 }
+				 $this->interfaces[$inter_name]['module'] = $module->getValue();
+			}
+		}
+
+		//Cerramos el xml
+		unset($xml_obj);
+	}
+	
+	/**
+	 * Lanza un error al sistema de errores.
+	 * @param string $msg_error Literal asociado al error.
+	 * @param string $type_error Nivel de error.
+	 *
+	 * @todo Optimización general del sistema de errores.
+	 *
+	 * @internal
+     *
+	 */
+	function _setError($str_error, $type_error)
+	{
+        trigger_error('Registry::'.$str_error, $type_error);
+        return;
+	}
 }
 ?>

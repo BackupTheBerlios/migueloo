@@ -27,7 +27,7 @@
       +----------------------------------------------------------------------+
 */
 /**
- * M�dulo encargado de crear cursos.
+ * MÛdulo encargado de crear cursos.
  *
  * @author Antonio F. Cano Damas <antoniofcano@telefonica.net>
  * @author miguel development team <e-learning-desarrollo@listas.hispalinux.es>     
@@ -41,7 +41,7 @@
  */
 
 
-class miguel_CNewCourse extends base_Controller
+class miguel_CNewCourse extends miguel_Controller
 {
 	/**
 	 * This is the constructor.
@@ -49,8 +49,8 @@ class miguel_CNewCourse extends base_Controller
 	 */
 	function miguel_CNewCourse()
 	{	
-		$this->base_Controller();
-        $this->setModuleName('newCourse');
+		$this->miguel_Controller();
+    $this->setModuleName('newCourse');
 		$this->setModelClass('miguel_MNewCourse');
 		$this->setViewClass('miguel_VNewCourse');
 	}
@@ -63,37 +63,66 @@ class miguel_CNewCourse extends base_Controller
         if ( isset($user_id) && $user_id != '' ) { 
             $bol_hasAccess = true;
         }
+
+     	  $navinfo_institution = $this->getSessionElement( 'navinfo', 'institution_id' );
+        $navinfo_faculty = $this->getSessionElement( 'navinfo', 'faculty_id' );
+        $navinfo_department = $this->getSessionElement( 'navinfo', 'department_id' );
+        $navinfo_area = $this->getSessionElement( 'navinfo', 'area_id' );                
+        $test_nav = $this->obj_data->testNav($navinfo_institution, $navinfo_faculty, $navinfo_department, $navinfo_area);
+        if ( !$test_nav ) {
+            //Hay un problema de integridad en los datos de la jerarquía
+            header('Location:' . Util::format_URLPath('main/index.php') );                	
+        }
         
-	    if ( $bol_hasAccess ) {
+        if ( $bol_hasAccess ) {
             if ($this->issetViewVariable('submit')) {
                 $courseData = array('name' => $this->getViewVariable('coursename'),
-                                      'description' => $this->getViewVariable('coursedescription'),
-                                      'institution' => $this->getViewVariable('courseinstitution'),
-                                      'faculty' => $this->getViewVariable('coursefaculty'),
-                                      'department' => $this->getViewVariable('coursedepartment'),
-                                      'area' => $this->getViewVariable('coursearea'),
-                                      'access' => $this->getViewVariable('courseaccess'),
-                                      'active' => $this->getViewVariable('courseactive'),
-                                      'user_id' => $user_id,
-                                      'language' => 'es_es');
+                                    'description' => $this->getViewVariable('coursedescription'),
+                                    'institution' => $navinfo_institution,
+                                    'faculty' => $navinfo_faculty,
+                                    'department' => $this->getSessionElement( 'navinfo', 'department_id' ),
+                                    'area' => $this->getSessionElement( 'navinfo', 'area_id' ),
+                                    'access' => $this->getViewVariable('courseaccess'),
+                                    'active' => $this->getViewVariable('courseactive'),
+                                    'user_id' => $user_id,
+                                    'language' => $this->getViewVariable('courselanguage'));
+                //Hay que hacer un unset SessionElement( 'navinfo')
+                $this->clearSessionElement('navinfo', 'institution_id');
+                $this->clearSessionElement('navinfo', 'faculty_id');
+                $this->clearSessionElement('navinfo', 'department_id');
+                $this->clearSessionElement('navinfo', 'area_id');                                                
+                                
                 $this->obj_data->insertNewCourse($courseData);
                 $this->obj_data->insertUserCourse($user_id, $this->obj_data->getCourseId( $courseData['name'] ) );                
                 $this->setViewClass('miguel_VResultNewCourse');   
                 $this->setViewVariable('courseName', $courseData['name']);
                 $this->setViewVariable('courseDescription', $courseData['description']);
 
+                //Realiza la notificacion si esta permitido
+                if ( $this->getSessionElement( 'userinfo', 'notify_email' ) ) {
+                	include_once(Util::base_Path("include/classes/mailer.class.php"));
+                  $mail = new miguel_mailer();
+
+                  $mail->From = $this->getSessionElement( 'userinfo', 'email' );
+                  $mail->FromName =  $this->getSessionElement( 'userinfo', 'name' ) . ' ' . $this->getSessionElement( 'userinfo', 'surname' ) ;
+                  $mail->AddAddress($this->getSessionElement( 'userinfo', 'email' ), $this->getSessionElement( 'userinfo', 'name' ));
+                  $mail->AddReplyTo($this->getSessionElement( 'userinfo', 'email' ), $this->getSessionElement( 'userinfo', 'name' ));
+                  
+                  $mail->Subject = agt('miguel_newCourseSubject') . ' ' . $courseData['name'];
+                  $mail->Body    = $course_name . ',\n ' . agt('miguel_newCourseSubscriptionBody') . '\n' . agt('miguel_disclaimer');                  if(!$mail->Send())
+                  {
+                      echo "Message could not be sent. <p>";
+                      echo "Mailer Error: " . $mail->ErrorInfo;
+                      exit;
+                  }
+                }
                 $this->setCacheFile("miguel_VResultNewCourse_" . $this->getSessionElement("userinfo","user_id"));
                 $this->setCacheFlag(true);  		
 
                 $this->setMessage(agt('miguel_ResultNewCourse') );
                 $this->setPageTitle( 'miguel_ResultNewCourse' );
-            } else {
-                $this->setViewVariable('arr_listInstitution', $this->obj_data->getInstitution() );
-                $this->setViewVariable('arr_listFaculty', $this->obj_data->getFaculty() );
-                $this->setViewVariable('arr_listDepartment', $this->obj_data->getDepartment() );
-	            $this->setViewVariable('arr_listArea', $this->obj_data->getArea() );	    
-  		
-                //$this->addNavElement(Util::format_URLPath("newCourse/index.php", "course=".$course_id), $infoCourse['name']);
+           } else {
+                 //$this->addNavElement(Util::format_URLPath("newCourse/index.php", "course=".$course_id), $infoCourse['name']);
 		 
                 $this->setCacheFile("miguel_VNewCourse_" . $this->getSessionElement("userinfo","user_id"));
                 $this->setCacheFlag(true);  		

@@ -94,11 +94,16 @@ class miguel_VAuth extends miguel_VMenu
 		
 		$ret_val->add(html_h4("Inscripción al Campus Virtual"));
 		
-		$ret_val->add($this->addForm('auth', 'miguel_inscriptionForm'));
-            	
+		 if ($this->issetViewVariable('newclient') && $this->getViewVariable('newclient') == 'ok') {
+            $ret_val->add(html_h2(agt('Alta de usuario correcta.')));
+			$ret_val->add(html_a(Util::main_URLPath('index.php'), agt('Regresar a la página principal')));
+			$ret_val->add(html_br(2));
+			$ret_val->add(html_a(Util::app_URLPath('auth/index.php'), agt('Nuevo Usuario')));
+		} else {
+			$ret_val->add($this->addForm('auth', 'miguel_inscriptionForm'));
+		}
         return $ret_val;
     }
- 
 }
 
 ?>

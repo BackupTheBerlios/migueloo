@@ -40,7 +40,7 @@
  * Include libraries
  */
 
-class miguel_CInstall extends base_Controller
+class miguel_CInstall extends miguel_Controller
 {
 	/**
 	 * This is the constructor.
@@ -48,7 +48,7 @@ class miguel_CInstall extends base_Controller
 	 */
 	function miguel_CInstall()
 	{	
-		$this->base_Controller(false);
+		$this->miguel_Controller(false);
 		$this->setModuleName('install');
 		$this->setModelClass('miguel_MInstall');
 		$this->setViewClass('miguel_VInstall');
@@ -277,7 +277,7 @@ class miguel_CInstall extends base_Controller
                             $this->setSessionElement('admin_user', $this->getViewVariable('miguel_admin_user'));
                             $this->setSessionElement('admin_passwd', $this->getViewVariable('miguel_admin_passwd'));
                             $this->setSessionElement('admin_theme', $this->getViewVariable('miguel_admin_theme'));
-                            if($this->getViewVariable('miguel_cript_passwd') == _('Si')){
+                            if($this->getViewVariable('miguel_cript_passwd') == agt('Si')){
                                 $cripted = 'true';
                             } else {
                                 $cripted = 'false';

@@ -40,7 +40,8 @@
  * Include libraries
  */
 
-class miguel_CTodo extends base_Controller
+//El controlador hereda de miguel_Controller la superclase controlador de miguelOO
+class miguel_CTodo extends miguel_Controller
 {
 	/**
 	 * This is the constructor.
@@ -48,42 +49,65 @@ class miguel_CTodo extends base_Controller
 	 */
 	function miguel_CTodo() 
 	{	
-		$this->base_Controller();
+                //Ejecuta el constructor de la clase padre
+		$this->miguel_Controller();
+
+                //Inicializamos algunas propiedades del módulo
+                //Nombre del módulo, ha de coincidir con registry.xml
 		$this->setModuleName('todo');
+
+                //Nombre de la clase del Modelo, el fichero será miguel_mtodo.class.php
 		$this->setModelClass('miguel_MTodo');
+
+                //Nombre de la clase Vista por defecto, como la página no se renderiza hasta el final de la ejecución esta puede cambiar en cualquier momento
 		$this->setViewClass('miguel_VTodo');
+
+                //Indicamos si deseamos Cachear la página
 		$this->setCacheFlag(false);
 	}
-     
+    
+        //Esta función ejecuta el Controlador 
 	function processPetition() 	
 	{
 	   $bol_insert = false;
-	   //dbg_var($this->arr_form, __FILE__, __LINE__);
-        if(isset($this->arr_form['nombre']) && $this->arr_form['nombre'] != ''){
-            if(isset($this->arr_form['email']) && $this->arr_form['email'] != ''){
-		  	   if(isset($this->arr_form['comentario']) && $this->arr_form['comentario'] != ''){
-		  	       $this->obj_data->insertSugestion($this->arr_form['nombre'], $this->arr_form['email'], $this->arr_form['comentario']);
+           //Comprueba el contenido de la Variable nombre. Esta se le pasa como entrada al controlador y puede venir de un formulario o un link
+           if( $this->issetViewVariable('nombre') && $this->getViewVariable('nombre') != ''){
+              //Comprobamos la variable email
+              if( $this->issetViewVariable('email') && $this->getViewVariable('email') != ''){
+		     if( $this->issetViewVariable('comentario') && $this->getViewVariable('comentario') != ''){
+                               //Realizamos una llamada al Modelo $this->obj_data->Método(Parámetros);
+		  	       $this->obj_data->insertSugestion($this->getViewVariable('nombre'), $this->getViewVariable('email'), $this->getViewVariable('comentario'));
+
 		  	       //Poner control
 		  	       $bol_insert = true;
+
+                               //Enviamos a la vista la información a Mostrar
 		  	       $this->setViewVariable('sug_nombre', $this->arr_form['nombre']);
 		  	       $this->setViewVariable('sug_email', $this->arr_form['email']);
 		  	       $this->setViewVariable('sug_comentario', $this->arr_form['comentario']);
-                   //Debug::oneVar($this->obj_data, __FILE__, __LINE__);
+
+                               //Operación de Depuración, necesita tener activadas las ventanas pop-up en el navegador. __FILE__ y __LINE__ son constantes del sistema
+                               //Debug::oneVar($this->obj_data, __FILE__, __LINE__);
 		      }
-		    }
-		}
-		
-		if($bol_insert){
+	       }
+	    }
+
+            //Dependiendo de la acción ejecutada se muestra una Vista (Formulario) u otra (Confirmación de la entrada)
+            //En este caso se utiliza una única vista para dos acciones. Por lo general se hace con setViewClass() y se define una clase vista para cada una de las acciones
+	    if($bol_insert){
 		  $this->setPageTitle("miguel Todo Page");
-		  $this->setMessage("Gracias por su colaboración");
+		  $this->setMessage("Gracias por su colaboraciÃ›n");
 		  $this->setViewVariable('bol_cuestion', false);
-		} else {
+	    } else {
 		  $this->setPageTitle("miguel Todo Page");
-		  $this->setMessage("Aquí puede presentar su sugerencia, comentario, protesta,... sobre miguel");
+		  $this->setMessage("AquÃŒ puede presentar su sugerencia, comentario, protesta,... sobre miguel");
 		  $this->setViewVariable('bol_cuestion', true);
-		}
-		$this->setHelp("");	
-		$this->addNavElement(Util::format_URLPath("todo/index.php"), "Sugerencia");	
+	   }
+
+           //Establece cual va a ser el archivo de la ayuda on-line, este se obtiene del directorio help/
+	   $this->setHelp("");
+
+           //En la barra de navegación superior, la que se usa para no perdernos. Añade un enlace a esta barra de enlaces.
+	   $this->addNavElement(Util::format_URLPath("todo/index.php"), "Sugerencia");	
 	}
-    
 }

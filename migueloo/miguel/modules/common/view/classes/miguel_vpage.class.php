@@ -56,8 +56,9 @@
  * @version 1.0.0
  *
  */ 
+include_once(Util::app_Path("common/view/classes/miguel_vbase.class.php"));
 
-class miguel_VPage extends base_LayoutPage
+class miguel_VPage extends miguel_VBase
 {
 	/**
 	 * @access private
@@ -77,19 +78,7 @@ class miguel_VPage extends base_LayoutPage
         
         $this->base_LayoutPage($this->str_title, $arr_commarea);
     }
-    
-    function initialize()
-    {
-        //Preparamos valores para los header de la página
-        $this->add_head_content("<meta name=\"keywords\" content=\"miguel,hispalinux,indetec,campus,ecampus,e-campus,classroom,elearning,learning,pedagogy,platform,teach,teaching,teacher,prof,professor,student,study,open,source,gpl,mysql,php,e-learning, apprentissage,ecole,universite,university,contenu,classe, universidad, enseÃ±anza, virtual, distribuida, sl, gpl, software, libre, clases, aprendizaje, proceso\">"); 
-        $this->add_head_content("<link rel=\"icon\" href=\"".Theme::getThemeImagePath('favicon.png')."\" type=\"image/png\">");
-		
-		//Hojas de estilo CSS
-		$this->add_css_link(Theme::getThemeCSSPath('common.css'));
-		$this->add_css_link(Theme::getThemeCSSPath('headers.css'));
-		$this->add_css_link(Theme::getThemeCSSPath('index.inc.css'));
-    }
-
+	
 	/**
 	 * Define la estructura global de la página
 	 *
@@ -122,9 +111,8 @@ class miguel_VPage extends base_LayoutPage
 		$this->add( html_comment( "Footer block begins") );
 		NLS::setTextdomain('common', Util::formatPath(MIGUELGETTEXT_DIR), NLS::getCharset());
 		$this->add( $this->footer_block() );
-		$this->add( html_comment( "Footer block ends") );        
+		$this->add( html_comment( "Footer block ends") );
 	}
-
 
     /**
      * Define el valor de la cabecera.

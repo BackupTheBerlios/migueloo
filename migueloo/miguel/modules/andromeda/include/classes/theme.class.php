@@ -29,7 +29,7 @@
       +----------------------------------------------------------------------+
 */
 /**
- * Todo el patrón MVC se define es este paquete llamado framework
+ * Todo el patrÃ›n MVC se define es este paquete llamado framework
  * @package framework
  * @subpackage include
  */
@@ -137,7 +137,17 @@ class Theme
         return html_img( Theme::getURLTheme() . 'image/' . $imag_path, 0, 0, 0, $description);
      }
      
-     
+     /**
+      * Devuelve una URL a una direccion de e-mail
+      *
+      * @public
+      */
+     function getMailURL($email, $user_id = 0) 
+     {
+     //Cuando este implementado el modulo mailBox si $user_id > 0 entonces muestra un enlace a escribir mensaje desde miguel
+        return "mailto:$email";
+     }
+	     
      /**
       * Devuelve el path al tema
       *

@@ -26,7 +26,7 @@
       +----------------------------------------------------------------------+
 */
 /**
- * Todo el patrón MVC se define es este paquete llamado framework
+ * Todo el patrÃ›n MVC se define es este paquete llamado framework
  * @package framework
  * @subpackage view
  */
@@ -60,9 +60,20 @@ class base_FormContent extends FormContent
     function form_action() {
         return true;
     }
+    /**
+     * This method gets called after the FormElement data has
+     * passed the validation.  This enables you to validate the
+     * data against some backend mechanism, say a DB.
+     *
+     */
+    function form_backend_validation() 
+    {
+        //La validaciÃ³n se hacen en el controlador
+        return TRUE;
+    }
 
     /**
-	 * Recupera el valor de una variable que se usará en la vista.
+	 * Recupera el valor de una variable que se usarÂ· en la vista.
 	 * @param string $str_name Nombre de la variable
 	 * @return mixto Valor de la variable
 	 */

@@ -113,18 +113,18 @@ class miguel_prefsForm extends base_FormContent
 		$elem13->set_style_attribute('id', 'install');
 		$this->add_element($elem13);
 		
-		$elem14 = new FEYesNoRadioGroup("miguel_cript_passwd", FALSE, _('Si'), _('No'));
+		$elem14 = new FEYesNoRadioGroup("miguel_cript_passwd", FALSE, agt('Si'), agt('No'));
 		if($this->getViewVariable('inst_cript_passwd')){
-            $elem14->set_value(_('Si'));
+            $elem14->set_value(agt('Si'));
         } else {
-            $elem14->set_value(_('No'));
+            $elem14->set_value(agt('No'));
         }
 		$elem14->set_style_attribute('id', 'install');
 		$this->add_element($elem14);
 
-		$this->add_element($this->_formatElem("base_SubmitButton", "Salir", "quit", _("Salir")));
-		$this->add_element($this->_formatElem("base_SubmitButton", "Siguiente", "submit", _("Siguiente")." >"));
-		$this->add_element($this->_formatElem("base_SubmitButton", "Regresar", "back", "< "._("Regresar")));
+		$this->add_element($this->_formatElem("base_SubmitButton", "Salir", "quit", agt("Salir")));
+		$this->add_element($this->_formatElem("base_SubmitButton", "Siguiente", "submit", agt("Siguiente")." >"));
+		$this->add_element($this->_formatElem("base_SubmitButton", "Regresar", "back", "< ".agt("Regresar")));
     }
 
 	function form_init_data()
@@ -143,20 +143,20 @@ class miguel_prefsForm extends base_FormContent
 		$table = &html_table($this->_width,0,2,2);
         //$table->set_style("border: 1px solid");
 
-        $table->add_row(_("Nombre del Campus Virtual"), $this->element_form("miguel_campus_name"));
-		$table->add_row(_("Nombre de la Institución"), $this->element_form("miguel_inst_name"));
-		$table->add_row(_("URL de la Institución"), $this->element_form("miguel_inst_url"));
-		$table->add_row(_("Jefe de Estudios"), $this->element_form("miguel_director_name"));
-		$table->add_row(_("E-mail de contacto"), $this->element_form("miguel_director_email"));
-		$table->add_row(_("Teléfono de contacto"), $this->element_form("miguel_inst_phone"));
-		$table->add_row(_("Idioma del Campus"), $this->element_form("miguel_campus_lang"));
-		$table->add_row(_("Nombre del administrador"), $this->element_form("miguel_admin_name"));
-		$table->add_row(_("Apellido del administrador"), $this->element_form("miguel_admin_surname"));
-		$table->add_row(_("Usuario del administrador"), $this->element_form("miguel_admin_user"));
-		$table->add_row(_("Contraseña del administrador"), $this->element_form("miguel_admin_passwd"));
-		$table->add_row(_("Cofirmación de Contraseña"), $this->element_form("miguel_admin_passwd2"));
-		$table->add_row(_("Tema visual del administrador"), $this->element_form("miguel_admin_theme"));
-		$table->add_row(_("Encriptar contraseñas de usuarios"), $this->element_form("miguel_cript_passwd"));
+        $table->add_row(agt("Nombre del Campus Virtual"), $this->element_form("miguel_campus_name"));
+		$table->add_row(agt("Nombre de la Institución"), $this->element_form("miguel_inst_name"));
+		$table->add_row(agt("URL de la Institución"), $this->element_form("miguel_inst_url"));
+		$table->add_row(agt("Jefe de Estudios"), $this->element_form("miguel_director_name"));
+		$table->add_row(agt("E-mail de contacto"), $this->element_form("miguel_director_email"));
+		$table->add_row(agt("Teléfono de contacto"), $this->element_form("miguel_inst_phone"));
+		$table->add_row(agt("Idioma del Campus"), $this->element_form("miguel_campus_lang"));
+		$table->add_row(agt("Nombre del administrador"), $this->element_form("miguel_admin_name"));
+		$table->add_row(agt("Apellido del administrador"), $this->element_form("miguel_admin_surname"));
+		$table->add_row(agt("Usuario del administrador"), $this->element_form("miguel_admin_user"));
+		$table->add_row(agt("Contraseña del administrador"), $this->element_form("miguel_admin_passwd"));
+		$table->add_row(agt("Cofirmación de Contraseña"), $this->element_form("miguel_admin_passwd2"));
+		$table->add_row(agt("Tema visual del administrador"), $this->element_form("miguel_admin_theme"));
+		$table->add_row(agt("Encriptar contraseñas de usuarios"), $this->element_form("miguel_cript_passwd"));
 
 		$row = html_tr("");
 		$col1 = html_td("");

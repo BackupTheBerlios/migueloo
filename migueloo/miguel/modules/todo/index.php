@@ -26,12 +26,16 @@
       |                       <e-learning-desarrollo@listas.hispalinux.es>   |      
       +----------------------------------------------------------------------+
 */
+
+//Carga el código de Andromeda
 include_once ("../common/miguel_base.inc.php");
 
+//Carga el código del controlador
 include_once (Util::app_Path("todo/control/classes/miguel_ctodo.class.php"));
 
-
+//Instancia un Controlador en memoria. Esto al mismo tiempo inicializa el modelo y la vista
 $miguel = new miguel_CTodo();
 
+//Ejecuta el controlador
 $miguel->Exec();
 ?>

@@ -22,6 +22,7 @@
       |   the world-wide-web at http://www.gnu.org/copyleft/gpl.html         |
       +----------------------------------------------------------------------+
       | Authors: Jesus A. Martinez Cerezal <jamarcer@inicia.es>              |
+      |          Antonio F. Cano Damas <antoniofcano@telefonica.net>         |
       |          miguel Development Team                                     |
       |                       <e-learning-desarrollo@listas.hispalinux.es>   |      
       +----------------------------------------------------------------------+
@@ -29,9 +30,9 @@
 /**
  * Define la clase para la pantalla principal de miguel.
  *
- * Se define una plantilla común para todas las pantallas de miguel:
+ * Se define una plantilla comË™n para todas las pantallas de miguel:
  *  + Bloque de cabecera en la parte superior.
- *  + Bloque central, donde se presentará la información
+ *  + Bloque central, donde se presentarÂ· la informaciÃ›n
  *  + Bloque de pie en la parte inferior
  *
  * --------------------------------
@@ -47,6 +48,7 @@
  * Utiliza la libreria phphtmllib.
  *
  * @author Jesus A. Martinez Cerezal <jamarcer@inicia.es>
+ * @author Antonio F. Cano Damas <antoniofcano@telefonica.net>
  * @author miguel development team <e-learning-desarrollo@listas.hispalinux.es>     
  * @package miguel base
  * @subpackage view
@@ -85,18 +87,18 @@ class miguel_VCourse extends miguel_VMenu
      */
     function right_block() 
     {
-		$ret_val = container();
+        $ret_val = container();
 		
-		$hr = html_hr();
-		$hr->set_tag_attribute("noshade");
-		$hr->set_tag_attribute("size", 2);
-		$ret_val->add($hr);
+        $hr = html_hr();
+        $hr->set_tag_attribute("noshade");
+        $hr->set_tag_attribute("size", 2);
+	      $ret_val->add($hr);
 		
-		$div = html_div();
-		$div->add( Theme::getThemeImage('edcenters.png') );
+	      $div = html_div();
+ 	      $div->add( Theme::getThemeImage('edcenters.png') );
         
-        $path_arr = $this->getViewVariable('infoPath');
-        
+        $infoCourse = $this->getViewVariable('infoCourse');
+        $path_arr = $infoCourse['path'];       
         $strPath = $path_arr['institution'];
         if ( $path_arr['faculty'] != '' ) {
             $strPath .= '&nbsp;>&nbsp;';
@@ -110,47 +112,49 @@ class miguel_VCourse extends miguel_VMenu
             $strPath .= '&nbsp;>&nbsp;';
         }
         $strPath .= $path_arr['area'];
-		$div->add( $strPath );
+        $div->add( $strPath );
 		
-		$div->add(html_br());
+        $div->add(html_br());
 
-        $infoCourse = $this->getViewVariable('infoCourse');
-		$div->add(Theme::getThemeImage('info.png', $infoCourse['name']) );
-		$div->add(html_b(html_a(Util::format_URLPath("course/index.php", 'course=' . $infoCourse['course_id']), $infoCourse['name'])));
-		$div->add(html_br());
-		$div->add(html_b( agt('miguel_responsable') . ' ' . $infoCourse['user_responsable']));
-		$div->add(html_br(2));
+        
+        $div->add(Theme::getThemeImage('info.png', $infoCourse['name']) );
+        $div->add(html_b(html_a(Util::format_URLPath("course/index.php", 'course=' . $infoCourse['course_id']), $infoCourse['name'])));
+        $div->add(html_br());
+        
+        $mailLink = Theme::getMailURL($infoCourse['email'], Session::getValue('migueloo_userinfo_user_id') );        
+        $div->add(html_b( agt('miguel_responsable') . ' '), html_a( $mailLink,  $infoCourse['user_responsable']));
+        $div->add(html_br(2));
 		
-		$table = html_table("100%",0,8,0);
-		$table->set_class("simple");
-		$table->set_id("modules");
-		$table->set_tag_attribute("valign", "top"); 
+        $table = html_table("100%",0,8,0);
+        $table->set_class("simple");
+        $table->set_id("modules");
+        $table->set_tag_attribute("valign", "top"); 
 		
-		$arr_elem = $this->_getModuleElements();
-		$int_elem = count($arr_elem);
+        $arr_elem = $this->_getModuleElements();
+        $int_elem = count($arr_elem);
 
-		for($i=0; $i<$int_elem; $i = $i+2){
+        for($i=0; $i<$int_elem; $i = $i+2){
             $row = html_tr();
-			$col = html_td("","left"); 
-			$col->add( $this->imag_ref( Util::format_URLPath( $arr_elem[$i][0]), Theme::getThemeImagePath( $arr_elem[$i][1] ), agt('miguel_Module' . $arr_elem[$i][2]) ) );
-			$row->add($col);
+			      $col = html_td("","left"); 
+            $col->add( $this->imag_ref( Util::format_URLPath( $arr_elem[$i][0]), Theme::getThemeImagePath( $arr_elem[$i][1] ), agt('miguel_Module' . $arr_elem[$i][2]) ) );
+            $row->add($col);
 
             $col = html_td("","left");
             if ( $arr_elem[$i+1][0] != ''  ){
-			    $col->add( $this->imag_ref(Util::format_URLPath( $arr_elem[$i+1][0]), Theme::getThemeImagePath( $arr_elem[$i+1][1] ), agt( 'miguel_Module' . $arr_elem[$i+1][2]) ));
-			    $row->add($col);
-        	}
+			        $col->add( $this->imag_ref(Util::format_URLPath( $arr_elem[$i+1][0]), Theme::getThemeImagePath( $arr_elem[$i+1][1] ), agt( 'miguel_Module' . $arr_elem[$i+1][2]) ));
+			        $row->add($col);
+        	  }
        	    $table->add_row($row);      
-    	}
+    	  }
     	
-		$div->add( $table );
-		$ret_val->add($div);
+        $div->add( $table );
+        $ret_val->add($div);
             	
         return $ret_val;
     }
     
     /**
-     * Obtiene los modulos a incluiren el área principal
+     * Obtiene los modulos a incluiren el Â·rea principal
      * @internal
      */
     function _getModuleElements()

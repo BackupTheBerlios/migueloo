@@ -65,11 +65,12 @@ class Setup_cli extends Setup {
 	var $cachepath	 		= null; 
 	var $log     	 		= null;    
 	var $logtype	 		= null; 
-	var $logpath	 		= null; 
+	var $logpath	 		= null;
 	var $logtable	 		= null; 
 	var $loglevel	 		= null; 
 	var $sessiontime 		= null;
 	var $sessionpath 		= null;
+	var $errorpath	 		= null;
 
     /**
      * Constructs a new Setup object using the CLI interface.
@@ -210,14 +211,17 @@ class Setup_cli extends Setup {
 	function fsChoice()
     {
     	$fs_ok = $this->cli->prompt(agt('fsAsk'), array(agt('opcY') => agt('opcSi'), agt('opcN') => agt('opcNo')));
-    	if ($fs_ok == agt('opcN')) {
+        $var_path = $this->miguel_path.'/'.$this->miguel_name.'/var/temp/';
+		//Error log por defecto siempre bajo FS original
+		$this->errorpath = $var_path.'log/error.log';
+
+		if ($fs_ok == agt('opcN')) {
     		$this->fsOrig = '0';
     	} else {
     		$this->fsOrig = '1';
-       		$var_path = $this->miguel_path.'/'.$this->miguel_name.'/var/temp/';
             $this->cachepath = $var_path.'cache/';
 			$this->logpath = $var_path.'log/miguel.log';
-			$this->sessionpath = $var_path.'session/';
+			$this->sessionpath = $var_path.'session';
 
 			if (file_exists($var_path)) {
         	   $this->log(agt('fsOk'), 'success');
@@ -250,7 +254,7 @@ class Setup_cli extends Setup {
     function setupLog()
     {
     	$log_ok = $this->cli->prompt(agt('logAsk'), array(agt('opcY') => agt('opcSi'), agt('opcN') => agt('opcNo')));
-    	if ($log_ok == agt('opcN')) {
+     	if ($log_ok == agt('opcN')) {
     		$this->log = '0';
     	} else {
     		$this->log = '1';
@@ -374,6 +378,83 @@ class Setup_cli extends Setup {
         }
     }
 
+	function setupDDBB()
+    {
+        require_once($this->adodb_path.'/adodb.inc.php');
+		require_once($this->adodb_path.'/adodb-xmlschema.inc.php');
+
+		$bol_error = true;
+
+		$int = 1;
+		do {
+			$SGBDs = $this->getAllSGBD();
+
+			$select = $this->cli->prompt(agt('ddbbSGBD'), $SGBDs);
+			$platform = $SGBDs[$select];
+			$dbHost = $this->cli->prompt(agt('ddbbHost').': ');
+			$dbUser = $this->cli->prompt(agt('ddbbUser').': ');
+			$dbPassword = $this->cli->prompt(agt('ddbbPasswd').': ');
+			$dbName = $this->cli->prompt(agt('ddbbName').': ');
+
+			$db = ADONewConnection( $platform );
+			$db->Connect( $dbHost, $dbUser, $dbPassword, $dbName );
+
+			if (is_resource($db->_connectionID)) {
+				$this->log(agt('ddbbConnOk'), 'success');
+				$bol_error = false;
+				break;
+			} else {
+				$this->log(agt('ddbbConnErr'), 'error');
+			}
+
+			$int++;
+		} while ($int < 4);
+
+		if($bol_error){
+			return false;
+		}
+
+		$allDDBB = $db->MetaDatabases();
+
+		if(!empty($allDDBB)){
+			if (in_array($dbName, $allDDBB)){
+				$this->log(agt('ddbbNameOk'), 'success');
+			} else {
+                $this->log(agt('ddbbNameErr'), 'warning');
+				$this->log(agt('ddbbCreate'), 'warning');
+
+				if (!$db->Execute("create database $dbName") ) {
+					$this->cli->fatal(agt('ddbbCreateErr'));
+				} else {
+					$this->log(agt('ddbbCreateOk'), 'success');
+
+					//Reconectamos
+					$db->Connect( $dbHost, $dbUser, $dbPassword, $dbName );
+				}
+			}
+		}
+
+		$schemaFile = $this->miguel_path.'/'.$this->miguel_name.'/modules/common/include/miguel_schema.xml';
+
+		if(file_exists($schemaFile)) {
+			//Preparamos el proceso de creación de la BBDD
+			$schema = new adoSchema( $db );
+
+			$sql = $schema->ParseSchema( $schemaFile );
+			$result = $schema->ExecuteSchema($sql, true);
+
+			if ($result != 2) {
+  				$this->cli->fatal(agt('ddbbTableErr'));
+			}
+
+			$this->log(agt('ddbbTableOk'), 'success');
+		} else {
+			$this->cli->fatal(agt('fsErr'));
+		}
+
+		return true;
+    }
+
     function writeFile($file_name, $file_content)
     {
     	// abrir en modo escritura el fichero cache
@@ -390,4 +471,27 @@ class Setup_cli extends Setup {
 	{
 		$this->cli->fatal(agt($error));
 	}
+
+	function getAllSGBD()
+    {
+        $sgbdlist = array();
+        $dir_path = $this->adodb_path.'/drivers/';
+        $dir = opendir($dir_path);
+
+		$ind = 1;
+
+        while ($item = readdir ($dir)){
+            if($item != '.' && $item != '..' && $item != 'CVS'){
+                if(is_file($dir_path.$item)){
+                    $elem = substr($item, 6,-8);
+                    $sgblist[$ind] = $elem;
+					$ind++;
+                }
+            }
+        }
+        closedir($dir);
+		sort($sgblist);
+
+        return $sgblist;
+    }
 }

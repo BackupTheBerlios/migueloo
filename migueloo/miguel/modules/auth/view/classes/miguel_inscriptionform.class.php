@@ -35,8 +35,9 @@
  * @package miguel main
  * @version 1.0.0
  */
+include_once (Util::app_Path("common/view/classes/miguel_formcontent.class.php"));
 
-class miguel_inscriptionForm extends base_FormContent
+class miguel_inscriptionForm extends miguel_FormContent
 {
     /**
      * Este metodo se llama cada vez que se instancia la clase.

@@ -21,7 +21,8 @@
       |   02111-1307, USA. The GNU GPL license is also available through     |
       |   the world-wide-web at http://www.gnu.org/copyleft/gpl.html         |
       +----------------------------------------------------------------------+
-      | Authors: Jesus A. Martinez Cerezal <jamarcer@inicia.es>              |
+      | Authors: Jesus A. Martinez Cerezal <jamarcer@ia.es>                  |
+      |          Antonio F. Cano Damas <antoniofcano@telefonica.net>         |
       |          miguel Development Team                                     |
       |                       <e-learning-desarrollo@listas.hispalinux.es>   |      
       +----------------------------------------------------------------------+
@@ -30,6 +31,7 @@
  * Define la clase base de miguel.
  *
  * @author Jesus A. Martinez Cerezal <jamarcer@inicia.es>
+ * @author antoniofcano@telefonica.net <antoniofcano@telefonica.net>
  * @author miguel development team <e-learning-desarrollo@listas.hispalinux.es>     
  * @package miguel base
  * @subpackage control
@@ -41,7 +43,7 @@
  */
 
 
-class miguel_CCourse extends base_Controller
+class miguel_CCourse extends miguel_Controller
 {
 	/**
 	 * This is the constructor.
@@ -49,8 +51,8 @@ class miguel_CCourse extends base_Controller
 	 */
 	function miguel_CCourse()
 	{	
-		$this->base_Controller();
-        $this->setModuleName('course');
+		$this->miguel_Controller();
+    $this->setModuleName('course');
 		$this->setModelClass('miguel_MCourse');
 		$this->setViewClass('miguel_VCourse');
 	}
@@ -58,7 +60,7 @@ class miguel_CCourse extends base_Controller
 	function processPetition() 
 	{
 	
-	    /* Falta la comprobaci—n del acceso */
+	    /* Falta la comprobaciÃ³n del acceso */
 	    
 	    $user_id = $this->getSessionElement('userinfo','user_id');
 	    $course_id = 0;
@@ -66,19 +68,24 @@ class miguel_CCourse extends base_Controller
 	        $course_id = $this->getViewVariable('course');
 	    }
         
-        include_once( Util::app_Path('common/control/classes/miguel_courseinfo.class.php') );
-	    $infoCourse = miguel_CourseInfo::getInfo($this->obj_data, $course_id);
-	    $this->setViewVariable('infoCourse', $infoCourse);
+      include_once( Util::app_Path('common/control/classes/miguel_courseinfo.class.php') );
+      $courseAccess = miguel_CourseInfo::hasAccess($this->obj_data, $course_id, $user_id);
+      if ( $courseAccess ) {
+  	    $infoCourse = miguel_CourseInfo::getInfo($this->obj_data, $course_id);
+	      $this->setViewVariable('infoCourse', $infoCourse);
   		
-  		$infoPath = $this->obj_data->getPath($course_id);
-  		$this->setViewVariable('infoPath', $infoPath);
-  		
-		$this->addNavElement(Util::format_URLPath("lib/course/index.php", "course=".$course_id), $infoCourse['name']);
+		    $this->addNavElement(Util::format_URLPath("course/index.php", "course=".$course_id), $infoCourse['name']);
 		
-  		$this->setCacheFile('miguel_VCourse_' . $course_id . '_' . $this->getSessionElement("userinfo","user_id"));
+    		$this->setCacheFile('miguel_VCourse_' . $course_id . '_' . $this->getSessionElement("userinfo","user_id"));
   		
-  		$this->setPageTitle("miguelOO Curso: " . $infoCourse['name']);
-		$this->setMessage('Bienvenido al curso "' . $infoCourse['name'] . '"');
-		$this->setHelp("EducContent");
+    		$this->setPageTitle("miguelOO Curso: " . $infoCourse['name']);
+  	  	$this->setMessage('Bienvenido al curso "' . $infoCourse['name'] . '"');
+  		  $this->setHelp("EducContent");
+      } else {
+    		$this->setPageTitle("miguelOO Curso: " . agt('miguel_courseNoAccess') );
+  	  	$this->setMessage( agt('miguel_courseNoAccess') );
+  		  $this->setHelp("EducContent");
+    		$this->setError('miguel_VNoAccess');	  
+      }
 	}
 }

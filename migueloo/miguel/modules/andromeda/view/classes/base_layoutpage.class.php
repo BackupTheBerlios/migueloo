@@ -120,10 +120,10 @@ class base_LayoutPage extends PageWidget
 	 */
 	function addForm($str_moduleName, $str_className)
 	{
-    	$ret_val = '';
+    	$ret_val = container();
     	
     	$file_name = Util::app_Path($str_moduleName.'/view/classes/'.strtolower($str_className).".class.php");
-
+        
     	if(file_exists($file_name)) {
     		include($file_name);
         	$ret_val = new FormProcessor(new $str_className($this->arr_commarea), strtolower($str_className), Util::format_URLPath(trim(str_replace( '/'.MIGUELBASE_MODULES_BASE, ' ', $_SERVER['PHP_SELF']))));
@@ -323,20 +323,78 @@ class base_LayoutPage extends PageWidget
     }
     
     /**
-     * Permite comprobar el "permiso" en el sistema gacl
-   	 * @param string $str_name Nombre del elemento (variable)
-   	 * @param string $str_name Nombre del elemento (variable)
-   	 * @param string $str_name Nombre del elemento (variable)
-   	 * @param string $str_name Nombre del elemento (variable)
-   	 * @return boolean 
+     * Permite comprobar el "permiso" en el sistema
+   	 * @param string $str_name Nombre servicio
+   	 * @param string $str_profile Perfil solicitante
+   	 * @return boolean
    	 */
+	function checkAccess($str_name, $str_profile)
+   	{
+        $ret_val = false;
+
+        if(empty($str_profile) || $str_profile == null){
+            $str_profile = 99;
+        }
+
+		$profiles = array('none'        => 0,
+                          'admin' 		=> 1,
+						  'tutor' 		=> 2,
+						  'profesor' 	=> 3,
+						  'alumno' 		=> 4,
+						  'secretaria' 	=> 5,
+						  'guest' 		=> 6
+						 );
+
+		$service = $this->registry->getProfileService($str_name);
+		//Debug::oneVar($str_profile, __FILE__, __LINE__);
+		//Debug::oneVar($service, __FILE__, __LINE__);
+		//Debug::oneVar($profiles[$service], __FILE__, __LINE__);
+
+		switch($service){
+			case 'all':
+				$ret_val = true;
+				break;
+			case 'none':
+				if($str_profile == $profiles['admin']){
+					$ret_val = true;
+				}
+				break;
+			case 'secretaria':
+				if($str_profile == $profiles['secretaria']){
+					$ret_val = true;
+				}
+				break;
+			default:
+				if($str_profile <= $profiles[$service]){
+					$ret_val = true;
+				}
+		}
+
+		return $ret_val;
+	}
+
+	/**
+     * Permite comprobar el "permiso" en el sistema usando gacl
+   	 * @param string $str_name Nombre del elemento (variable)
+   	 * @param string $str_name Nombre del elemento (variable)
+   	 * @param string $str_name Nombre del elemento (variable)
+   	 * @param string $str_name Nombre del elemento (variable)
+   	 * @return boolean
+	 *
+	 * @since Despalzada implementación hasta versiones posteriores
+   	 */
+	/*
    	function checkAccess($str_aco_sys, $str_aco_elem, $str_aro_sys, $str_aro_elem)
    	{
+        //Debug::oneVar($str_aco_sys,__FILE__, __LINE__);
+        //Debug::oneVar($str_aco_elem,__FILE__, __LINE__);
+        //Debug::oneVar($str_aro_sys,__FILE__, __LINE__);
+        //Debug::oneVar($str_aro_elem,__FILE__, __LINE__);
         //Incluimos el API de phpgacl
         //define('ADODB_DIR', MIGUELBASE_ADODB);
    	    include_once(Util::base_Path("include/gacl/gacl.class.php"));
-   	    
-        //Probar el sistema de cache: ¿para qué? ADOdb cacheado ya.   	
+
+        //Probar el sistema de cache: ¿para qué? ADOdb cacheado ya.
    	    $arr_gacl_options = array(
 								'debug' => FALSE,
 								'items_per_page' => 100,
@@ -353,10 +411,11 @@ class base_LayoutPage extends PageWidget
 								'cache_dir' => MIGUELBASE_CACHE_DIR,
 								'cache_expire_time' => MIGUELBASE_CACHE_TIME
 							);
-   	    
+
    	    $obj_gacl = new gacl($arr_gacl_options);
-   	    
+
    	    return $obj_gacl->acl_check($str_aco_sys, $str_aco_elem, $str_aro_sys, $str_aro_elem);
    	}
+	*/
 }
 ?>

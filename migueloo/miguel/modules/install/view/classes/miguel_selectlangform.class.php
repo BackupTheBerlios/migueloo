@@ -49,8 +49,8 @@ class miguel_selectLangForm extends base_FormContent
 		//$elem1->set_value($this->getViewVariable('inst_lang'));
 		$this->add_element($elem1);
         	
-		$this->add_element($this->_formatElem("base_SubmitButton", "Siguiente", "submit", _("Siguiente")." >"));
-		$this->add_element($this->_formatElem("base_SubmitButton", "Salir", "quit", "< "._("Salir")));
+		$this->add_element($this->_formatElem("base_SubmitButton", "Siguiente", "submit", agt("Siguiente")." >"));
+		$this->add_element($this->_formatElem("base_SubmitButton", "Salir", "quit", "< ".agt("Salir")));
     }
 
     /**
@@ -67,7 +67,7 @@ class miguel_selectLangForm extends base_FormContent
         $row = html_tr("");
 		$col1 = html_td("");
 		$col1->set_tag_attribute("align", "right"); 
-		$col1->add(html_b(gettext("Idioma")));
+		$col1->add(html_b(agt("Idioma")));
 		$col2 = html_td("");
 		$col2->set_tag_attribute("align", "left"); 
 		$col2->add($this->element_form("miguel_lang"));	

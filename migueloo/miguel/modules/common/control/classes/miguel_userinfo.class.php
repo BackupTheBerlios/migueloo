@@ -32,6 +32,7 @@
  *
  * @author Jesus A. Martinez Cerezal <jamarcer@inicia.es>
  * @author Antonio F. Cano Damas <antoniofcano@telefonica.net>
+ * @author Antonio Gutiérrez Mayoral <agutierr@gsyc.escet.urjc.es>
  * @author miguel development team <e-learning-desarrollo@listas.hispalinux.es>
  * @package miguel common
  * @subpackage control
@@ -87,19 +88,20 @@ class miguel_UserInfo
     }
 
     /**
-	 * Obtiene toda la información de un usuario
+	 * Obtiene toda la informaciÃ›n de un usuario
 	 * @param base_model $obj_model Instancia de un modelo
 	 * @param string $str_user Identificador de usuario (nickname).
-	 * @return array Toda la información: nombre, email, nick, trato, idioma,...
+	 * @return array Toda la informaciÃ›n: nombre, email, nick, trato, idioma,...
 	 */
     function getInfo(&$obj_model, $str_user)
     {
-    	if($str_user == '') {
+
+        if($str_user == '') {
     	   $ret_val = array ( 'name'          => '',
                               'surname'       => '',
                               'user_alias'    => 'guest',
                               'email'         => '',
-                              'profile_id'    => '6',
+                              'profile_id'    => 6,
                               'treatment'     => '',
                               'language'      => '',
                               'theme'         => '',
@@ -107,23 +109,24 @@ class miguel_UserInfo
                               'isadmin'       => false);
     	} else {
             $ret_sql = $obj_model->SelectMultiTable('user, person, treatment, profile', 
-                                                    'user.user_id, user.user_alias, user.email, user.theme, user.language, user.id_profile, treatment.treatment_description, person.person_name, person.person_surname, profile.profile_description',
+                                                    'user.user_id, user.user_alias, user.email, user.user_notify_email, user.theme, user.language, user.id_profile, treatment.treatment_description, person.person_name, person.person_surname, profile.profile_description',
                                                     'user.user_alias = ' . $str_user . ' AND user.person_id = person.person_id AND user.treatment_id = treatment.treatment_id AND user.id_profile = profile.id_profile');
 
     	   if ($obj_model->hasError()) {
     		  $ret_val = null;
     	   } else {
-        	  //No incluimos información de la "tabla" o modelo de datos
+        	  //No incluimos informaciÃ›n de la "tabla" o modelo de datos
         	  $ret_val = array ( 'user_id'       => $ret_sql[0]['user.user_id'],
-                                 'name'          => $ret_sql[0]['person.person_name'],
+                               'name'          => $ret_sql[0]['person.person_name'],
         	                     'surname'       => $ret_sql[0]['person.person_surname'],
         	                     'user_alias'    => $ret_sql[0]['user.user_alias'],
         	                     'email'         => $ret_sql[0]['user.email'],
         	                     'profile_id'    => $ret_sql[0]['user.id_profile'],
-                                 'profile'       => $ret_sql[0]['profile.profile_description'],
+                               'profile'       => $ret_sql[0]['profile.profile_description'],
         	                     'treatment'     => $ret_sql[0]['treatment.treatment_description'],
         	                     'language'      => $ret_sql[0]['user.language'],
-                                 'theme'         => $ret_sql[0]['user.theme']);
+                               'theme'         => $ret_sql[0]['user.theme'],
+                               'notify_email'  => $ret_sql[0]['user.user_notify_email']);
     	   }
  	}
 
@@ -162,5 +165,28 @@ class miguel_UserInfo
 		}
     	return ($ret_val);
     }
+
+	/**
+	 * Devuelve el rol asociado al usuario que inició la sesión.
+	 * @param base_model $obj_model Instancia de un modelo.
+	 * @param int $user_id Identificador de usuario.
+	 * @return int Devuelve el role o profile asociado a un usuario.
+	 *
+	 **/
+   
+	function getRole(&$obj_model, $user_id)
+
+	{
+		$ret_sql = $obj_model->Select('user','id_profile', 'user_id = ' . $user_id);
+
+		if ($obj_model->hasError()) {
+			$ret_val = null;
+		} else {
+			$ret_val = $ret_sql[0]['user.id_profile'];
+		}
+
+		return ($ret_val);
+	}
+
 }
 ?>

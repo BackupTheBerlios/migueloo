@@ -57,7 +57,7 @@ class miguel_resultNewCourseForm extends base_FormContent
 
 
     /**
-     * Este metodo construye el formulario en sí.
+     * Este metodo construye el formulario en sÃŒ.
      */
     function form() 
     {
@@ -65,30 +65,6 @@ class miguel_resultNewCourseForm extends base_FormContent
         $table->add_row(html_td("", "left",  $this->element_form("Continuar")));
 
         return $table;
-    }
-
-    /**
-     * This method gets called after the FormElement data has
-     * passed the validation.  This enables you to validate the
-     * data against some backend mechanism, say a DB.
-     *
-     */
-    function form_backend_validation() 
-    {
-        //Los controles se hacen en el controlador
-        return TRUE;
-    }
-
-    /**
-     * This method is called ONLY after ALL validation has
-     * passed.  This is the method that allows you to 
-     * do something with the data, say insert/update records
-     * in the DB.
-     */
-    function form_action() 
-    {
-        //Evitamos que se escriba nada
-        return false;
     }
 }
 

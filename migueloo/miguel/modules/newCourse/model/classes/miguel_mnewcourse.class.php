@@ -27,7 +27,7 @@
       +----------------------------------------------------------------------+
 */
 /**
- * Define la clase modelo del módulo encargado de crear cursos.
+ * Define la clase modelo del mÃ›dulo encargado de crear cursos.
  *
  * @author Antonio F. Cano Damas <antoniofcano@telefonica.net>
  * @author miguel development team <e-learning-desarrollo@listas.hispalinux.es>     
@@ -51,87 +51,23 @@ class miguel_MNewCourse extends base_Model
         $this->base_Model();
     }
 
-    function getInstitution()
+    function testNav($institution_id, $faculty_id, $department_id, $area_id)
     {
-        $ret_val = $this->Select('institution', "institution_id, institution_name");
-        if ($this->hasError()) {
-            $ret_val = null;
-        }
-        
-        $categoryelem = array();
-        if (is_array($ret_val)) {
-            $countInstitution = count($ret_val);
-    		for ($i=0; $i < $countInstitution; $i++) {
-                $categoryelem[$ret_val[$i]['institution.institution_name']] = $ret_val[$i]['institution.institution_id'];
-
-            }
-        }
     	
-    	return $categoryelem;
-    } 
-
-    function getFaculty()
-    {
-        $ret_val = $this->Select('faculty', "faculty_id, faculty_name");
-        if ($this->hasError()) {
-            $ret_val = null;
-        }
+      $ret_val = $this-> SelectCount('area', "institution_id = $institution_id AND faculty_id = $faculty_id AND department_id = $department_id AND area_id = $area_id");
+      if ($this->hasError()) {
+          $ret_val = 0;
+      }
         
-        $categoryelem = array();
-        if (is_array($ret_val)) {
-            $countInstitution = count($ret_val);
-    		for ($i=0; $i < $countInstitution; $i++) {
-                $categoryelem[$ret_val[$i]['faculty.faculty_name']] = $ret_val[$i]['faculty.faculty_id'];
-            }
-        }
-
-    	return $categoryelem;
-    } 
-    
-    function getDepartment()
-    {
-        $ret_val = $this->Select('department', "department_id, department_name");
-        if ($this->hasError()) {
-            $ret_val = null;
-        }
-        
-        $categoryelem = array();
-        if (is_array($ret_val)) {
-            $countInstitution = count($ret_val);
-    		for ($i=0; $i < $countInstitution; $i++) {
-                $categoryelem[$ret_val[$i]['department.department_name']] = $ret_val[$i]['department.department_id'];
-            }
-        }
-
-    	
-    	return $categoryelem;
-    } 
-    
-    function getArea()
-    {
-        $ret_val = $this->Select('area', "area_id, area_name");
-        if ($this->hasError()) {
-            $ret_val = null;
-        }
-        
-        $categoryelem = array();
-        if (is_array($ret_val)) {
-            $countInstitution = count($ret_val);
-    		for ($i=0; $i < $countInstitution; $i++) {
-                $categoryelem[$ret_val[$i]['area.area_name']] = $ret_val[$i]['area.area_id'];
-            }
-        }
-
-    	
-    	return $categoryelem;
+    	return $ret_val;
     }
     
+
     function insertNewCourse( $courseData )
     {
-        
         $ret_val = $this->Insert('course',
                                  'course_name, course_description, course_language, course_access, course_active, institution_id, faculty_id, department_id, area_id, user_id, course_date',
-                                 $courseData['name'] . ' , ' . $courseData['description'] . ' , ' . $courseData['language'] . ' , ' . $courseData['access'] . ' , ' . $courseData['active'] . ' , ' . $courseData['institution'] . ' , ' . $courseData['faculty'] . ' , ' . $courseData['department'] . ' , ' . $courseData['area'] . ' , ' . $courseData['user_id'] . ' , ' . time());
+                                 $courseData['name'] . ' , ' . $courseData['description'] . ' , ' . $courseData['language'] . ' , ' . $courseData['access'] . ' , ' . $courseData['active'] . ' , ' . $courseData['institution'] . ' , ' . $courseData['faculty'] . ' , ' . $courseData['department'] . ' , ' . $courseData['area'] . ' , ' . $courseData['user_id'] . ' , ' . date("Y-m-d H:i:s"));
         if ($this->hasError()) {
             $ret_val = null;
         }
@@ -144,7 +80,7 @@ class miguel_MNewCourse extends base_Model
         
         $ret_val = $this->Insert('user_course',
                                  'course_id, user_id, ud_date',
-                                 $course_id . ' , ' . $user_id . ' , ' . time());
+                                 $course_id . ' , ' . $user_id . ' , ' . date("Y-m-d H:i:s"));
         if ($this->hasError()) {
             $ret_val = null;
         }

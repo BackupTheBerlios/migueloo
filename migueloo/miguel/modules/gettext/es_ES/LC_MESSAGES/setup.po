@@ -131,6 +131,22 @@ msgid "step7Ok"
 msgstr "Los ficheros de configuracion ya estan disponibles"
 
 #: setup.php:
+msgid "step8"
+msgstr "Paso 8"
+
+#: setup.php:
+msgid "step8Des"
+msgstr "Instalacion de la base de datos de miguel"
+
+#: setup.php:
+msgid "step8Err"
+msgstr "La base de datos no ha sido instalada. Compruebe su instalacion."
+
+#: setup.php:
+msgid "step8Ok"
+msgstr "Base de datos de miguel instalada correctamente"
+
+#: setup.php:
 msgid "finalMsg"
 msgstr "Configuracion completa. ¡Gracias por usar miguel!"
 
@@ -337,6 +353,62 @@ msgstr "Fichero de configuracion creados."
 #: setup_cli.class.php:
 msgid "createInfo"
 msgstr "Necesita los ficheros de configuracion para continuar con la personalizacion y uso de miguel."
+
+#: setup_cli.class.php:
+msgid "ddbbSGBD"
+msgstr "Gestor de base de datos"
+
+#: setup_cli.class.php:
+msgid "ddbbHost"
+msgstr "Host donde reside el gestor"
+
+#: setup_cli.class.php:
+msgid "ddbbUser"
+msgstr "Usuario autorizado"
+
+#: setup_cli.class.php:
+msgid "ddbbPasswd"
+msgstr "Clave de acceso"
+
+#: setup_cli.class.php:
+msgid "ddbbName"
+msgstr "Nombre de la base de datos"
+
+#: setup_cli.class.php:
+msgid "ddbbConnOk"
+msgstr "Conectado correctamente"
+
+#: setup_cli.class.php:
+msgid "ddbbConnErr"
+msgstr "Fallo al conectar con la base de datos. Comprueba los datos"
+
+#: setup_cli.class.php:
+msgid "ddbbNameOk"
+msgstr "La base de datos ya existe"
+
+#: setup_cli.class.php:
+msgid "ddbbNameErr"
+msgstr "La base de datos no existe"
+
+#: setup_cli.class.php:
+msgid "ddbbCreate"
+msgstr "Creando la base de datos especificada"
+
+#: setup_cli.class.php:
+msgid "ddbbCreateErr"
+msgstr "No pudo crearse la base de datos especificada. Por favor, hagalo manualmente"
+
+#: setup_cli.class.php:
+msgid "ddbbCreateOk"
+msgstr "Base de datos especificada creada correctamente"
+
+#: setup_cli.class.php:
+msgid "ddbbTableOk"
+msgstr "Base de datos instalada"
+
+#: setup_cli.class.php:
+msgid "ddbbTableErr"
+msgstr "Error al crear la base de datos"
 
 #: base_CLI.class.php:
 msgid "fatalErr"

@@ -42,7 +42,7 @@
  *
  */
 
-class miguel_CArea extends base_Controller
+class miguel_CArea extends miguel_Controller
 {	
 	/**
 	 * This is the constructor.
@@ -50,7 +50,7 @@ class miguel_CArea extends base_Controller
 	 */
 	function miguel_CArea()
 	{	
-		$this->base_Controller();
+		$this->miguel_Controller();
 		$this->setModuleName('area');
 		$this->setModelClass('miguel_MArea');
 		$this->setViewClass('miguel_VMain');

@@ -92,7 +92,7 @@ class base_VError extends base_LayoutPage
 		//Puede no estar definido la url de retorno
 		$url = $this->getViewVariable('str_url');
 		if(isset($url)) {
-			$row = html_td("", "",html_a($url, _('Volver')));
+			$row = html_td("", "",html_a($url, agt('Volver')));
 			$row->set_tag_attribute("align", "center");
 			$table->add_row($row);
 		} 

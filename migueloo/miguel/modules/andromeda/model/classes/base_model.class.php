@@ -33,7 +33,6 @@
 /**
  *
  */ 
- 
 include_once(MIGUELBASE_DIR."model/classes/ddbb/base_ddbberror.class.php");
 
 /**
@@ -103,7 +102,7 @@ class base_Model extends base_ddbbError
 		//Instanciamos la clase responsable
 		$this->obj_data = new base_ddbbData();
 		$this->obj_data->openConnection();
-		//dbg_var($this->obj_data, __FILE__, __LINE__);
+		//Debug::oneVar($this->obj_data, __FILE__, __LINE__);
 		//Activamos los métodos asociados
 		$this->bol_dataMeth = true;
 	}
@@ -141,7 +140,7 @@ class base_Model extends base_ddbbError
 	function Select($str_table, $str_fields, $str_cond = '' )
 	{
 		if($this->bol_dataMeth) {
-			return $this->obj_data->_select($str_table, 0, $str_fields, $str_cond);
+			return $this->obj_data->_select($str_table, 0, $str_fields, '', $str_cond, false);
 		} else {
 			$this->_setError('Model ::  DDBB service not active');
 		}
@@ -157,7 +156,7 @@ class base_Model extends base_ddbbError
 	function SelectMultiTable($str_table, $str_fields, $str_cond = '' )
 	{
 		if($this->bol_dataMeth) {
-			return $this->obj_data->_select($str_table, 2, $str_fields, $str_cond);
+			return $this->obj_data->_select($str_table, 2, $str_fields, '', $str_cond, false);
 		} else {
 			$this->_setError('Model ::  DDBB service not active');
 		}
@@ -172,7 +171,7 @@ class base_Model extends base_ddbbError
 	function SelectAll($str_table, $str_cond = '' )
 	{
 		if($this->bol_dataMeth) {
-			return $this->obj_data->_select($str_table, 0, '*', $str_cond);
+			return $this->obj_data->_select($str_table, 0, '*', '', $str_cond, false);
 		} else {
 			$this->_setError('Model ::  DDBB service not active');
 		}
@@ -188,7 +187,26 @@ class base_Model extends base_ddbbError
 	function SelectDistinct($str_table, $str_fields, $str_cond = '' )
 	{
 		if($this->bol_dataMeth) {
-			return $this->obj_data->_select($str_table, 1, $str_fields, $str_cond);
+			return $this->obj_data->_select($str_table, 1, $str_fields, '', $str_cond, false);
+		} else {
+			$this->_setError('Model ::  DDBB service not active');
+		}
+	}
+	
+	/**
+	 * Obtiene todos los registros diferentes de una tabla que cumplen la condición dada.
+	 * Los ordena en función de los campos y tipo especificado
+	 * @param string $str_table Nombre de la tabla.
+	 * @param string $str_fields Campos a buscar (cadena formada por los campos separados por comas)
+	 * @param string $str_sort_by Campos por los que ordenar(cadena formada por los campos separados por comas)
+ 	 * @param string $str_cond Condición a cumplir
+ 	 * @param boolean $bol_reverse Tipo de ordenación: false -> ascendente; true -> descendente
+ 	 * @return array Registros obtenidos.
+	 */
+	function SelectOrder($str_table, $str_fields, $str_sort_by, $str_cond = '' ,$bol_reverse = false)
+	{
+		if($this->bol_dataMeth) {
+			return $this->obj_data->_select($str_table, 1, $str_fields, $str_sort_by, $str_cond, $bol_reverse);
 		} else {
 			$this->_setError('Model ::  DDBB service not active');
 		}
